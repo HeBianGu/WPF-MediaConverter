@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="HeBianGu.Product.FFmpeg.UserControls.MediaConvertControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0"/>
+        </Style>
+
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate DataType="{x:Type local:MediaConvertEntityNotifyClass}">
+
+            <Grid  Height="80" Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}">
+                <Grid Margin="0,2,35,2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition  Width="100"/>
+                        <ColumnDefinition  Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Background="Red" Grid.Column="0"/>
+                    <Grid Background="Blue" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.6*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox HorizontalAlignment="Left" Text="{Binding From_FileName}" Grid.Row="0" Grid.ColumnSpan="6"/>
+
+                        <TextBlock HorizontalAlignment="Left" Text="格式：" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From_Type}" Grid.Row="1" Grid.Column="1"/>
+
+                        <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From_Resolution}" Grid.Row="1" Grid.Column="3"/>
+
+                        <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From_Time}" Grid.Row="2" Grid.Column="1"/>
+
+                        <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/>
+                        <TextBlock  HorizontalAlignment="Left" Text="{Binding From_Size}" Grid.Row="2" Grid.Column="3"/>
+                    </Grid>
+                    <Grid Background="Purple" Grid.Column="2">
+                        <TextBlock Text="=" FontSize="50"/>
+                    </Grid>
+                    <Grid Background="Blue" Grid.Column="3">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.6*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox HorizontalAlignment="Left" Text="{Binding To_FileName}" Grid.Row="0" Grid.ColumnSpan="6"/>
+
+                        <TextBlock HorizontalAlignment="Left" Text="格式：" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To_Type}" Grid.Row="1" Grid.Column="1"/>
+
+                        <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To_Resolution}" Grid.Row="1" Grid.Column="3"/>
+
+                        <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To_Time}" Grid.Row="2" Grid.Column="1"/>
+
+                        <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/> 
+                        <TextBlock  HorizontalAlignment="Left" Text="{Binding To_Size}" Grid.Row="2" Grid.Column="3"/>
+                    </Grid>
+                    <Grid Background="Gray" Grid.Column="4">
+                        <Button Content="参数设置" Height="30"/>
+                    </Grid>
+                    <Grid Background="Red" Grid.Column="5">
+                        <Button Content="转换" Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="btn_convert"  Height="50" Width="150"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="367*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel>
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="5,0"/>
+                    </Style>
+
+                </StackPanel.Resources>
+                <Button Content="添加文件" Command="{Binding RelayCommand}" CommandParameter="AddFile"/>
+                <Button Content="添加文件夾"/>
+                <Button Content="分割視頻"/>
+                <Button Content="合并視頻"/>
+                <Button Content="製作GIF"/>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type ToggleButton}">
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="10,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="輸出格式："/>
+                <ToggleButton Content="MP4 同源文件"/>
+            </StackPanel>
+        </DockPanel>
+
+        <DockPanel Grid.Row="2">
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <TextBlock Text="保存至："/>
+                <RadioButton Content="源文件"/>
+                <RadioButton Content="自定义"/>
+                <TextBox/>
+                <Button Content="浏览" Height="30" Width="50"/>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="5,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Content="清空列表"/>
+                <Button Content="开始转换" Width="150" Height="50"/>
+            </StackPanel>
+        </DockPanel>
+
+        <ListBox Grid.Row="1" Background="Green" ItemsSource="{Binding Collection}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+
+        </ListBox>
+    </Grid>
+</UserControl>

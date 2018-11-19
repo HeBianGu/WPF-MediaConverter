@@ -1,0 +1,9 @@
+﻿<Application x:Class="HeBianGu.Product.FFmpeg.MediaConverter.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.MediaConverter"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
