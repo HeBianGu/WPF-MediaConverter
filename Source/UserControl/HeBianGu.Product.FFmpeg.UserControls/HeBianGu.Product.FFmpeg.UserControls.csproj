@@ -38,8 +38,16 @@
     <Reference Include="HeBianGu.General.WpfControlLib">
       <HintPath>..\..\Product\Dll\HeBianGu.General.WpfControlLib.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Product\Dll\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Product\Dll\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,10 +62,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MediaConvertConfig.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MediaConvertControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="MediaConvertConfig.xaml.cs">
+      <DependentUpon>MediaConvertConfig.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MediaConvertControl.xaml.cs">
       <DependentUpon>MediaConvertControl.xaml</DependentUpon>
     </Compile>
@@ -86,7 +101,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Base\HeBianGu.Product.FFmpeg.Driver\HeBianGu.Product.FFmpeg.Driver.csproj">
+    <ProjectReference Include="..\..\Base\HeBianGu.Product.FFmpeg.Base.Model\HeBianGu.Product.FFmpeg.Base.Model.csproj">
+      <Project>{F4E3D9A9-05AB-4B0B-81D1-45E424AF9795}</Project>
+      <Name>HeBianGu.Product.FFmpeg.Base.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Base\HeBianGu.Product.FFmpeg.Driver\HeBianGu.Product.FFmpeg.Driver.csproj">
       <Project>{c27bfe9f-1dc6-4446-b08a-ad7ba540ccc0}</Project>
       <Name>HeBianGu.Product.FFmpeg.Driver</Name>
     </ProjectReference>

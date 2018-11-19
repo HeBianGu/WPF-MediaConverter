@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C27BFE9F-1DC6-4446-B08A-AD7BA540CCC0}</ProjectGuid>
+    <ProjectGuid>{F4E3D9A9-05AB-4B0B-81D1-45E424AF9795}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HeBianGu.Product.FFmpeg.Driver</RootNamespace>
-    <AssemblyName>HeBianGu.Product.FFmpeg.Driver</AssemblyName>
+    <RootNamespace>HeBianGu.Product.FFmpeg.Base.Model</RootNamespace>
+    <AssemblyName>HeBianGu.Product.FFmpeg.Base.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Product\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,17 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FFmpegParameter.cs" />
-    <Compile Include="FFmpegProcess.cs" />
-    <Compile Include="FFmpegConvert.cs" />
-    <Compile Include="FFmpegService.cs" />
+    <Compile Include="MediaEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HeBianGu.Product.FFmpeg.Base.Model\HeBianGu.Product.FFmpeg.Base.Model.csproj">
-      <Project>{f4e3d9a9-05ab-4b0b-81d1-45e424af9795}</Project>
-      <Name>HeBianGu.Product.FFmpeg.Base.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

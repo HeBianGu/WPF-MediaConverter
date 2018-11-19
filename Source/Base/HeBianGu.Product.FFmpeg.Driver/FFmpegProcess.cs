@@ -1,48 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HeBianGu.Product.FFmpeg.Driver
 {
     public class FFmpegProcess
     {
-
-        public const string format = "-i {0} -b 1024k -acodec copy -f mp4 {1}";
-
-        public const string mp4towmv = @"-i {0} -vcodec wmv1 {1}";
-
-        public const string mToSound = "-i {0} -vn -ab 128k {1}";
-
-
-        protected static string Execute(string parameters, string exePath = @"F:\Solution\HeBianGu.Product.FFmpeg.MediaConverter\HeBianGu.Product.FFmpeg.MediaConverter\ffmpeg.exe")
+        public string Execute(string parameters, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
         {
             string result = String.Empty;
 
+            string err = string.Empty;
+
             using (Process p = new Process())
             {
-
                 p.StartInfo.UseShellExecute = false;
-
                 p.StartInfo.CreateNoWindow = true;
-
-                //p.StartInfo.WorkingDirectory = @"F:\Solution\HeBianGu.Product.FFmpeg.MediaConverter\HeBianGu.Product.FFmpeg.MediaConverterr\";
-
                 p.StartInfo.RedirectStandardOutput = true;
-
                 p.StartInfo.FileName = exePath;
-
                 p.StartInfo.Arguments = parameters;
-
                 p.Start();
-
                 p.WaitForExit();
+                result = p.StandardOutput.ReadLine();
 
-                result = p.StandardOutput.ReadToEnd();
 
-                Console.WriteLine("\n运行结束...\n");
+                //Debug.WriteLine("说明"+ result);
+
+                //StreamReader SR = p.StandardOutput;
+
+                //while (!SR.EndOfStream)
+                //{
+                //    var s = SR.ReadLineAsync();
+
+                //    s.ContinueWith(l =>
+                //    {
+                //        Debug.WriteLine("说明" + l);
+                //    });
+                    
+
+                //    Thread.Sleep(1000);
+
+                //}
+
+
+                Debug.WriteLine("\n运行结束...\n");
             }
 
             return result;
@@ -50,25 +56,53 @@ namespace HeBianGu.Product.FFmpeg.Driver
         }
 
 
-        public static void Mp4ToWmv(string from, string to)
+        public string ExecuteWithErr(string parameters, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
         {
-            string param = string.Format(mp4towmv, from, to);
+            string result = String.Empty;
 
-            var result = FFmpegProcess.Execute(param);
+            using (Process p = new Process())
+            {
 
-            Debug.WriteLine(result);
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+
+                p.StartInfo.FileName = exePath;
+                p.StartInfo.Arguments = parameters;
+                p.Start();
+                p.WaitForExit();
+
+                result = p.StandardError.ReadToEnd();
+
+                Debug.WriteLine("\n运行结束...\n");
+            }
+
+            return result;
 
         }
 
-        public static void MediaToMP3(string from, string to)
+        public string ExecuteWithOutWait(string parameters, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
         {
-            string param = string.Format(mToSound, from, to);
+            string result = String.Empty;
 
-            var result = FFmpegProcess.Execute(param);
+            using (Process p = new Process())
+            {
 
-            Console.WriteLine("\n运行结束...\n");
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.FileName = exePath;
+                p.StartInfo.Arguments = parameters;
+                p.Start();
 
-            Debug.WriteLine(result);
+                result = p.StandardOutput.ReadToEnd();
+
+                Console.WriteLine("\n运行结束...\n");
+            }
+
+            return result;
 
         }
 

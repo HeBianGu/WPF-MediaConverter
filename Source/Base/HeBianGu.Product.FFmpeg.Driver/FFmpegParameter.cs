@@ -11,9 +11,6 @@ namespace HeBianGu.Product.FFmpeg.Driver
         /// <summary> m4a转wav </summary>
         public const string m4aTowav = "-i input.m4a -ac 2 -ar 44100 -acodec pcm_s16le -f wav output.wav";
 
-        /// <summary> 从视频中提取声音 p1=input p2= output </summary>
-        public const string mToSound = "-i {0} -vn -ab 128k {1}";
-
         /// <summary> 分离视频流 </summary>
         public const string mediaToMediaStream = "-i input_file -vcodec copy -an output_file_video";
 
@@ -104,6 +101,21 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         /// <summary> 视频封装 </summary>
         public const string mediaToSountStream = "–i video_file –i audio_file –vcodec copy –acodec copy output_file";
+
+
+        #region new
+
+        public string format = "-i {0} -b 1024k -acodec copy -f mp4 {1}";
+
+        public string mp4towmv = @"-i {0} -vcodec wmv1 {1}";
+
+        public string mToSound = "-i {0} -vn -ab 128k {1}";
+
+        public string ffmpeg_formats = "-formats";
+
+        public string ffmpeg_detial = "-i {0}";
+
+        #endregion
 
     }
 }

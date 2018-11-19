@@ -122,7 +122,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UserControl\HeBianGu.Product.FFmpeg.UserControls\HeBianGu.Product.FFmpeg.UserControls.csproj">
+    <ProjectReference Include="..\..\UserControl\HeBianGu.Product.FFmpeg.UserControls\HeBianGu.Product.FFmpeg.UserControls.csproj">
       <Project>{c4b00e7d-53ed-4864-ae6a-cc6be85731d3}</Project>
       <Name>HeBianGu.Product.FFmpeg.UserControls</Name>
     </ProjectReference>

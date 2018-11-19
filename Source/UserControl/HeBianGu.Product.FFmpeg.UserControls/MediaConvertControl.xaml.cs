@@ -84,6 +84,10 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         {
             string command = obj.ToString();
 
+
+            Debug.WriteLine(command);
+
+
             //  Do：应用
             if (command == "AddFile")
             {
@@ -100,22 +104,24 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 //var file= File.Create(open.FileName);
                 entity.From_FilePath = open.FileName;
 
+                var model = FFmpegService.Instance.GetMediaEntity(open.FileName);
+
                 entity.From_FileName = System.IO.Path.GetFileName(open.FileName);
                 entity.From_Type = System.IO.Path.GetExtension(open.FileName);
                 entity.From_Size = "00MB";
-                entity.From_Time = "00:00:00";
-                entity.From_Resolution = "***";
+                entity.From_Time = model.Duration;
+                entity.From_Resolution = model.Resoluction;
 
 
                 entity.To_FileName = System.IO.Path.GetFileNameWithoutExtension(open.FileName) + ".wmv";
                 entity.To_FilePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(open.FileName), entity.To_FileName);
-               
+
 
                 this.Collection.Add(entity);
 
             }
             //  Do：取消
-            else if (command == "Cancel")
+            else if (command == "config_btn_sumit")
             {
 
 
@@ -300,10 +306,27 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
 
 
+        private double _progressValue;
+        /// <summary> 说明  </summary>
+        public double ProgressValue
+        {
+            get { return _progressValue; }
+            set
+            {
+                _progressValue = value;
+                RaisePropertyChanged("ProgressValue");
+            }
+        }
+
+
 
         public void RelayMethod(object obj)
         {
             string command = obj.ToString();
+
+
+            Debug.WriteLine(command);
+
 
             //  Do：应用
             if (command == "btn_convert")
@@ -311,15 +334,19 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                 Debug.WriteLine("btn_convert");
 
+                string result =  FFmpegService.Instance.Mp4ToWmv(this.From_FilePath, this.To_FilePath);
+                
 
 
-                FFmpegProcess.Mp4ToWmv(this.From_FilePath, this.To_FilePath);
+
+                Debug.WriteLine(result);
+
 
 
 
             }
             //  Do：取消
-            else if (command == "Cancel")
+            else if (command == "config_btn_sumit")
             {
 
 

@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.UserControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
     <UserControl.Resources>
@@ -43,6 +45,11 @@
                         <ColumnDefinition  Width="100"/>
                         <ColumnDefinition  Width="200"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ProgressBar Height="10" Grid.Row="1" Value="{Binding ProgressValue}" Foreground="Gray" Grid.ColumnSpan="7"/>
 
                     <Grid Background="Red" Grid.Column="0"/>
                     <Grid Background="Blue" Grid.Column="1">
@@ -104,7 +111,31 @@
                         <TextBlock  HorizontalAlignment="Left" Text="{Binding To_Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
                     <Grid Background="Gray" Grid.Column="4">
-                        <Button Content="参数设置" Height="30"/>
+                        
+                        <ToggleButton x:Name="toggle_config" Content="参数设置" Height="30"/>
+
+                        <Popup x:Name="Pop" PopupAnimation="Slide" IsOpen="{Binding ElementName=toggle_config,Path=IsChecked}"  
+                               PlacementTarget="{Binding ElementName=toggle_config}" 
+                               Placement="Bottom" AllowsTransparency="True"
+                               StaysOpen="False" HorizontalAlignment="Left" 
+                               VerticalAlignment="Bottom">
+                            <Border Background="{DynamicResource S_OpacityGray}" 
+                                    CornerRadius="5" 
+                                    BorderBrush="{DynamicResource S_AccentBrush}" BorderThickness="1">
+                                <StackPanel Margin="10">
+                                    <local:MediaConvertConfig Width="400" Height="180" 
+                                                              Background="LightBlue" >
+
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SumitClick">
+                                                <i:InvokeCommandAction  Command="{Binding RelayCommand}"  CommandParameter="config_btn_sumit"/>
+                                                <ei:ChangePropertyAction TargetObject="{Binding ElementName=toggle_config}" PropertyName="IsChecked" Value="false"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </local:MediaConvertConfig>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
                     </Grid>
                     <Grid Background="Red" Grid.Column="5">
                         <Button Content="转换" Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="btn_convert"  Height="50" Width="150"/>
@@ -180,7 +211,7 @@
             </StackPanel>
         </DockPanel>
 
-        <ListBox Grid.Row="1" Background="Green" ItemsSource="{Binding Collection}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+        <ListBox Grid.Row="1" Background="Green" ItemsSource="{Binding Collection}"  ScrollViewer.HorizontalScrollBarVisibility="Hidden">
 
         </ListBox>
     </Grid>
