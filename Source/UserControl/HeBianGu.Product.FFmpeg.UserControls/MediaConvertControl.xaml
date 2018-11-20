@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.UserControls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:base="clr-namespace:HeBianGu.Base.WpfBase;assembly=HeBianGu.Base.WpfBase"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
     <UserControl.Resources>
@@ -36,7 +37,7 @@
         <DataTemplate DataType="{x:Type local:MediaConvertEntityNotifyClass}">
 
             <Grid  Height="80" Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}">
-                <Grid Margin="0,2,35,2">
+                <Grid Margin="5,5,25,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition/>
@@ -45,11 +46,6 @@
                         <ColumnDefinition  Width="100"/>
                         <ColumnDefinition  Width="200"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <ProgressBar Height="10" Grid.Row="1" Value="{Binding ProgressValue}" Foreground="Gray" Grid.ColumnSpan="7"/>
 
                     <Grid Background="Red" Grid.Column="0"/>
                     <Grid Background="Blue" Grid.Column="1">
@@ -111,7 +107,7 @@
                         <TextBlock  HorizontalAlignment="Left" Text="{Binding To_Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
                     <Grid Background="Gray" Grid.Column="4">
-                        
+
                         <ToggleButton x:Name="toggle_config" Content="参数设置" Height="30"/>
 
                         <Popup x:Name="Pop" PopupAnimation="Slide" IsOpen="{Binding ElementName=toggle_config,Path=IsChecked}"  
@@ -137,10 +133,15 @@
                             </Border>
                         </Popup>
                     </Grid>
+
+                    <ProgressBar IsHitTestVisible="False" Value="{Binding ProgressValue}" Visibility="{Binding IsBuzy,Converter={x:Static base:XConverter.BooleanToVisibilityConverter}}" Foreground="Orange" Opacity="0.5" Grid.ColumnSpan="7"/>
+
                     <Grid Background="Red" Grid.Column="5">
                         <Button Content="转换" Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="btn_convert"  Height="50" Width="150"/>
                     </Grid>
                 </Grid>
+
+
             </Grid>
         </DataTemplate>
 

@@ -292,6 +292,20 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
 
 
+        private bool _isBuzy;
+        /// <summary> 说明  </summary>
+        public bool IsBuzy
+        {
+            get { return _isBuzy; }
+            set
+            {
+                _isBuzy = value;
+                RaisePropertyChanged("IsBuzy");
+            }
+        }
+
+
+
         private string _to_FilePath;
         /// <summary> 说明  </summary>
         public string To_FilePath
@@ -334,15 +348,35 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                 Debug.WriteLine("btn_convert");
 
-                string result =  FFmpegService.Instance.Mp4ToWmv(this.From_FilePath, this.To_FilePath);
-                
+                TimeSpan total = TimeSpan.Parse(this.From_Time);
 
+                Action<string> reciveAction = l =>
+                  {
+                      if (string.IsNullOrEmpty(l)) return;
 
+                      TimeSpan time = TimeSpan.Parse(l);
 
-                Debug.WriteLine(result);
+                      Application.Current.Dispatcher.Invoke(() =>
+                      {
+                          this.ProgressValue = (time.TotalSeconds / total.TotalSeconds)*100 ;
+                      });
 
+                  };
 
+                Action<int> existAction = l =>
+                  {
+                      Application.Current.Dispatcher.Invoke(() =>
+                      {
+                          MessageBox.Show("运行结束");
 
+                          this.IsBuzy = false;
+                      });
+
+                  };
+
+                FFmpegService.Instance.Mp4ToWmv(this.From_FilePath, this.To_FilePath, reciveAction, existAction);
+
+                this.IsBuzy = true;
 
             }
             //  Do：取消

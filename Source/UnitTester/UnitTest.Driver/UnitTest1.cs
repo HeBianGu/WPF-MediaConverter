@@ -10,7 +10,7 @@ namespace UnitTest.Driver
         [TestMethod]
         public void TestMethod1()
         {
-            string ss= FFmpegProcess.Formats();
+            string ss= FFmpegService.Instance.Formats();
         }
 
         [TestMethod]
@@ -20,10 +20,10 @@ namespace UnitTest.Driver
             string filePath = @"F:\GitHub\WPF-MediaConverter\Document\from.mp4";
 
 
-            string ss = FFmpegProcess.GetDetail(filePath);
+            //string ss = FFmpegService.Instance.GetDetail(filePath);
 
 
-            FFmpegConvert.GetMediaEntity(ss);
+            FFmpegService.Instance.GetMediaEntity(filePath);
 
 
 

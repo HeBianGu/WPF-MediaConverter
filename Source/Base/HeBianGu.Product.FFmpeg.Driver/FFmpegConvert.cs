@@ -10,7 +10,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 {
     public class FFmpegConvert
     {
-        public  MediaEntity GetMediaEntity(string txt)
+        public MediaEntity GetMediaEntity(string txt)
         {
 
             MediaEntity entity = new MediaEntity();
@@ -28,7 +28,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
             entity.Start = arr[1].Split(':')[1];
             entity.Bitrate = arr[2].Split(':')[1];
 
-         
+
 
             string regexVideo = "Video: (.*?), (.*?), (.*?)[,\\s]";
 
@@ -43,6 +43,21 @@ namespace HeBianGu.Product.FFmpeg.Driver
             entity.Resoluction = arr[2];
 
             return entity;
+        }
+
+
+        /// <summary> frame= 2833 fps=110 q=24.8 size=   12560kB time=00:03:09.05 bitrate= 544.3kbits/s dup=52 drop=0   </summary>
+        public string GetProgress(string str)
+        {
+            if (str == null) return string.Empty;
+
+            if (!str.StartsWith("frame=")) return string.Empty;
+
+            var result = str.Split(' ', '=').ToList();
+
+              result.RemoveAll(l => string.IsNullOrEmpty(l));
+
+            return result[9];
         }
     }
 }

@@ -20,25 +20,30 @@ namespace HeBianGu.Product.FFmpeg.Driver
         FFmpegParameter _ffmpegParameter = new FFmpegParameter();
 
 
-        public string Mp4ToWmv(string from, string to)
+        public void Mp4ToWmv(string from, string to, Action<string> progressAction, Action<int> existAction)
         {
+            Action<string> action = l =>
+            {
+                progressAction(this._ffmpegConvert.GetProgress(l));
+            };
+
             string param = string.Format(_ffmpegParameter.mp4towmv, from, to);
 
-            var result = _ffmpegProcess.Execute(param);
-
-            return result;
+            _ffmpegProcess.ExecuteWithRecevied(param, action, action, existAction);
 
         }
 
-        public void MediaToMP3(string from, string to)
+        public void MediaToMP3(string from, string to, Action<string> progressAction, Action<int> existAction)
         {
+
+            Action<string> action = l =>
+              {
+                  progressAction(this._ffmpegConvert.GetProgress(l));
+              };
+
             string param = string.Format(_ffmpegParameter.mToSound, from, to);
 
-            var result = _ffmpegProcess.Execute(param);
-
-            Console.WriteLine("\n运行结束...\n");
-
-            Debug.WriteLine(result);
+            _ffmpegProcess.ExecuteWithRecevied(param, action, action, existAction);
 
         }
 

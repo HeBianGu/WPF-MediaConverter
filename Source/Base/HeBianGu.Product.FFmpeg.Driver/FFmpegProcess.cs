@@ -29,29 +29,66 @@ namespace HeBianGu.Product.FFmpeg.Driver
                 result = p.StandardOutput.ReadLine();
 
 
-                //Debug.WriteLine("说明"+ result);
-
-                //StreamReader SR = p.StandardOutput;
-
-                //while (!SR.EndOfStream)
-                //{
-                //    var s = SR.ReadLineAsync();
-
-                //    s.ContinueWith(l =>
-                //    {
-                //        Debug.WriteLine("说明" + l);
-                //    });
-                    
-
-                //    Thread.Sleep(1000);
-
-                //}
-
-
                 Debug.WriteLine("\n运行结束...\n");
             }
 
             return result;
+
+        }
+
+        public void ExecuteWithRecevied(string parameters, Action<string> OutputDataReceived, Action<string> ErrorDataReceived, Action<int> Exited, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
+        {
+
+            ProcessStartInfo startInfo = new ProcessStartInfo(exePath, parameters);
+            startInfo.CreateNoWindow = true;   //不创建窗口
+            startInfo.UseShellExecute = false;
+            //不使用系统外壳程序启动,重定向输出的话必须设为false
+            startInfo.RedirectStandardOutput = true; //重定向输出，
+            startInfo.RedirectStandardError = true;
+
+
+            try
+            {
+                Process process = Process.Start(startInfo);
+                process.OutputDataReceived += (s, _e) =>
+                {
+
+                    Debug.WriteLine("OutputDataReceived：" + _e.Data);
+
+                    if (OutputDataReceived != null)
+                    {
+                        OutputDataReceived(_e.Data);
+                    }
+                };
+
+                process.ErrorDataReceived += (s, _e) =>
+                {
+                    Debug.WriteLine("ErrorDataReceived：" + _e.Data);
+
+                    if (ErrorDataReceived != null)
+                    {
+                        ErrorDataReceived(_e.Data);
+                    }
+                };
+                //当EnableRaisingEvents为true，进程退出时Process会调用下面的委托函数
+                process.Exited += (s, _e) =>
+                {
+                    Debug.WriteLine("Exited:" + process.ExitCode);
+
+                    if (Exited != null)
+                    {
+                        Exited(process.ExitCode);
+                    }
+                };
+                process.EnableRaisingEvents = true;
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                //process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
         }
 
