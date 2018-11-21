@@ -55,9 +55,44 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
             var result = str.Split(' ', '=').ToList();
 
-              result.RemoveAll(l => string.IsNullOrEmpty(l));
+            result.RemoveAll(l => string.IsNullOrEmpty(l));
 
             return result[9];
+        }
+
+
+
+
+    }
+
+    public static class FFmpegConvertExtention
+    {
+        public static string GetCommandParameter(this string str, List<FFmpegCommandCheckParameter> checks)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var item in checks)
+            {
+                if (!item.IsChecked) continue;
+
+                sb.Append(" " + item.Command);
+            }
+
+            return str + sb.ToString();
+        }
+
+        public static string GetCommandParameter(this string str, List<FFmpegCommandTextParameter> texts)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var item in texts)
+            {
+                if (!item.IsChecked) continue;
+
+                sb.Append(" " + item.Command + " " + item.Parameter);
+            }
+
+            return str + sb.ToString();
         }
     }
 }

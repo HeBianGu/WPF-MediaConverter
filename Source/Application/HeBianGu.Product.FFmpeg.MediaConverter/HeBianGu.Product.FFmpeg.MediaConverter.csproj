@@ -56,6 +56,9 @@
     <Reference Include="HeBianGu.Base.WpfBase">
       <HintPath>bin\Debug\Dll\HeBianGu.Base.WpfBase.dll</HintPath>
     </Reference>
+    <Reference Include="HeBianGu.General.Logger">
+      <HintPath>..\..\..\Product\Dll\HeBianGu.General.Logger.dll</HintPath>
+    </Reference>
     <Reference Include="HeBianGu.General.WpfControlLib">
       <HintPath>bin\Debug\Dll\HeBianGu.General.WpfControlLib.dll</HintPath>
     </Reference>

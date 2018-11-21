@@ -1,4 +1,5 @@
-﻿using HeBianGu.Product.FFmpeg.Base.Model;
+﻿using HeBianGu.General.Logger;
+using HeBianGu.Product.FFmpeg.Base.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,6 +26,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
             Action<string> action = l =>
             {
                 progressAction(this._ffmpegConvert.GetProgress(l));
+
             };
 
             string param = string.Format(_ffmpegParameter.mp4towmv, from, to);

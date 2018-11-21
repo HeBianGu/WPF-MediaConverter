@@ -1,4 +1,5 @@
 ﻿using HeBianGu.Base.WpfBase;
+using HeBianGu.General.Logger;
 using HeBianGu.Product.FFmpeg.Driver;
 using Microsoft.Win32;
 using System;
@@ -116,7 +117,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 entity.To_FileName = System.IO.Path.GetFileNameWithoutExtension(open.FileName) + ".wmv";
                 entity.To_FilePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(open.FileName), entity.To_FileName);
 
-
                 this.Collection.Add(entity);
 
             }
@@ -156,7 +156,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
     partial class MediaConvertEntityNotifyClass
     {
-
         private string _from_filePath;
         /// <summary> 说明  </summary>
         public string From_FilePath
@@ -277,7 +276,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
         private string _to_time;
         /// <summary> 说明  </summary>
         public string To_Time
@@ -289,8 +287,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 RaisePropertyChanged("To_Time");
             }
         }
-
-
 
         private bool _isBuzy;
         /// <summary> 说明  </summary>
@@ -304,8 +300,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
-
         private string _to_FilePath;
         /// <summary> 说明  </summary>
         public string To_FilePath
@@ -314,11 +308,27 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             set
             {
                 _to_FilePath = value;
+
+
                 RaisePropertyChanged("To_FilePath");
+
+                if (watcher != null)
+                {
+                    watcher.Close();
+                }
+
+                watcher = new FileWatcher(System.IO.Path.GetDirectoryName(value));
+
+                watcher.ChangeAction = () =>
+                 {
+                     this.CmdState = this.GetState();
+                 };
+
+                watcher.Open();
+
+
             }
         }
-
-
 
         private double _progressValue;
         /// <summary> 说明  </summary>
@@ -332,18 +342,32 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
+        private string _cmdState = "开始转换";
+        /// <summary> 说明  </summary>
+        public string CmdState
+        {
+            get
+            {
+                _cmdState = this.GetState();
 
+                return _cmdState;
+            }
+            set
+            {
+                _cmdState = value;
+
+                RaisePropertyChanged("CmdState");
+            }
+        }
 
         public void RelayMethod(object obj)
         {
             string command = obj.ToString();
 
-
             Debug.WriteLine(command);
 
-
             //  Do：应用
-            if (command == "btn_convert")
+            if (command == "开始转换")
             {
 
                 Debug.WriteLine("btn_convert");
@@ -358,7 +382,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                       Application.Current.Dispatcher.Invoke(() =>
                       {
-                          this.ProgressValue = (time.TotalSeconds / total.TotalSeconds)*100 ;
+                          this.ProgressValue = (time.TotalSeconds / total.TotalSeconds) * 100;
                       });
 
                   };
@@ -370,6 +394,8 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                           MessageBox.Show("运行结束");
 
                           this.IsBuzy = false;
+
+                          this.CmdState = this.GetState();
                       });
 
                   };
@@ -380,11 +406,42 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
             }
             //  Do：取消
-            else if (command == "config_btn_sumit")
+            else if (command == "取消")
             {
 
 
             }
+            //  Do：取消
+            else if (command == "打开")
+            {
+                Process.Start(this.To_FilePath);
+
+            }
+        }
+
+
+        public string GetState()
+        {
+
+            string result;
+
+            if (this.IsBuzy)
+            {
+                result = "取消";
+            }
+            else
+            {
+                if (File.Exists(this.To_FilePath))
+                {
+                    result = "打开";
+                }
+                else
+                {
+                    result = "开始转换";
+                }
+            }
+
+            return result;
         }
     }
 
@@ -392,10 +449,16 @@ namespace HeBianGu.Product.FFmpeg.UserControls
     {
         public RelayCommand RelayCommand { get; set; }
 
+        FileWatcher watcher;
+
         public MediaConvertEntityNotifyClass()
         {
             RelayCommand = new RelayCommand(RelayMethod);
+        }
 
+        private void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         #region - MVVM -
 
@@ -409,5 +472,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
         #endregion
     }
+
+
 
 }

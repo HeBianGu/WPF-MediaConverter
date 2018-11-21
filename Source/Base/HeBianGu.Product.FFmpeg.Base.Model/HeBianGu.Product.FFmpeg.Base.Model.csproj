@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FFmpegCommandTextParameter.cs" />
+    <Compile Include="FFmpegCommandCheckParameter.cs" />
     <Compile Include="MediaEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

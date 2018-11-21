@@ -46,6 +46,10 @@
                         <ColumnDefinition  Width="100"/>
                         <ColumnDefinition  Width="200"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
                     <Grid Background="Red" Grid.Column="0"/>
                     <Grid Background="Blue" Grid.Column="1">
@@ -103,7 +107,7 @@
                         <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding To_Time}" Grid.Row="2" Grid.Column="1"/>
 
-                        <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/> 
+                        <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/>
                         <TextBlock  HorizontalAlignment="Left" Text="{Binding To_Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
                     <Grid Background="Gray" Grid.Column="4">
@@ -119,9 +123,7 @@
                                     CornerRadius="5" 
                                     BorderBrush="{DynamicResource S_AccentBrush}" BorderThickness="1">
                                 <StackPanel Margin="10">
-                                    <local:MediaConvertConfig Width="400" Height="180" 
-                                                              Background="LightBlue" >
-
+                                    <local:MediaConvertConfig Width="400" Background="LightBlue" >
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="SumitClick">
                                                 <i:InvokeCommandAction  Command="{Binding RelayCommand}"  CommandParameter="config_btn_sumit"/>
@@ -133,15 +135,16 @@
                             </Border>
                         </Popup>
                     </Grid>
-
-                    <ProgressBar IsHitTestVisible="False" Value="{Binding ProgressValue}" Visibility="{Binding IsBuzy,Converter={x:Static base:XConverter.BooleanToVisibilityConverter}}" Foreground="Orange" Opacity="0.5" Grid.ColumnSpan="7"/>
-
                     <Grid Background="Red" Grid.Column="5">
-                        <Button Content="转换" Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="btn_convert"  Height="50" Width="150"/>
+                        <Button Content="{Binding CmdState}" Grid.Row="1" Command="{Binding RelayCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=Content}"  Height="50" Width="150"/>
                     </Grid>
+
+                    <ProgressBar Grid.Row="1" IsHitTestVisible="False" Value="{Binding ProgressValue}" Height="5"
+                                 Visibility="{Binding IsBuzy,Converter={x:Static base:XConverter.BooleanToVisibilityConverter}}" 
+                                 Foreground="Orange"  Grid.ColumnSpan="7"/>
+
                 </Grid>
-
-
             </Grid>
         </DataTemplate>
 

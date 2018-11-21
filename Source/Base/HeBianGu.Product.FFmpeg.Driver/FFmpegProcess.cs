@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HeBianGu.General.Logger;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -55,6 +56,8 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
                     Debug.WriteLine("OutputDataReceived：" + _e.Data);
 
+                    Log4Servcie.Instance.Info("OutputDataReceived：" + _e.Data);
+
                     if (OutputDataReceived != null)
                     {
                         OutputDataReceived(_e.Data);
@@ -65,6 +68,8 @@ namespace HeBianGu.Product.FFmpeg.Driver
                 {
                     Debug.WriteLine("ErrorDataReceived：" + _e.Data);
 
+                    Log4Servcie.Instance.Info("ErrorDataReceived：" + _e.Data);
+
                     if (ErrorDataReceived != null)
                     {
                         ErrorDataReceived(_e.Data);
@@ -74,6 +79,8 @@ namespace HeBianGu.Product.FFmpeg.Driver
                 process.Exited += (s, _e) =>
                 {
                     Debug.WriteLine("Exited:" + process.ExitCode);
+
+                    Log4Servcie.Instance.Info("Exited:" + process.ExitCode);
 
                     if (Exited != null)
                     {

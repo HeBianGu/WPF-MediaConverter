@@ -4,9 +4,107 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="180" d:DesignWidth="300">
+             xmlns:sys="clr-namespace:System;assembly=System"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+
+    <!--https://www.jianshu.com/p/049d03705a81-->
     <UserControl.Resources>
+        
+        <DataTemplate DataType="FFmpegCommandTextParameter">
+            <Grid Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}" ToolTip="{Binding XPath=@ToolTip}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border  x:Name="border" Grid.ColumnSpan="3"/>
+
+                    <TextBlock Text="{Binding XPath=@Text}" ToolTip="{Binding XPath=@ToolTip}" Grid.Column="1" IsEnabled="{Binding ElementName=cb,Path=IsChecked}"/>
+                    
+                    <TextBox Text="{Binding XPath=@Parameter}" ToolTip="{Binding XPath=@Command}" Grid.Column="2" IsEnabled="{Binding ElementName=cb,Path=IsChecked}"/>
+
+                    <CheckBox x:Name="cb" IsChecked="{Binding XPath=@IsChecked}" ToolTip="{Binding XPath=@Command}" Grid.Column="0"/>
+                </Grid>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsChecked,ElementName=cb}" Value="false">
+                    <Setter Property="Background" Value="LightGray" TargetName="border"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate DataType="FFmpegCommandCheckParameter">
+            <Grid Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}"  ToolTip="{Binding XPath=@ToolTip}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border  x:Name="border" Grid.ColumnSpan="3"/>
+
+                    <TextBlock Text="{Binding XPath=@Text}" ToolTip="{Binding XPath=@ToolTip}"  IsEnabled="{Binding ElementName=cb,Path=IsChecked}"  Grid.Column="1"/>
+                    <CheckBox x:Name="cb"  IsChecked="{Binding XPath=@IsChecked}" ToolTip="{Binding XPath=@Command}" />
+                </Grid>
+            </Grid>
+
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsChecked,ElementName=cb}" Value="false">
+                    <Setter Property="Background" Value="LightGray" TargetName="border"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!--XPath指定一组节点-->
+        <XmlDataProvider x:Key="Source.XmlDataProvider.FFmpegConfig.General" XPath="XUnits">
+            <x:XData>
+                <XUnits xmlns="">
+                    <FFmpegCommandTextParameter Text="输入文件" ToolTip="输入文件"  Command="-I" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置纪录时间" ToolTip="hh:mm:ss[.xxx]格式的记录时间也支持"  Command="-t" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="搜索到指定的时间" ToolTip="[-]hh:mm:ss[.xxx]的格式也支持"  Command="-ss" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置标题" ToolTip="设置标题"  Command="-title" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置作者" ToolTip="设置作者"  Command="-author" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置版权" ToolTip="设置版权"  Command="-copyright" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置评论" ToolTip="设置评论"  Command="-comment" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置目标文件类型" ToolTip="设置目标文件类型"  Command="-author" Parameter="2001"  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置以秒为基准的时间偏移" ToolTip="设置以秒为基准的时间偏移，该选项影响所有后面的输入文件。该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset秒。 [-]hh:mm:ss[.xxx]的格式也支持"  
+                                                Command="-itsoffset" Parameter=""  IsChecked="false"/>
+
+                    <FFmpegCommandTextParameter Text="强迫采用格式fmt" ToolTip="强迫采用格式fmt"  
+                                                Command="-f" Parameter=""  IsChecked="false"/>
+
+                    <FFmpegCommandCheckParameter Text="激活高质量设置" ToolTip="激活高质量设置"  Command="-hq" IsChecked="false" />
+                    <FFmpegCommandCheckParameter Text="覆盖输出文件" ToolTip="覆盖输出文件"  Command="-y" IsChecked="false"/>
+                </XUnits>
+            </x:XData>
+        </XmlDataProvider>
+
+        <XmlDataProvider x:Key="Source.XmlDataProvider.FFmpegConfig.Vedio" XPath="XUnits">
+            <x:XData>
+                <XUnits xmlns="">
+                    <FFmpegCommandTextParameter Text="输入文件" ToolTip="输入文件"  Command="-I" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置纪录时间" ToolTip="hh:mm:ss[.xxx]格式的记录时间也支持"  Command="-t" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="搜索到指定的时间" ToolTip="[-]hh:mm:ss[.xxx]的格式也支持"  Command="-ss" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置标题" ToolTip="设置标题"  Command="-title" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置作者" ToolTip="设置作者"  Command="-author" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置版权" ToolTip="设置版权"  Command="-copyright" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置评论" ToolTip="设置评论"  Command="-comment" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置目标文件类型" ToolTip="设置目标文件类型"  Command="-author" Parameter=""  IsChecked="false"/>
+                    <FFmpegCommandTextParameter Text="设置以秒为基准的时间偏移" ToolTip="设置以秒为基准的时间偏移，该选项影响所有后面的输入文件。该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset秒。 [-]hh:mm:ss[.xxx]的格式也支持"  
+                                                Command="-itsoffset" Parameter=""  IsChecked="false"/>
+
+                    <FFmpegCommandTextParameter Text="强迫采用格式fmt" ToolTip="强迫采用格式fmt"  
+                                                Command="-f" Parameter=""  IsChecked="false"/>
+
+                    <FFmpegCommandCheckParameter Text="激活高质量设置" ToolTip="激活高质量设置"  Command="-hq" IsChecked="false"/>
+                    <FFmpegCommandCheckParameter Text="覆盖输出文件" ToolTip="覆盖输出文件"  Command="-y" IsChecked="false"/>
+                </XUnits>
+            </x:XData>
+        </XmlDataProvider>
+
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -28,27 +126,41 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5,0"/>
         </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="239*"/>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="转换类型：" Grid.Column="0" Grid.Row="0"/>
-        <ComboBox Grid.Column="1" Grid.Row="0"/>
 
-        <TextBlock Text="文件类型：" Grid.Column="0" Grid.Row="1"/>
-        <ComboBox Grid.Column="1" Grid.Row="1"/>
+        <TabControl>
+            <TabItem Header="通用选项">
+                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                    <ListBox.ItemsSource>
+                        <Binding Source="{StaticResource Source.XmlDataProvider.FFmpegConfig.General}" XPath="*"/>
+                    </ListBox.ItemsSource>
+                </ListBox>
+            </TabItem>
 
-        <TextBlock Text="分辨率：" Grid.Column="0" Grid.Row="2"/>
-        <ComboBox Grid.Column="1" Grid.Row="2"/>
+            <TabItem Header="视频选项">
+                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                    <ListBox.ItemsSource>
+                        <Binding Source="{StaticResource Source.XmlDataProvider.FFmpegConfig.Vedio}" XPath="*"/>
+                    </ListBox.ItemsSource>
+                </ListBox>
+            </TabItem>
+        </TabControl>
 
-        <Button Content="确定.." Grid.Column="1" Grid.Row="3" Click="Button_Click"/>
+        <Button Content="确定.."  Grid.Row="1" Click="Button_Click"/>
     </Grid>
 </UserControl>
