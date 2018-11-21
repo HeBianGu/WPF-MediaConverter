@@ -74,7 +74,6 @@ artifacts/
 *.cache
 *.txt
 *.g.resources  
-*.exe       
     
 # Chutzpah Test files    
 _Chutzpah*    
