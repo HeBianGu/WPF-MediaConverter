@@ -21,7 +21,19 @@ namespace HeBianGu.Product.FFmpeg.Driver
         FFmpegParameter _ffmpegParameter = new FFmpegParameter();
 
 
-        public void Mp4ToWmv(string from, string to, Action<string> progressAction, Action<int> existAction)
+
+        public void ConvertWithParams(string param, Action<string> progressAction, Action<int> existAction)
+        {
+            Action<string> action = l =>
+            {
+                progressAction(this._ffmpegConvert.GetProgress(l));
+            };
+
+            _ffmpegProcess.ExecuteWithRecevied(param, action, action, existAction);
+
+        }
+
+        public void MediaToWmv(string from, string to, Action<string> progressAction, Action<int> existAction)
         {
             Action<string> action = l =>
             {
@@ -29,7 +41,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
             };
 
-            string param = string.Format(_ffmpegParameter.mp4towmv, from, to);
+            string param = string.Format(_ffmpegParameter.media_to_wmv, from, to);
 
             _ffmpegProcess.ExecuteWithRecevied(param, action, action, existAction);
 

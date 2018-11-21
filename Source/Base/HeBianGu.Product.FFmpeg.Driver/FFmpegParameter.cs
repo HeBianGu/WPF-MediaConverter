@@ -107,7 +107,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         public string format = "-i {0} -b 1024k -acodec copy -f mp4 {1}";
 
-        public string mp4towmv = @"-i {0} -vcodec wmv1 {1}";
+        public string media_to_wmv = @"-i {0} -vcodec wmv1 {1}";
 
         public string mToSound = "-i {0} -vn -ab 128k {1}";
 

@@ -360,6 +360,21 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
+
+
+        private string _cmdParams;
+        /// <summary> 说明  </summary>
+        public string CmdParams
+        {
+            get { return _cmdParams; }
+            set
+            {
+                _cmdParams = value;
+                RaisePropertyChanged("CmdParams");
+            }
+        }
+
+
         public void RelayMethod(object obj)
         {
             string command = obj.ToString();
@@ -400,7 +415,19 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                   };
 
-                FFmpegService.Instance.Mp4ToWmv(this.From_FilePath, this.To_FilePath, reciveAction, existAction);
+                //FFmpegService.Instance.MediaToWmv(this.From_FilePath, this.To_FilePath, reciveAction, existAction);
+
+                string ccc = string.Format("-i {0} {1} ", this.From_FilePath, this.To_FilePath);
+
+                string sss = ccc + this.CmdParams;
+
+                Log4Servcie.Instance.Info(sss);
+
+                Debug.WriteLine(sss);
+
+
+                FFmpegService.Instance.ConvertWithParams(sss, reciveAction, existAction);
+               
 
                 this.IsBuzy = true;
 

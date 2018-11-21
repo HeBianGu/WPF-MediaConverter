@@ -124,7 +124,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
             string result = string.Empty.GetCommandParameter(checkModels).GetCommandParameter(textModels);
 
-
             return result;
 
         }
