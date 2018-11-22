@@ -82,6 +82,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MediaConvertResourceProvider.cs" />
+    <Compile Include="MediaEntityViewModel.cs" />
+    <Compile Include="ObjectExtend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

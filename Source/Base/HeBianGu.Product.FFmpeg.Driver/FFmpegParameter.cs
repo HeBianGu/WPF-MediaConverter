@@ -113,6 +113,8 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         public string ffmpeg_formats = "-formats";
 
+        public string ffmpeg_codecs = "-codecs";
+
         public string ffmpeg_detial = "-i {0}";
 
         #endregion

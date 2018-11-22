@@ -65,19 +65,19 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBox HorizontalAlignment="Left" Text="{Binding From_FileName}" Grid.Row="0" Grid.ColumnSpan="6"/>
+                        <TextBox HorizontalAlignment="Left" Text="{Binding From.Name}" Grid.Row="0" Grid.ColumnSpan="6"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="格式：" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding From_Type}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From.MediaType}" Grid.Row="1" Grid.Column="1"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding From_Resolution}" Grid.Row="1" Grid.Column="3"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From.Resolution}" Grid.Row="1" Grid.Column="3"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding From_Time}" Grid.Row="2" Grid.Column="1"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From.Duration}" Grid.Row="2" Grid.Column="1"/>
 
                         <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/>
-                        <TextBlock  HorizontalAlignment="Left" Text="{Binding From_Size}" Grid.Row="2" Grid.Column="3"/>
+                        <TextBlock  HorizontalAlignment="Left" Text="{Binding From.Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
                     <Grid Background="Purple" Grid.Column="2">
                         <TextBlock Text="=" FontSize="50"/>
@@ -96,19 +96,19 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBox HorizontalAlignment="Left" Text="{Binding To_FileName}" Grid.Row="0" Grid.ColumnSpan="6"/>
+                        <TextBox HorizontalAlignment="Left" Text="{Binding To.Name}" Grid.Row="0" Grid.ColumnSpan="6"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="格式：" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding To_Type}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To.MediaType}" Grid.Row="1" Grid.Column="1"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding To_Resolution}" Grid.Row="1" Grid.Column="3"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To.MediaResolution}" Grid.Row="1" Grid.Column="3"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding To_Time}" Grid.Row="2" Grid.Column="1"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To.Duration}" Grid.Row="2" Grid.Column="1"/>
 
                         <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/>
-                        <TextBlock  HorizontalAlignment="Left" Text="{Binding To_Size}" Grid.Row="2" Grid.Column="3"/>
+                        <TextBlock  HorizontalAlignment="Left" Text="{Binding To.Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
                     <Grid Background="Gray" Grid.Column="4">
 

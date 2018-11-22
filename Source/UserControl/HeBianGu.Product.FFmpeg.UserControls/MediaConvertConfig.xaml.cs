@@ -29,8 +29,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         public MediaConvertConfig()
         {
             InitializeComponent();
-
-
         }
 
         //声明和注册路由事件
@@ -86,11 +84,23 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         {
             XmlDataProvider xml = this.Resources["Source.XmlDataProvider.FFmpegConfig.General"] as XmlDataProvider;
 
-            XmlElement root = xml.Document.DocumentElement as XmlElement;
+            string genral = this.GetCommandFromXml(xml.Document);
 
-            XmlNodeList texts = xml.Document.DocumentElement.SelectNodes("FFmpegCommandTextParameter") as XmlNodeList;
+            xml = this.Resources["Source.XmlDataProvider.FFmpegConfig.Vedio"] as XmlDataProvider;
 
-            XmlNodeList checks = xml.Document.DocumentElement.SelectNodes("FFmpegCommandCheckParameter") as XmlNodeList;
+            string video = this.GetCommandFromXml(xml.Document);
+
+            return genral + video;
+
+        }
+
+        public string GetCommandFromXml(XmlDocument doc)
+        {
+            XmlElement root = doc.DocumentElement as XmlElement;
+
+            XmlNodeList texts = doc.DocumentElement.SelectNodes("FFmpegCommandTextParameter") as XmlNodeList;
+
+            XmlNodeList checks = doc.DocumentElement.SelectNodes("FFmpegCommandCheckParameter") as XmlNodeList;
 
             List<FFmpegCommandTextParameter> textModels = new List<FFmpegCommandTextParameter>();
 
@@ -102,7 +112,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 model.ToolTip = item.GetAttribute("ToolTip");
                 model.Command = item.GetAttribute("Command");
                 model.Parameter = item.GetAttribute("Parameter");
-                model.IsChecked =bool.Parse(item.GetAttribute("IsChecked"));
+                model.IsChecked = bool.Parse(item.GetAttribute("IsChecked"));
 
                 textModels.Add(model);
             }
@@ -125,7 +135,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             string result = string.Empty.GetCommandParameter(checkModels).GetCommandParameter(textModels);
 
             return result;
-
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using HeBianGu.Product.FFmpeg.Base.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,7 +39,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
             arr = result.Value.Split(':')[1].Split(',');
 
-            entity.Video = arr[0];
+            entity.MediaCode = arr[0];
             entity.MediaType = arr[1];
             entity.Resoluction = arr[2];
 
@@ -61,7 +62,54 @@ namespace HeBianGu.Product.FFmpeg.Driver
         }
 
 
+        public List<SupportFormatEntity> GetFomarts(string source)
+        {
+            return  this.GetSupportFormatEntity(source, "--");
+        }
 
+        public List<SupportFormatEntity> GetCodecs(string source)
+        {
+            return this.GetSupportFormatEntity(source, "-------");
+        }
+
+
+        List<SupportFormatEntity> GetSupportFormatEntity(string source,string flag= "--")
+        {
+            var result = source.Split('\r').Select(l => l.Trim('\n')).ToList();
+
+            var kk = result.FindIndex(l => l.Trim() == flag);
+
+            var v = result.Skip(kk + 1).ToList();
+
+            string[] arr = new string[] { "    " };
+
+            List<SupportFormatEntity> collection = new List<SupportFormatEntity>();
+
+            foreach (var item in v)
+            {
+                var cc = item.Split(arr, StringSplitOptions.RemoveEmptyEntries);
+
+                if (cc.Length != 2) continue;
+
+                var vv = cc[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (vv.Length != 2) continue;
+
+                SupportFormatEntity entity = new SupportFormatEntity();
+
+                entity.Supported = vv[0];
+                entity.Name = vv[1];
+                entity.ToolTip = cc[1];
+
+                collection.Add(entity);
+
+            }
+
+
+            Debug.WriteLine(source);
+
+            return collection;
+        }
 
     }
 

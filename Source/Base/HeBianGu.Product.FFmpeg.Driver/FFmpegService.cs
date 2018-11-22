@@ -20,8 +20,6 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         FFmpegParameter _ffmpegParameter = new FFmpegParameter();
 
-
-
         public void ConvertWithParams(string param, Action<string> progressAction, Action<int> existAction)
         {
             Action<string> action = l =>
@@ -61,11 +59,18 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         }
 
-        public string Formats()
+        public List<SupportFormatEntity> GetFormats()
         {
             string result = _ffmpegProcess.ExecuteWithOutWait(_ffmpegParameter.ffmpeg_formats);
 
-            return result;
+            return _ffmpegConvert.GetFomarts(result);
+        }
+
+        public List<SupportFormatEntity> GetCodecs()
+        {
+            string result = _ffmpegProcess.ExecuteWithOutWait(_ffmpegParameter.ffmpeg_codecs);
+
+            return _ffmpegConvert.GetCodecs(result);
         }
 
         public string GetDetail(string from)
@@ -85,8 +90,6 @@ namespace HeBianGu.Product.FFmpeg.Driver
             string txt = this.GetDetail(filePath);
 
             return _ffmpegConvert.GetMediaEntity(txt);
-
-
         }
 
         #endregion

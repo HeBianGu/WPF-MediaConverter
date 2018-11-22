@@ -45,6 +45,7 @@
     <Compile Include="FFmpegCommandCheckParameter.cs" />
     <Compile Include="MediaEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupportFormatEntity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

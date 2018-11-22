@@ -10,7 +10,7 @@
 
     <!--https://www.jianshu.com/p/049d03705a81-->
     <UserControl.Resources>
-        
+
         <DataTemplate DataType="FFmpegCommandTextParameter">
             <Grid Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}" ToolTip="{Binding XPath=@ToolTip}">
                 <Grid>
@@ -19,11 +19,11 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Border  x:Name="border" Grid.ColumnSpan="3"/>
 
                     <TextBlock Text="{Binding XPath=@Text}" ToolTip="{Binding XPath=@ToolTip}" Grid.Column="1" IsEnabled="{Binding ElementName=cb,Path=IsChecked}"/>
-                    
+
                     <TextBox Text="{Binding XPath=@Parameter}" ToolTip="{Binding XPath=@Command}" Grid.Column="2" IsEnabled="{Binding ElementName=cb,Path=IsChecked}"/>
 
                     <CheckBox x:Name="cb" IsChecked="{Binding XPath=@IsChecked}" ToolTip="{Binding XPath=@Command}" Grid.Column="0"/>
@@ -82,28 +82,73 @@
             </x:XData>
         </XmlDataProvider>
 
-        <XmlDataProvider x:Key="Source.XmlDataProvider.FFmpegConfig.Vedio" XPath="XUnits">
+        <XmlDataProvider x:Key="Source.XmlDataProvider.FFmpegConfig.BaseConfig" XPath="XUnits">
             <x:XData>
                 <XUnits xmlns="">
-                    <FFmpegCommandTextParameter Text="输入文件" ToolTip="输入文件"  Command="-I" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置纪录时间" ToolTip="hh:mm:ss[.xxx]格式的记录时间也支持"  Command="-t" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="搜索到指定的时间" ToolTip="[-]hh:mm:ss[.xxx]的格式也支持"  Command="-ss" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置标题" ToolTip="设置标题"  Command="-title" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置作者" ToolTip="设置作者"  Command="-author" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置版权" ToolTip="设置版权"  Command="-copyright" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置评论" ToolTip="设置评论"  Command="-comment" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置目标文件类型" ToolTip="设置目标文件类型"  Command="-author" Parameter=""  IsChecked="false"/>
-                    <FFmpegCommandTextParameter Text="设置以秒为基准的时间偏移" ToolTip="设置以秒为基准的时间偏移，该选项影响所有后面的输入文件。该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset秒。 [-]hh:mm:ss[.xxx]的格式也支持"  
-                                                Command="-itsoffset" Parameter=""  IsChecked="false"/>
+                    <MediaType Name="MP4" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+                    <MediaType Name="MOV" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+                    <MediaType Name="AVI " ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+                    <MediaType Name="ASF" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+                    <MediaType Name="WMV" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+                    <MediaType Name="NAVI" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
 
-                    <FFmpegCommandTextParameter Text="强迫采用格式fmt" ToolTip="强迫采用格式fmt"  
-                                                Command="-f" Parameter=""  IsChecked="false"/>
+                    <MediaType Name="3GP" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
 
-                    <FFmpegCommandCheckParameter Text="激活高质量设置" ToolTip="激活高质量设置"  Command="-hq" IsChecked="false"/>
-                    <FFmpegCommandCheckParameter Text="覆盖输出文件" ToolTip="覆盖输出文件"  Command="-y" IsChecked="false"/>
+                    <MediaType Name="MKV" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+                    <MediaType Name="FLV" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+
+                    <MediaType Name="F4V" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+                    <MediaType Name="RMVB" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+
+                    <MediaType Name="RMVB" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+                    <MediaType Name="RMVB" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+                    <MediaType Name="RMVB" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
+
+                    <MediaType Name="RMVB" ToolTip="媒体类型">
+                        <CodeType Name="h264"/>
+                    </MediaType>
                 </XUnits>
             </x:XData>
         </XmlDataProvider>
+
+        <ObjectDataProvider x:Key="Resource.ObjectDataProvider.SupportFormat" MethodName="GetFormatSupportEntitys" ObjectType="{x:Type local:MediaConvertResourceProvider}"/>
+        <ObjectDataProvider x:Key="Resource.ObjectDataProvider.SupportCode" MethodName="GetCodeSupportEntitys" ObjectType="{x:Type local:MediaConvertResourceProvider}"/>
+
+
 
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -144,18 +189,120 @@
         </Grid.RowDefinitions>
 
         <TabControl>
+            <TabItem Header="基本配置">
+                
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="文件名称:"/>
+                        <TextBox Text="{Binding To.Name}" Grid.Column="1"/>
+                    </Grid>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="输出路径:"/>
+                        <TextBox Text="{Binding To.Path}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="文件类型:"/>
+                        <TextBox Text="{Binding To.Extend}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="视频类型:"/>
+                        <ComboBox Text="{Binding To.MediaType}" ItemsSource="{Binding Source={StaticResource Resource.ObjectDataProvider.SupportFormat}}" DisplayMemberPath="Name"
+                                  Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="编码格式:"/>
+                        <ComboBox Text="{Binding To.MediaCode}" ItemsSource="{Binding Source={StaticResource Resource.ObjectDataProvider.SupportCode}}" DisplayMemberPath="Name"
+                                  Grid.Column="1"/>
+                       
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="分辨率:"/>
+                        <TextBox Text="{Binding To.Resoluction}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="比特率:"/>
+                        <TextBox Text="{Binding To.Bitrate}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="设置帧频:"/>
+                        <TextBox Text="{Binding To.MediaCode}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="开始时间:"/>
+                        <TextBox Text="{Binding To.MediaCode}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="结束时间:"/>
+                        <TextBox Text="{Binding To.MediaCode}" Grid.Column="1"/>
+                    </Grid>
+
+                </StackPanel>
+
+            </TabItem>
+
             <TabItem Header="通用选项">
                 <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                     <ListBox.ItemsSource>
                         <Binding Source="{StaticResource Source.XmlDataProvider.FFmpegConfig.General}" XPath="*"/>
-                    </ListBox.ItemsSource>
-                </ListBox>
-            </TabItem>
-
-            <TabItem Header="视频选项">
-                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                    <ListBox.ItemsSource>
-                        <Binding Source="{StaticResource Source.XmlDataProvider.FFmpegConfig.Vedio}" XPath="*"/>
                     </ListBox.ItemsSource>
                 </ListBox>
             </TabItem>

@@ -18,7 +18,7 @@ namespace HeBianGu.Product.FFmpeg.Base.Model
         public string Bitrate { get; set; }
 
         /// <summary> 编码格式 h264 (Constrained Baseline) (avc1 / 0x31637661) </summary>
-        public string Video { get; set; }
+        public string MediaCode { get; set; }
 
         /// <summary> 视频格式 yuv420p </summary>
         public string MediaType { get; set; }
