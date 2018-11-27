@@ -34,6 +34,54 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
+        <DataTemplate DataType="{x:Type local:MediaEntityViewModel}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding Name}" Grid.Row="0" Grid.Column="1"/>
+                <TextBlock Text="文件名称：" Grid.Row="0" Grid.Column="0"/>
+                
+                <TextBlock Text="{Binding FullPath}"  Grid.Row="1"  Grid.Column="1"/>
+                <TextBlock Text="文件路径："  Grid.Row="1"  Grid.Column="0"/>
+
+                <TextBlock Text="{Binding Duration}"  Grid.Row="2"  Grid.Column="1"/>
+                <TextBlock Text="文件时长："  Grid.Row="2"  Grid.Column="0"/>
+
+                <TextBlock Text="{Binding Size}"  Grid.Row="3"  Grid.Column="1"/>
+                <TextBlock Text="文件大小："  Grid.Row="3"  Grid.Column="0"/>
+
+                <TextBlock Text="{Binding MediaCode}"  Grid.Row="4"  Grid.Column="1"/>
+                <TextBlock Text="编码格式："  Grid.Row="4"  Grid.Column="0"/>
+                
+                <TextBlock Text="{Binding MediaType}"  Grid.Row="5"  Grid.Column="1"/>
+                <TextBlock Text="视频格式："  Grid.Row="5"  Grid.Column="0"/>
+                
+                <TextBlock Text="{Binding Bitrate}"  Grid.Row="6"  Grid.Column="1"/>
+                <TextBlock Text="比特率："  Grid.Row="6"  Grid.Column="0"/>
+                
+                <TextBlock Text="{Binding Resoluction}"  Grid.Row="7"  Grid.Column="1"/>
+                <TextBlock Text="分辨率："  Grid.Row="7"  Grid.Column="0"/>
+                
+                <TextBlock Text="{Binding Start}"  Grid.Row="8"  Grid.Column="1"/>
+                <TextBlock Text="开始时间："  Grid.Row="8"  Grid.Column="0"/>
+            </Grid>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type local:MediaConvertEntityNotifyClass}">
 
             <Grid  Height="80" Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}">
@@ -52,7 +100,8 @@
                     </Grid.RowDefinitions>
 
                     <Grid Background="Red" Grid.Column="0"/>
-                    <Grid Background="Blue" Grid.Column="1">
+                    
+                    <Grid Background="Blue" Grid.Column="1"  ToolTip="{Binding From}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
                             <ColumnDefinition/>
@@ -71,7 +120,7 @@
                         <TextBlock HorizontalAlignment="Left" Text="{Binding From.MediaType}" Grid.Row="1" Grid.Column="1"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding From.Resolution}" Grid.Row="1" Grid.Column="3"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding From.Resoluction}" Grid.Row="1" Grid.Column="3"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding From.Duration}" Grid.Row="2" Grid.Column="1"/>
@@ -82,7 +131,7 @@
                     <Grid Background="Purple" Grid.Column="2">
                         <TextBlock Text="=" FontSize="50"/>
                     </Grid>
-                    <Grid Background="Blue" Grid.Column="3">
+                    <Grid Background="Blue" Grid.Column="3"  ToolTip="{Binding From}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
@@ -102,7 +151,7 @@
                         <TextBlock HorizontalAlignment="Left" Text="{Binding To.MediaType}" Grid.Row="1" Grid.Column="1"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding To.MediaResolution}" Grid.Row="1" Grid.Column="3"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding To.Resoluction}" Grid.Row="1" Grid.Column="3"/>
 
                         <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding To.Duration}" Grid.Row="2" Grid.Column="1"/>
