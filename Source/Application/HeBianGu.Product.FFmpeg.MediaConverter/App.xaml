@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.MediaConverter"
              Startup="Application_Startup">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!--自定义资源引用-->
+                <ResourceDictionary Source="/HeBianGu.Base.WpfBase;component/Themes/HeBianGu.Themes.Resource.xaml"/>
+                <ResourceDictionary Source="/HeBianGu.Base.WpfBase;component/Themes/Color/LightThemeResource.xaml"/>
+                <ResourceDictionary Source="/HeBianGu.General.WpfControlLib;component/Themes/HeBianGu.Themes.Default.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

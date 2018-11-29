@@ -7,13 +7,16 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:base="clr-namespace:HeBianGu.Base.WpfBase;assembly=HeBianGu.Base.WpfBase"
+             xmlns:wpfcontrollib="clr-namespace:HeBianGu.General.WpfControlLib;assembly=HeBianGu.General.WpfControlLib"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
     <UserControl.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Margin" Value="0,0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource NormalTextForeground}"/>
         </Style>
 
         <Style TargetType="{x:Type RadioButton}">
@@ -28,9 +31,9 @@
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="30"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Margin" Value="0,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
@@ -55,7 +58,7 @@
 
                 <TextBlock Text="{Binding Name}" Grid.Row="0" Grid.Column="1"/>
                 <TextBlock Text="文件名称：" Grid.Row="0" Grid.Column="0"/>
-                
+
                 <TextBlock Text="{Binding FullPath}"  Grid.Row="1"  Grid.Column="1"/>
                 <TextBlock Text="文件路径："  Grid.Row="1"  Grid.Column="0"/>
 
@@ -67,16 +70,16 @@
 
                 <TextBlock Text="{Binding MediaCode}"  Grid.Row="4"  Grid.Column="1"/>
                 <TextBlock Text="编码格式："  Grid.Row="4"  Grid.Column="0"/>
-                
+
                 <TextBlock Text="{Binding MediaType}"  Grid.Row="5"  Grid.Column="1"/>
                 <TextBlock Text="视频格式："  Grid.Row="5"  Grid.Column="0"/>
-                
+
                 <TextBlock Text="{Binding Bitrate}"  Grid.Row="6"  Grid.Column="1"/>
                 <TextBlock Text="比特率："  Grid.Row="6"  Grid.Column="0"/>
-                
+
                 <TextBlock Text="{Binding Resoluction}"  Grid.Row="7"  Grid.Column="1"/>
                 <TextBlock Text="分辨率："  Grid.Row="7"  Grid.Column="0"/>
-                
+
                 <TextBlock Text="{Binding Start}"  Grid.Row="8"  Grid.Column="1"/>
                 <TextBlock Text="开始时间："  Grid.Row="8"  Grid.Column="0"/>
             </Grid>
@@ -84,12 +87,15 @@
 
         <DataTemplate DataType="{x:Type local:MediaConvertEntityNotifyClass}">
 
-            <Grid  Height="80" Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}">
-                <Grid Margin="5,5,25,5">
+            <Grid ClipToBounds="False"  Background="{DynamicResource S_GrayLightOpacity}" 
+                  Height="90" IsEnabled="{Binding IsBuzy,Converter={x:Static base:XConverter.TrueToFalseConverter}}"
+                  Width="{Binding RelativeSource={RelativeSource AncestorType=ListBox},Path=ActualWidth}">
+                
+                <Grid Margin="5,5,25,5" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="80"/>
                         <ColumnDefinition/>
                         <ColumnDefinition  Width="100"/>
                         <ColumnDefinition  Width="200"/>
@@ -99,9 +105,12 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Background="Red" Grid.Column="0"/>
-                    
-                    <Grid Background="Blue" Grid.Column="1"  ToolTip="{Binding From}">
+                    <Grid Grid.Column="0" Margin="5,2" >
+                        <MediaElement Source="{Binding From.FullPath}" LoadedBehavior="Pause" ScrubbingEnabled="True"/>
+                        <wpfcontrollib:FButton Style="{StaticResource FButton_Transparency}" FIcon="&#xe74a;" FIconSize="40"/>
+                    </Grid>
+
+                    <Grid Grid.Column="1"  ToolTip="{Binding From}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
                             <ColumnDefinition/>
@@ -109,29 +118,68 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition Height="1.8*"/>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBox HorizontalAlignment="Left" Text="{Binding From.Name}" Grid.Row="0" Grid.ColumnSpan="6"/>
+                        <TextBox HorizontalAlignment="Left" Text="{Binding From.Name}" Grid.Row="0" Grid.ColumnSpan="6"  IsEnabled="False"/>
 
-                        <TextBlock HorizontalAlignment="Left" Text="格式：" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock HorizontalAlignment="Left" Text="{Binding From.MediaType}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock HorizontalAlignment="Left"  TextBlock.FontWeight="Bold" Text="格式：" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left"    Text="{Binding From.MediaType}" Grid.Row="1" Grid.Column="1"/>
 
-                        <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock HorizontalAlignment="Right"  TextBlock.FontWeight="Bold"  Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding From.Resoluction}" Grid.Row="1" Grid.Column="3"/>
 
-                        <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left"  TextBlock.FontWeight="Bold"  Text="长度：" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding From.Duration}" Grid.Row="2" Grid.Column="1"/>
 
-                        <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/>
+                        <TextBlock  HorizontalAlignment="Right"  TextBlock.FontWeight="Bold"  Text="大小：" Grid.Row="2" Grid.Column="2"/>
                         <TextBlock  HorizontalAlignment="Left" Text="{Binding From.Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
-                    <Grid Background="Purple" Grid.Column="2">
-                        <TextBlock Text="=" FontSize="50"/>
+
+                    <Grid Grid.Column="2">
+                        <TextBlock Text="&#xeafe;" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                   Style="{StaticResource FIcon}"
+                                   FontSize="50">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:01.5" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-50"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:01.5" Value="20"/>
+                                            </DoubleAnimationUsingKeyFrames>
+
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(TextBlock.FontSize)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:01.5" Value="50"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
+                        </TextBlock>
+
                     </Grid>
-                    <Grid Background="Blue" Grid.Column="3"  ToolTip="{Binding From}">
+
+                    <Grid Grid.Column="3" ToolTip="{Binding From}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.6*"/>
@@ -147,21 +195,25 @@
 
                         <TextBox HorizontalAlignment="Left" Text="{Binding To.Name}" Grid.Row="0" Grid.ColumnSpan="6"/>
 
-                        <TextBlock HorizontalAlignment="Left" Text="格式：" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left"  TextBlock.FontWeight="Bold" Text="格式：" Grid.Row="1" Grid.Column="0"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding To.MediaType}" Grid.Row="1" Grid.Column="1"/>
 
-                        <TextBlock HorizontalAlignment="Left" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock HorizontalAlignment="Right"  TextBlock.FontWeight="Bold" Text="分辨率：" Grid.Row="1" Grid.Column="2"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding To.Resoluction}" Grid.Row="1" Grid.Column="3"/>
 
-                        <TextBlock HorizontalAlignment="Left" Text="长度：" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock HorizontalAlignment="Left"  TextBlock.FontWeight="Bold" Text="长度：" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock HorizontalAlignment="Left" Text="{Binding To.Duration}" Grid.Row="2" Grid.Column="1"/>
 
-                        <TextBlock  HorizontalAlignment="Left" Text="大小：" Grid.Row="2" Grid.Column="2"/>
+                        <TextBlock  HorizontalAlignment="Right"  TextBlock.FontWeight="Bold" Text="大小：" Grid.Row="2" Grid.Column="2"/>
                         <TextBlock  HorizontalAlignment="Left" Text="{Binding To.Size}" Grid.Row="2" Grid.Column="3"/>
                     </Grid>
-                    <Grid Background="Gray" Grid.Column="4">
 
-                        <ToggleButton x:Name="toggle_config" Content="参数设置" Height="30"/>
+                    <Grid Grid.Column="4">
+
+                        <ToggleButton x:Name="toggle_config"  IsChecked="False"
+                                      Style="{StaticResource FIconToggleButton}" Content="参数设置" FontSize="20"  Foreground="Black"
+                                      base:ControlAttachProperty.FIcon="&#xe79c;"  Height="30" >
+                        </ToggleButton>
 
                         <Popup x:Name="Pop" PopupAnimation="Slide" IsOpen="{Binding ElementName=toggle_config,Path=IsChecked}"  
                                PlacementTarget="{Binding ElementName=toggle_config}" 
@@ -184,16 +236,28 @@
                             </Border>
                         </Popup>
                     </Grid>
-                    <Grid Background="Red" Grid.Column="5">
-                        <Button Content="{Binding CmdState}" Grid.Row="1" Command="{Binding RelayCommand}" 
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=Content}"  Height="50" Width="150"/>
+
+                    <Grid Grid.Column="5">
+                        <wpfcontrollib:FButton Content="{Binding CmdState}" 
+                                               Command="{Binding RelayCommand}" 
+                                               CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=Content}"  
+                                               Height="50"  FIconSize="30" FontSize="20" FIcon=""
+                                               Width="150"/>
                     </Grid>
 
                     <ProgressBar Grid.Row="1" IsHitTestVisible="False" Value="{Binding ProgressValue}" Height="5"
                                  Visibility="{Binding IsBuzy,Converter={x:Static base:XConverter.BooleanToVisibilityConverter}}" 
-                                 Foreground="Orange"  Grid.ColumnSpan="7"/>
+                                 Foreground="{DynamicResource S_AccentBrush}"  Grid.ColumnSpan="7"/>
 
                 </Grid>
+
+                <wpfcontrollib:FButton FIcon="&#xe702;" Margin="0,-8"
+                                       Visibility="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected,Converter={x:Static base:XConverter.BooleanToVisibilityConverter}}"
+                                       Style="{StaticResource FButton_Transparency}" 
+                                       HorizontalAlignment="Right" 
+                                       Foreground="White" 
+                                       FIconSize="30" Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.RelayCommand}" CommandParameter="btn_delete_current"
+                                       VerticalAlignment="Top"/>
             </Grid>
         </DataTemplate>
 
@@ -218,35 +282,21 @@
                     </Style>
 
                 </StackPanel.Resources>
-                <Button Content="添加文件" Command="{Binding RelayCommand}" CommandParameter="AddFile"/>
-                <Button Content="添加文件夾"/>
-                <Button Content="分割視頻"/>
-                <Button Content="合并視頻"/>
-                <Button Content="製作GIF"/>
+                <wpfcontrollib:FButton FIcon="&#xe635;" Content="添加文件" Margin="10,0" Command="{Binding RelayCommand}" CommandParameter="AddFile"/>
+                <wpfcontrollib:FButton  FIcon="&#xe611;"   Content="添加文件夾" Margin="10,0" />
+                <wpfcontrollib:FButton  FIcon="&#xe61e;"   Content="分割視頻" Margin="10,0" />
+                <wpfcontrollib:FButton  FIcon="&#xe611;"   Content="合并視頻" Margin="10,0" />
+                <wpfcontrollib:FButton  FIcon="&#xe606;"   Content="製作GIF" Margin="10,0" />
             </StackPanel>
 
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type ToggleButton}">
-                        <Setter Property="Width" Value="100"/>
-                        <Setter Property="Height" Value="30"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Margin" Value="10,0"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Text="輸出格式："/>
-                <ToggleButton Content="MP4 同源文件"/>
-            </StackPanel>
         </DockPanel>
 
         <DockPanel Grid.Row="2">
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                <TextBlock Text="保存至："/>
-                <RadioButton Content="源文件"/>
-                <RadioButton Content="自定义"/>
-                <TextBox/>
-                <Button Content="浏览" Height="30" Width="50"/>
+
+                <wpfcontrollib:FTextBox Width="500" Height="30" Margin="3"  
+                                        base:ControlAttachProperty.Label="保存路径"
+                                        Style="{StaticResource LabelOpenFolderTextBox}"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -259,12 +309,14 @@
                         <Setter Property="Margin" Value="5,0"/>
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="清空列表"/>
-                <Button Content="开始转换" Width="150" Height="50"/>
+                <wpfcontrollib:FButton FIcon="&#xe70d;" Content="清空列表" Command="{Binding RelayCommand}" CommandParameter="btn_clear_all"/>
+                <wpfcontrollib:FButton Content="开始转换" CornerRadius="25" FontSize="20" FIcon="&#xe690;" Margin="50,0" Width="150" Height="50"/>
             </StackPanel>
         </DockPanel>
 
-        <ListBox Grid.Row="1" Background="Green" ItemsSource="{Binding Collection}"  ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+        <ListBox Grid.Row="1" BorderThickness="0" Margin="5"  Background="{DynamicResource S_OpacityGray}" ClipToBounds="False"
+                 ItemsSource="{Binding Collection}"   SelectedItem="{Binding Current}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden">
 
         </ListBox>
     </Grid>

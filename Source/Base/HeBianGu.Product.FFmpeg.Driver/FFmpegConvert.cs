@@ -14,6 +14,22 @@ namespace HeBianGu.Product.FFmpeg.Driver
         public MediaEntity GetMediaEntity(string txt)
         {
 
+            //            Metadata:
+            //            major_brand: isom
+            //       minor_version   : 512
+            //    compatible_brands: isomiso2avc1mp41
+            //    title           : EV褰曞睆3.8.4杞欢褰曞埗
+            //    encoder         : Lavf56.38.102
+            //    comment: 鏈棰戠敱婀栧崡涓€鍞俊鎭鎶€寮€鍙戠殑EV褰曞睆杞欢褰曞埗锛寃ww.ieway.cn
+            //Duration: 00:09:12.24, start: 0.014125, bitrate: 415 kb / s
+            //    Stream #0:0(und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p, 1920x1080, 284 kb/s, 14.68 fps, 15 tbr, 15360 tbn, 30 tbc (default)
+            //    Metadata:
+            //      handler_name: VideoHandler
+            //Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 127 kb/s (default)
+            //    Metadata:
+            //            handler_name: SoundHandler
+
+
             MediaEntity entity = new MediaEntity();
 
             //从视频信息中解析时长
@@ -27,11 +43,9 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
             entity.Duration = arr[0].Remove(0, arr[0].IndexOf(':') + 1);
             entity.Start = arr[1].Split(':')[1];
-            entity.Bitrate = arr[2].Split(':')[1];
+            entity.Bitrate = arr[2].Split(':')[1].Trim().Split(' ')[0];
 
-
-
-            string regexVideo = "Video: (.*?), (.*?), (.*?)[,\\s]";
+            string regexVideo = "Video: (.*?), (.*?), (.*?), (.*?), (.*?)[,\\s]";
 
             Regex r1 = new Regex(regexVideo);
 
@@ -39,10 +53,11 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
             arr = result.Value.Split(':')[1].Split(',');
 
-            entity.MediaCode = arr[0];
-            entity.MediaType = arr[1];
-            entity.Resoluction = arr[2];
-
+            entity.MediaCode = arr[0].Trim().Split(' ')[0];
+            entity.MediaType = entity.MediaCode;
+            entity.Resoluction = arr[1].Trim();
+            entity.Aspect = arr[2].Trim();
+            entity.Rate = arr[4].Trim().Split(' ')[0];
             return entity;
         }
 
@@ -64,7 +79,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         public List<SupportFormatEntity> GetFomarts(string source)
         {
-            return  this.GetSupportFormatEntity(source, "--");
+            return this.GetSupportFormatEntity(source, "--");
         }
 
         public List<SupportFormatEntity> GetCodecs(string source)
@@ -73,7 +88,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
         }
 
 
-        List<SupportFormatEntity> GetSupportFormatEntity(string source,string flag= "--")
+        List<SupportFormatEntity> GetSupportFormatEntity(string source, string flag = "--")
         {
             var result = source.Split('\r').Select(l => l.Trim('\n')).ToList();
 

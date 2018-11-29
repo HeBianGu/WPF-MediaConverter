@@ -1,8 +1,10 @@
 ﻿using HeBianGu.Base.WpfBase;
 using HeBianGu.Product.FFmpeg.Base.Model;
+using HeBianGu.Product.FFmpeg.Driver;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -90,6 +92,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
         private string _bitrate;
         /// <summary> 比特率  </summary>
+        [Description(FFmpegParameter.ffmpeg_bitrate)]
         public string Bitrate
         {
             get { return _bitrate; }
@@ -97,6 +100,19 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             {
                 _bitrate = value;
                 RaisePropertyChanged("Bitrate");
+            }
+        }
+
+        private string _rate;
+        /// <summary> 比特率  </summary>
+        [Description(FFmpegParameter.ffmpeg_rate)]
+        public string Rate
+        {
+            get { return _rate; }
+            set
+            {
+                _rate = value;
+                RaisePropertyChanged("Rate");
             }
         }
 
@@ -114,6 +130,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
         private string _mediaType;
         /// <summary> 视频格式 yuv420p  </summary>
+        [Description(FFmpegParameter.ffmpeg_vcodec)]
         public string MediaType
         {
             get { return _mediaType; }
@@ -123,7 +140,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 RaisePropertyChanged("MediaType");
             }
         }
-
 
         private string _extend;
         /// <summary> 说明  </summary>
@@ -140,9 +156,9 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
         private string _resoluction;
         /// <summary> 分辨率  </summary>
+        [Description(FFmpegParameter.ffmpeg_pix_fmt)]
         public string Resoluction
         {
             get { return _resoluction; }
@@ -153,18 +169,47 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
         void RefreshFullPath()
         {
             if (string.IsNullOrEmpty(this.Name)) return;
             if (string.IsNullOrEmpty(this.Path)) return;
 
             this.FullPath = System.IO.Path.Combine(this.Path, this.Name);
+
+            this.FullPathChanged?.Invoke();
+
+
         }
+
+        public event Action FullPathChanged;
 
         void RefeshName()
         {
             this.Name = System.IO.Path.GetFileNameWithoutExtension(this.Name) + "." + this.Extend;
+        }
+
+
+        public string GetFileOptions()
+        {
+            StringBuilder sb = new StringBuilder();
+
+
+            foreach (var item in this.GetType().GetProperties())
+            {
+                var attr = item.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attr == null || attr.Count() == 0) continue;
+
+                if (item.GetValue(this) == null) continue;
+
+                DescriptionAttribute desc = attr.First() as DescriptionAttribute;
+
+                string current = string.Format(desc.Description, item.GetValue(this));
+
+                sb.Append(" " + current.Trim());
+            }
+
+            return sb.ToString();
         }
         public void RelayMethod(object obj)
         {
@@ -173,6 +218,8 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             //  Do：应用
             if (command == "Sumit")
             {
+
+                Debug.WriteLine("Sumit");
 
 
             }
@@ -192,7 +239,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         public MediaEntityViewModel()
         {
             RelayCommand = new RelayCommand(RelayMethod);
-
         }
 
 

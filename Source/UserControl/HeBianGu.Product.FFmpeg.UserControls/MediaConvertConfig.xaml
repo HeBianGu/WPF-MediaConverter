@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HeBianGu.Product.FFmpeg.UserControls"
-             xmlns:sys="clr-namespace:System;assembly=System"
+             xmlns:sys="clr-namespace:System;assembly=System"    
+             xmlns:base="clr-namespace:HeBianGu.Base.WpfBase;assembly=HeBianGu.Base.WpfBase"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpfcontrollib="clr-namespace:HeBianGu.General.WpfControlLib;assembly=HeBianGu.General.WpfControlLib"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
     <!--https://www.jianshu.com/p/049d03705a81-->
@@ -190,8 +192,30 @@
 
         <TabControl>
             <TabItem Header="基本配置">
-                
+
                 <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="同源文件:"/>
+                        
+                        <CheckBox IsChecked="{Binding IsFollow}" Grid.Column="1"/>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="是否覆盖:"/>
+                        <CheckBox IsChecked="{Binding Recover}" Grid.Column="1"/>
+                    </Grid>
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -201,7 +225,7 @@
                         <TextBlock Text="文件名称:"/>
                         <TextBox Text="{Binding To.Name}" Grid.Column="1"/>
                     </Grid>
-                    
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -219,84 +243,90 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="文件类型:"/>
-                        <TextBox Text="{Binding To.Extend}" Grid.Column="1"/>
+                        <ComboBox  Grid.Column="1" 
+                                   SelectedValue="{Binding To.Extend,Mode=TwoWay}"
+                                  ItemsSource="{Binding Source={StaticResource Source.XmlDataProvider.FFmpegConfig.BaseConfig},XPath=MediaType/@Name}"/>
                     </Grid>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                    <StackPanel IsEnabled="{Binding IsFollow,Converter={x:Static base:XConverter.TrueToFalseConverter}}">
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="视频类型:"/>
-                        <ComboBox Text="{Binding To.MediaType}" ItemsSource="{Binding Source={StaticResource Resource.ObjectDataProvider.SupportFormat}}" DisplayMemberPath="Name"
+                            <TextBlock Text="视频类型:"/>
+                            <ComboBox Text="{Binding To.MediaType}" 
+                                  ItemsSource="{Binding Source={StaticResource Resource.ObjectDataProvider.SupportFormat}}" 
+                                  DisplayMemberPath="Name"
                                   Grid.Column="1"/>
-                    </Grid>
+                        </Grid>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="编码格式:"/>
-                        <ComboBox Text="{Binding To.MediaCode}" ItemsSource="{Binding Source={StaticResource Resource.ObjectDataProvider.SupportCode}}" DisplayMemberPath="Name"
+                            <TextBlock Text="编码格式:"/>
+                            <ComboBox Text="{Binding To.MediaCode}" ItemsSource="{Binding Source={StaticResource Resource.ObjectDataProvider.SupportCode}}" DisplayMemberPath="Name"
                                   Grid.Column="1"/>
-                       
-                    </Grid>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                        </Grid>
 
-                        <TextBlock Text="分辨率:"/>
-                        <TextBox Text="{Binding To.Resoluction}" Grid.Column="1"/>
-                    </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                            <TextBlock Text="分辨率:"/>
+                            <TextBox Text="{Binding To.Resoluction}" Grid.Column="1"/>
+                        </Grid>
 
-                        <TextBlock Text="比特率:"/>
-                        <TextBox Text="{Binding To.Bitrate}" Grid.Column="1"/>
-                    </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                            <TextBlock Text="比特率:"/>
+                            <TextBox Text="{Binding To.Bitrate}" Grid.Column="1"/>
+                        </Grid>
 
-                        <TextBlock Text="设置帧频:"/>
-                        <TextBox Text="{Binding To.MediaCode}" Grid.Column="1"/>
-                    </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                            <TextBlock Text="设置帧频:"/>
+                            <TextBox Text="{Binding To.Rate}" Grid.Column="1"/>
+                        </Grid>
 
-                        <TextBlock Text="开始时间:"/>
-                        <TextBox Text="{Binding To.MediaCode}" Grid.Column="1"/>
-                    </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                            <TextBlock Text="开始时间:"/>
+                            <TextBox Text="{Binding To.Start}" Grid.Column="1"/>
+                        </Grid>
 
-                        <TextBlock Text="结束时间:"/>
-                        <TextBox Text="{Binding To.MediaCode}" Grid.Column="1"/>
-                    </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
+                            <TextBlock Text="结束时间:"/>
+                            <TextBox Text="{Binding To.Duration}" Grid.Column="1"/>
+                        </Grid>
+                    </StackPanel>
+                    
                 </StackPanel>
-
             </TabItem>
 
             <TabItem Header="通用选项">
@@ -308,6 +338,6 @@
             </TabItem>
         </TabControl>
 
-        <Button Content="确定.."  Grid.Row="1" Click="Button_Click"/>
+        <wpfcontrollib:FButton Content="确定.."  Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="Sumit" Click="Button_Click"/>
     </Grid>
 </UserControl>

@@ -81,6 +81,20 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         }
 
 
+        private MediaConvertEntityNotifyClass _current;
+        /// <summary> 说明  </summary>
+        public MediaConvertEntityNotifyClass Current
+        {
+            get { return _current; }
+            set
+            {
+                _current = value;
+                RaisePropertyChanged("Current");
+            }
+        }
+
+
+
         public void RelayMethod(object obj)
         {
             string command = obj.ToString();
@@ -107,7 +121,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                 from.Name= System.IO.Path.GetFileName(open.FileName);
                 from.Path = System.IO.Path.GetDirectoryName(open.FileName);
-                from.Extend = System.IO.Path.GetExtension(open.FileName);
+                from.Extend = System.IO.Path.GetExtension(open.FileName).Trim('.').ToUpper();
                 //from.MediaCode = model.MediaCode;
                 //from.MediaType = model.MediaType;
                 //from.Resoluction = model.Resoluction;
@@ -117,14 +131,16 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                 from.Size = "00MB";
                 from.CopyFromObj(model);
+                from.MediaCode = model.MediaCode.Trim().Split(' ')[0];
                 entity.From = from;
 
                 MediaEntityViewModel to = new MediaEntityViewModel();
                 to.Name = System.IO.Path.GetFileName(open.FileName);
                 to.Path = System.IO.Path.GetDirectoryName(open.FileName);
-                to.Extend = System.IO.Path.GetExtension(open.FileName);
+                to.Extend = System.IO.Path.GetExtension(open.FileName).Trim('.').ToUpper();
                 to.CopyFromObj(model);
-                
+                to.MediaCode = model.MediaCode.Trim().Split(' ')[0];
+
                 to.Size = "00MB";
                 entity.To = to;
 
@@ -132,11 +148,20 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
             }
             //  Do：取消
-            else if (command == "config_btn_sumit")
+            else if (command == "btn_delete_current")
             {
+                if (this.Current == null) return;
 
-
+                this.Collection.Remove(this.Current);
             }
+
+            //  Do：取消
+            else if (command == "btn_clear_all")
+            {
+                this.Collection.Clear();
+            }
+
+            
         }
     }
 
@@ -165,212 +190,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
     }
 
 
-    partial class MediaConvertEntityNotifyClass
-    {
-        private MediaEntityViewModel _from;
-        /// <summary> 说明  </summary>
-        public MediaEntityViewModel From
-        {
-            get { return _from; }
-            set
-            {
-                _from = value;
-                RaisePropertyChanged("From");
-            }
-        }
-
-
-        private MediaEntityViewModel _to;
-        /// <summary> 说明  </summary>
-        public MediaEntityViewModel To
-        {
-            get { return _to; }
-            set
-            {
-                _to = value;
-                RaisePropertyChanged("To");
-            }
-        }
-
-        private bool _isBuzy;
-        /// <summary> 说明  </summary>
-        public bool IsBuzy
-        {
-            get { return _isBuzy; }
-            set
-            {
-                _isBuzy = value;
-                RaisePropertyChanged("IsBuzy");
-            }
-        }
-
-        private double _progressValue;
-        /// <summary> 说明  </summary>
-        public double ProgressValue
-        {
-            get { return _progressValue; }
-            set
-            {
-                _progressValue = value;
-                RaisePropertyChanged("ProgressValue");
-            }
-        }
-
-        private string _cmdState = "开始转换";
-        /// <summary> 说明  </summary>
-        public string CmdState
-        {
-            get
-            {
-                _cmdState = this.GetState();
-
-                return _cmdState;
-            }
-            set
-            {
-                _cmdState = value;
-
-                RaisePropertyChanged("CmdState");
-            }
-        }
-
-        private string _cmdParams;
-        /// <summary> 说明  </summary>
-        public string CmdParams
-        {
-            get { return _cmdParams; }
-            set
-            {
-                _cmdParams = value;
-                RaisePropertyChanged("CmdParams");
-            }
-        }
-
-
-        public void RelayMethod(object obj)
-        {
-            string command = obj.ToString();
-
-            Debug.WriteLine(command);
-
-            //  Do：应用
-            if (command == "开始转换")
-            {
-
-                Debug.WriteLine("btn_convert");
-
-                TimeSpan total = TimeSpan.Parse(this.To.Duration);
-
-                Action<string> reciveAction = l =>
-                  {
-                      if (string.IsNullOrEmpty(l)) return;
-
-                      TimeSpan time = TimeSpan.Parse(l);
-
-                      Application.Current.Dispatcher.Invoke(() =>
-                      {
-                          this.ProgressValue = (time.TotalSeconds / total.TotalSeconds) * 100;
-                      });
-
-                  };
-
-                Action<int> existAction = l =>
-                  {
-                      Application.Current.Dispatcher.Invoke(() =>
-                      {
-                          MessageBox.Show("运行结束");
-
-                          this.IsBuzy = false;
-
-                          this.CmdState = this.GetState();
-                      });
-
-                  };
-
-                //FFmpegService.Instance.MediaToWmv(this.From_FilePath, this.To_FilePath, reciveAction, existAction);
-
-                string ccc = string.Format("-i {0} {1} ", this.From.FullPath, this.To.FullPath);
-
-                string sss = ccc + this.CmdParams;
-
-                Log4Servcie.Instance.Info(sss);
-
-                Debug.WriteLine(sss);
-
-
-                FFmpegService.Instance.ConvertWithParams(sss, reciveAction, existAction);
-               
-
-                this.IsBuzy = true;
-
-            }
-            //  Do：取消
-            else if (command == "取消")
-            {
-
-
-            }
-            //  Do：取消
-            else if (command == "打开")
-            {
-                Process.Start(this.To.FullPath);
-
-            }
-        }
-
-
-        public string GetState()
-        {
-
-            string result;
-
-            if (this.IsBuzy)
-            {
-                result = "取消";
-            }
-            else
-            {
-                if (File.Exists(this.To.FullPath))
-                {
-                    result = "打开";
-                }
-                else
-                {
-                    result = "开始转换";
-                }
-            }
-
-            return result;
-        }
-    }
-
-    partial class MediaConvertEntityNotifyClass : INotifyPropertyChanged
-    {
-        public RelayCommand RelayCommand { get; set; }
-
-        FileWatcher watcher;
-
-        public MediaConvertEntityNotifyClass()
-        {
-            RelayCommand = new RelayCommand(RelayMethod);
-        }
-
-        private void OnChanged(object sender, FileSystemEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-        #region - MVVM -
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-    }
 
 
 

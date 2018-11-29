@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HeBianGu.Product.FFmpeg.Driver
 {
-    class FFmpegParameter
+    public class FFmpegParameter
     {
         /// <summary> m4a转wav </summary>
         public const string m4aTowav = "-i input.m4a -ac 2 -ar 44100 -acodec pcm_s16le -f wav output.wav";
@@ -116,6 +116,27 @@ namespace HeBianGu.Product.FFmpeg.Driver
         public string ffmpeg_codecs = "-codecs";
 
         public string ffmpeg_detial = "-i {0}";
+
+        /// <summary> 频率 </summary>
+        public const string ffmpeg_rate = "-r {0}";
+
+        /// <summary> 比特率 </summary>
+        public const string ffmpeg_bitrate = "-b:v {0}k -bufsize {0}k ";
+
+        /// <summary> 宽高比 -aspect 15:3</summary>
+        public const string ffmpeg_aspect = "-aspect {0}";
+
+        /// <summary> 解码格式 -c:v h264</summary>
+        public const string ffmpeg_vcodec = "-c:v {0}";
+
+        /// <summary> 设置分辨率 pix_fmt yuva422p </summary>
+        public const string ffmpeg_pix_fmt = " -pix_fmt {0}";
+
+
+        /// <summary> 是否覆盖 </summary>
+        public const string ffmpeg_y = "-y";
+
+
 
         #endregion
 

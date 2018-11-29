@@ -82,6 +82,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MediaConvertEntityNotifyClass.cs" />
     <Compile Include="MediaConvertResourceProvider.cs" />
     <Compile Include="MediaEntityViewModel.cs" />
     <Compile Include="ObjectExtend.cs" />

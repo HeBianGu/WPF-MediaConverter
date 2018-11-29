@@ -53,9 +53,12 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            this.CommandString = this.ConvertToCommand();
+            //this.CommandString = this.ConvertToCommand();
 
-            this.OnSumitClick();
+
+
+
+            //this.OnSumitClick();
         }
 
 
