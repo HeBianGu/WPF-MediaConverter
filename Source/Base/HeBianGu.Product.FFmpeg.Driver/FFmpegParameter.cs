@@ -136,7 +136,14 @@ namespace HeBianGu.Product.FFmpeg.Driver
         /// <summary> 是否覆盖 </summary>
         public const string ffmpeg_y = "-y";
 
+        /// <summary> 分割视频起始时间   -ss 0:1:30 </summary>
+        public const string ffmpeg_start = "-ss {0}";
 
+        /// <summary> 分割视频持续时间  -t 0:0:20</summary>
+        public const string ffmpeg_time = "-t {0}";
+
+        /// <summary> 从源文件赋值当剪切操作时速度快 </summary>
+        public const string ffmpeg_copy= "-c copy";
 
         #endregion
 

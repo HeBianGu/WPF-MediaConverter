@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C4B00E7D-53ED-4864-AE6A-CC6BE85731D3}</ProjectGuid>
+    <ProjectGuid>{9AA2D32F-9F7D-439A-B591-79F1D30CE230}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>HeBianGu.Product.FFmpeg.UserControls</RootNamespace>
-    <AssemblyName>HeBianGu.Product.FFmpeg.UserControls</AssemblyName>
+    <RootNamespace>HeBianGu.Product.General.MediaPlayer</RootNamespace>
+    <AssemblyName>HeBianGu.Product.General.MediaPlayer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,23 +35,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Product\Dll\HeBianGu.Base.WpfBase.dll</HintPath>
     </Reference>
-    <Reference Include="HeBianGu.General.Logger">
-      <HintPath>..\..\..\Product\Dll\HeBianGu.General.Logger.dll</HintPath>
-    </Reference>
     <Reference Include="HeBianGu.General.WpfControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Product\Dll\HeBianGu.General.WpfControlLib.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Product\Dll\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Product\Dll\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -67,37 +55,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\MediaConvertConfig.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\MediaConvertControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="ViewModel\SplitControlNotifyClass.cs" />
-    <Compile Include="ViewModel\MediaConvertNotifyClass.cs" />
-    <Compile Include="Provider\FileWatcher.cs" />
-    <Compile Include="View\MediaConvertConfig.xaml.cs">
-      <DependentUpon>MediaConvertConfig.xaml</DependentUpon>
+    <Compile Include="MediaBrower.xaml.cs">
+      <DependentUpon>MediaBrower.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MediaConvertControl.xaml.cs">
-      <DependentUpon>MediaConvertControl.xaml</DependentUpon>
+    <Compile Include="MediaPlayer.xaml.cs">
+      <DependentUpon>MediaPlayer.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\MediaSplitControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ViewModel\MediaConvertEntityNotifyClass.cs" />
-    <Compile Include="Provider\MediaConvertResourceProvider.cs" />
-    <Compile Include="ViewModel\MediaEntityViewModel.cs" />
-    <Compile Include="View\MediaSplitControl.xaml.cs">
-      <DependentUpon>MediaSplitControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Provider\ObjectExtend.cs" />
-    <Compile Include="Provider\Previder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -121,18 +84,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Base\HeBianGu.Product.FFmpeg.Base.Model\HeBianGu.Product.FFmpeg.Base.Model.csproj">
-      <Project>{F4E3D9A9-05AB-4B0B-81D1-45E424AF9795}</Project>
-      <Name>HeBianGu.Product.FFmpeg.Base.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Base\HeBianGu.Product.FFmpeg.Driver\HeBianGu.Product.FFmpeg.Driver.csproj">
-      <Project>{c27bfe9f-1dc6-4446-b08a-ad7ba540ccc0}</Project>
-      <Name>HeBianGu.Product.FFmpeg.Driver</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\General\HeBianGu.Product.General.MediaPlayer\HeBianGu.Product.General.MediaPlayer.csproj">
-      <Project>{9aa2d32f-9f7d-439a-b591-79f1d30ce230}</Project>
-      <Name>HeBianGu.Product.General.MediaPlayer</Name>
-    </ProjectReference>
+    <Page Include="MediaBrower.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MediaPlayer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

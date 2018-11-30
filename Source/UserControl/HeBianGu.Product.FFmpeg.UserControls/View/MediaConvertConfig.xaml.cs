@@ -49,20 +49,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             this.RaiseEvent(args);
         }
 
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            //this.CommandString = this.ConvertToCommand();
-
-
-
-
-            //this.OnSumitClick();
-        }
-
-
-
         public string CommandString
         {
             get { return (string)GetValue(CommandStringProperty); }
@@ -80,7 +66,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                  string config = e.NewValue as string;
 
              }));
-
 
 
         public string ConvertToCommand()

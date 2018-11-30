@@ -12,35 +12,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace HeBianGu.Product.FFmpeg.UserControls
 {
-    /// <summary>
-    /// MediaConvertControl.xaml 的交互逻辑
-    /// </summary>
-    public partial class MediaConvertControl : UserControl
-    {
-
-        MediaConvertNotifyClass _vm = new MediaConvertNotifyClass();
-
-        public MediaConvertControl()
-        {
-            InitializeComponent();
-
-            this.DataContext = _vm;
-        }
-    }
-
-
 
     partial class MediaConvertNotifyClass
     {
@@ -80,7 +54,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
         private MediaConvertEntityNotifyClass _current;
         /// <summary> 说明  </summary>
         public MediaConvertEntityNotifyClass Current
@@ -93,15 +66,23 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
+        private SplitControlNotifyClass _splitParamater = new SplitControlNotifyClass();
+        /// <summary> 说明  </summary>
+        public SplitControlNotifyClass SplitParamater
+        {
+            get { return _splitParamater; }
+            set
+            {
+                _splitParamater = value;
+                RaisePropertyChanged("SplitParamater");
+            }
+        }
 
         public void RelayMethod(object obj)
         {
             string command = obj.ToString();
 
-
             Debug.WriteLine(command);
-
 
             //  Do：应用
             if (command == "AddFile")
@@ -114,35 +95,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                 if (!result.Value) return;
 
-                MediaConvertEntityNotifyClass entity = new MediaConvertEntityNotifyClass();
-
-                var model = FFmpegService.Instance.GetMediaEntity(open.FileName);
-                MediaEntityViewModel from = new MediaEntityViewModel();
-
-                from.Name= System.IO.Path.GetFileName(open.FileName);
-                from.Path = System.IO.Path.GetDirectoryName(open.FileName);
-                from.Extend = System.IO.Path.GetExtension(open.FileName).Trim('.').ToUpper();
-                //from.MediaCode = model.MediaCode;
-                //from.MediaType = model.MediaType;
-                //from.Resoluction = model.Resoluction;
-                //from.Start = model.Start;
-                //from.Bitrate = model.Bitrate;
-                //from.Duration = model.Duration;
-
-                from.Size = "00MB";
-                from.CopyFromObj(model);
-                from.MediaCode = model.MediaCode.Trim().Split(' ')[0];
-                entity.From = from;
-
-                MediaEntityViewModel to = new MediaEntityViewModel();
-                to.Name = System.IO.Path.GetFileName(open.FileName);
-                to.Path = System.IO.Path.GetDirectoryName(open.FileName);
-                to.Extend = System.IO.Path.GetExtension(open.FileName).Trim('.').ToUpper();
-                to.CopyFromObj(model);
-                to.MediaCode = model.MediaCode.Trim().Split(' ')[0];
-
-                to.Size = "00MB";
-                entity.To = to;
+                MediaConvertEntityNotifyClass entity = this.Create(open.FileName);
 
                 this.Collection.Add(entity);
 
@@ -161,8 +114,58 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 this.Collection.Clear();
             }
 
-            
+            //  Do：分割请求
+            else if (command == "split_SumitClick")
+            {
+
+                if (!File.Exists(this.SplitParamater.FilePath))
+                {
+                    Log4Servcie.Instance.Info("文件不存在");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(this.SplitParamater.StartTime)) return;
+
+                if (string.IsNullOrEmpty(this.SplitParamater.EndTime)) return;
+
+                MediaConvertEntityNotifyClass entity = this.Create(this.SplitParamater.FilePath);
+
+                entity.To.Start = this.SplitParamater.StartTime;
+                entity.To.Duration = (TimeSpan.Parse(this.SplitParamater.EndTime) - TimeSpan.Parse(this.SplitParamater.StartTime)).ToString().Split('.')[0];
+
+                this.Collection.Add(entity);
+            }
         }
+
+        MediaConvertEntityNotifyClass Create(string fileName)
+        {
+            MediaConvertEntityNotifyClass entity = new MediaConvertEntityNotifyClass();
+
+            var model = FFmpegService.Instance.GetMediaEntity(fileName);
+            MediaEntityViewModel from = new MediaEntityViewModel();
+
+            from.Name = System.IO.Path.GetFileName(fileName);
+            from.Path = System.IO.Path.GetDirectoryName(fileName);
+            from.Extend = System.IO.Path.GetExtension(fileName).Trim('.').ToUpper();
+
+            from.Size = fileName.GetLength();
+            from.CopyFromObj(model);
+            from.MediaCode = model.MediaCode.Trim().Split(' ')[0];
+            entity.From = from;
+
+            MediaEntityViewModel to = new MediaEntityViewModel();
+            to.Path = System.IO.Path.GetDirectoryName(fileName);
+            to.Extend = System.IO.Path.GetExtension(fileName).Trim('.').ToUpper();
+            to.Name = "out-" + System.IO.Path.GetFileName(fileName);
+            to.CopyFromObj(model);
+            to.MediaCode = model.MediaCode.Trim().Split(' ')[0];
+
+            to.Size = to.FullPath.GetLength();
+            entity.To = to;
+
+            return entity;
+        }
+
     }
 
     partial class MediaConvertNotifyClass : INotifyPropertyChanged
@@ -188,9 +191,4 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
         #endregion
     }
-
-
-
-
-
 }

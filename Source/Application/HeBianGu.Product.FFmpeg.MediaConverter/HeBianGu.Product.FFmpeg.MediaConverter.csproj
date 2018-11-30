@@ -52,14 +52,19 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\watermelon drive.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HeBianGu.Base.WpfBase">
+    <Reference Include="HeBianGu.Base.WpfBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Product\Dll\HeBianGu.Base.WpfBase.dll</HintPath>
     </Reference>
     <Reference Include="HeBianGu.General.Logger">
       <HintPath>..\..\..\Product\Dll\HeBianGu.General.Logger.dll</HintPath>
     </Reference>
-    <Reference Include="HeBianGu.General.WpfControlLib">
+    <Reference Include="HeBianGu.General.WpfControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Product\Dll\HeBianGu.General.WpfControlLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Windows.Shell">
@@ -67,6 +72,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -129,6 +135,9 @@
       <Project>{c4b00e7d-53ed-4864-ae6a-cc6be85731d3}</Project>
       <Name>HeBianGu.Product.FFmpeg.UserControls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\watermelon drive.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

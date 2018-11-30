@@ -14,7 +14,6 @@ using System.Windows;
 
 namespace HeBianGu.Product.FFmpeg.UserControls
 {
-
     partial class MediaConvertEntityNotifyClass
     {
         private MediaEntityViewModel _from;
@@ -28,7 +27,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 RaisePropertyChanged("From");
             }
         }
-
 
         private MediaEntityViewModel _to;
         /// <summary> 说明  </summary>
@@ -99,7 +97,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
         }
 
-
         private bool _recover;
         /// <summary> 说明  </summary>
         public bool Recover
@@ -111,8 +108,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 RaisePropertyChanged("Recover");
             }
         }
-
-
 
         private bool _isFollow = true;
         /// <summary> 说明  </summary>
@@ -127,22 +122,37 @@ namespace HeBianGu.Product.FFmpeg.UserControls
         }
 
 
+        private bool _isCopy;
+        /// <summary> 说明  </summary>
+        public bool IsCopy
+        {
+            get { return _isCopy; }
+            set
+            {
+                _isCopy = value;
+                RaisePropertyChanged("IsCopy");
+            }
+        }
+
+
         string ConvertToCommand()
         {
             //ffmpeg [global_options] {[input_file_options] -i input_url} ... {[output_file_options] output_url} 
 
-            string global_options = this.Recover ? " -y " : "";
+            string global_options = this.Recover ? FFmpegParameter.ffmpeg_y : "";
+
+            //  Do：增加剪切位置 设置在全局位置
+            global_options += this.To.GetCutSpace();
 
             if (this.IsFollow)
             {
-                string input_file_options = string.Empty;
+                string input_file_options =string.Empty;
 
                 string input_url = this.From.FullPath;
 
-                string output_file_options = string.Empty;
+                string output_file_options = this.IsCopy ? FFmpegParameter.ffmpeg_copy : string.Empty;
 
                 string output_url = this.To.FullPath;
-
 
                 return string.Format("{0} {1} -i {2} {3} {4}", global_options, input_file_options, input_url, output_file_options, output_url);
             }
@@ -152,18 +162,15 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
                 string input_url = this.From.FullPath;
 
-                string output_file_options = this.To.GetFileOptions();
+                string output_file_options = this.IsCopy ? FFmpegParameter.ffmpeg_copy : this.To.GetFileOptions();
 
                 string output_url = this.To.FullPath;
 
                 return string.Format("{0} {1} -i {2} {3} {4}", global_options, input_file_options, input_url, output_file_options, output_url);
             }
 
-           
-
 
         }
-
 
         public void RelayMethod(object obj)
         {
@@ -201,6 +208,8 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                         this.IsBuzy = false;
 
                         this.CmdState = this.GetState();
+
+                        this.To.Size = this.To.FullPath.GetLength();
                     });
 
                 };
@@ -235,7 +244,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
             }
         }
-
 
         public string GetState()
         {

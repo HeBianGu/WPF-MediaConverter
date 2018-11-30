@@ -7,7 +7,7 @@
         xmlns:wpfcontrollib="clr-namespace:HeBianGu.General.WpfControlLib;assembly=HeBianGu.General.WpfControlLib"
         xmlns:usercontrols="clr-namespace:HeBianGu.Product.FFmpeg.UserControls;assembly=HeBianGu.Product.FFmpeg.UserControls"
         mc:Ignorable="d" Style="{StaticResource DefaultWindowStyle}" CaptionHeight="40" FIcon="&#xebce;"
-        Title="视频格式转换器  v1.0" Height="650" Width="1000">
+        Title="视频格式转换器 v1.0  By HeBianGu" Height="650" Width="1000">
     <Grid>
         <usercontrols:MediaConvertControl/>
     </Grid>

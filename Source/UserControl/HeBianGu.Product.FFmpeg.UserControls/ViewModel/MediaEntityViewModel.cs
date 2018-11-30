@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +69,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
         private string _duration;
         /// <summary> 总时间  </summary>
+        [Description(FFmpegParameter.ffmpeg_time)]
         public string Duration
         {
             get { return _duration; }
@@ -80,6 +82,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
         private string _start;
         /// <summary> 开始时间  </summary>
+        [Description(FFmpegParameter.ffmpeg_start)]
         public string Start
         {
             get { return _start; }
@@ -168,7 +171,6 @@ namespace HeBianGu.Product.FFmpeg.UserControls
                 RaisePropertyChanged("Resoluction");
             }
         }
-
         void RefreshFullPath()
         {
             if (string.IsNullOrEmpty(this.Name)) return;
@@ -188,13 +190,41 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             this.Name = System.IO.Path.GetFileNameWithoutExtension(this.Name) + "." + this.Extend;
         }
 
-
         public string GetFileOptions()
         {
             StringBuilder sb = new StringBuilder();
 
-
             foreach (var item in this.GetType().GetProperties())
+            {
+                var attr = item.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attr == null || attr.Count() == 0) continue;
+
+                if (item.GetValue(this) == null) continue;
+
+                if (item.Name == "Start" || item.Name == "Duration") continue;
+
+                DescriptionAttribute desc = attr.First() as DescriptionAttribute;
+
+                string current = string.Format(desc.Description, item.GetValue(this));
+
+                sb.Append(" " + current.Trim());
+            }
+
+            return sb.ToString();
+        }
+
+
+        public string GetCutSpace()
+        {
+            List<PropertyInfo> ps = new List<PropertyInfo>();
+
+            ps.Add(this.GetType().GetProperty("Start"));
+            ps.Add(this.GetType().GetProperty("Duration"));
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var item in ps)
             {
                 var attr = item.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
@@ -210,7 +240,10 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             }
 
             return sb.ToString();
+
+            
         }
+
         public void RelayMethod(object obj)
         {
             string command = obj.ToString();
@@ -218,10 +251,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             //  Do：应用
             if (command == "Sumit")
             {
-
                 Debug.WriteLine("Sumit");
-
-
             }
             //  Do：取消
             else if (command == "Cancel")

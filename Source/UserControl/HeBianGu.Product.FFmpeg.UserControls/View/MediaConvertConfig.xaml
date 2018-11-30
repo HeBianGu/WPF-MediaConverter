@@ -187,7 +187,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="50"/>
+            <!--<RowDefinition Height="50"/>-->
         </Grid.RowDefinitions>
 
         <TabControl>
@@ -201,11 +201,10 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="同源文件:"/>
-                        
+
                         <CheckBox IsChecked="{Binding IsFollow}" Grid.Column="1"/>
                     </Grid>
-
-
+                    
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -214,6 +213,16 @@
 
                         <TextBlock Text="是否覆盖:"/>
                         <CheckBox IsChecked="{Binding Recover}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="从源文件复制(分割视频时使用):"/>
+                        <CheckBox IsChecked="{Binding IsCopy}" Grid.Column="1"/>
                     </Grid>
 
                     <Grid>
@@ -248,7 +257,33 @@
                                   ItemsSource="{Binding Source={StaticResource Source.XmlDataProvider.FFmpegConfig.BaseConfig},XPath=MediaType/@Name}"/>
                     </Grid>
 
-                    <StackPanel IsEnabled="{Binding IsFollow,Converter={x:Static base:XConverter.TrueToFalseConverter}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="开始时间:"/>
+                        <TextBox Text="{Binding To.Start}" Grid.Column="1"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="持续时间:"/>
+                        <TextBox Text="{Binding To.Duration}" Grid.Column="1"/>
+                    </Grid>
+
+                    <StackPanel>
+                        <StackPanel.IsEnabled>
+                            <MultiBinding Converter="{x:Static base:XConverter.TrueToFalseMultiConverter}">
+                                <Binding Path="IsFollow"/>
+                                <Binding Path="IsCopy"/>
+                            </MultiBinding>
+                        </StackPanel.IsEnabled>
                         
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -304,26 +339,6 @@
                             <TextBlock Text="设置帧频:"/>
                             <TextBox Text="{Binding To.Rate}" Grid.Column="1"/>
                         </Grid>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="开始时间:"/>
-                            <TextBox Text="{Binding To.Start}" Grid.Column="1"/>
-                        </Grid>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="结束时间:"/>
-                            <TextBox Text="{Binding To.Duration}" Grid.Column="1"/>
-                        </Grid>
                     </StackPanel>
                     
                 </StackPanel>
@@ -338,6 +353,6 @@
             </TabItem>
         </TabControl>
 
-        <wpfcontrollib:FButton Content="确定.."  Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="Sumit" Click="Button_Click"/>
+        <!--<wpfcontrollib:FButton Content="确定.."  Grid.Row="1" Command="{Binding RelayCommand}" CommandParameter="Sumit" Click="Button_Click"/>-->
     </Grid>
 </UserControl>
