@@ -119,8 +119,11 @@
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Column="0" Margin="5,2" >
-                            <MediaElement Source="{Binding From.FullPath}" LoadedBehavior="Pause" ScrubbingEnabled="True"/>
-                            <wpfcontrollib:FButton Style="{StaticResource FButton_Transparency}" FIcon="&#xe74a;" FIconSize="40"/>
+                            <!--<MediaElement Source="{Binding From.FullPath}" LoadedBehavior="Pause" ScrubbingEnabled="True"/>
+                            <wpfcontrollib:FButton Style="{StaticResource FButton_Transparency}"  FIcon="&#xe74a;" FIconSize="40"/>-->
+                            <MediaElement x:Name="media_smarl" Source="{Binding From.FullPath}"/>
+                            <!--<wpfcontrollib:FButton Style="{StaticResource FButton_Transparency}" Command="{x:Static MediaCommands.Pause}" CommandTarget="{Binding ElementName=media_smarl}" FIcon="&#xe74a;" FIconSize="40"/>-->
+
                         </Grid>
 
                         <Grid Grid.Column="1"  ToolTip="{Binding From}">

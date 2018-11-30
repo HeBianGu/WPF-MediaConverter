@@ -220,6 +220,7 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             List<PropertyInfo> ps = new List<PropertyInfo>();
 
             ps.Add(this.GetType().GetProperty("Start"));
+
             ps.Add(this.GetType().GetProperty("Duration"));
 
             StringBuilder sb = new StringBuilder();
@@ -242,6 +243,34 @@ namespace HeBianGu.Product.FFmpeg.UserControls
             return sb.ToString();
 
             
+        }
+
+        public string GetCutEnd()
+        {
+            List<PropertyInfo> ps = new List<PropertyInfo>();
+
+            ps.Add(this.GetType().GetProperty("Start"));
+
+            ps.Add(this.GetType().GetProperty("Duration"));
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var item in ps)
+            {
+                var attr = item.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attr == null || attr.Count() == 0) continue;
+
+                if (item.GetValue(this) == null) continue;
+
+                DescriptionAttribute desc = attr.First() as DescriptionAttribute;
+
+                string current = string.Format(desc.Description, item.GetValue(this));
+
+                sb.Append(" " + current.Trim());
+            }
+
+            return sb.ToString();
         }
 
         public void RelayMethod(object obj)

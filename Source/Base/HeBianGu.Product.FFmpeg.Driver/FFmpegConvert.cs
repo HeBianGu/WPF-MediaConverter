@@ -51,7 +51,8 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
             result = r1.Match(txt);
 
-            arr = result.Value.Split(':')[1].Split(',');
+
+            arr = result.Value.Substring(result.Value.IndexOf(':') + 1).Split(',');
 
             entity.MediaCode = arr[0].Trim().Split(' ')[0];
             entity.MediaType = entity.MediaCode;

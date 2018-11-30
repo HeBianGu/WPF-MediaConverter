@@ -176,7 +176,7 @@ namespace HeBianGu.Product.General.MediaPlayer
             this.media_media.Play();
             this._timer.Start();
 
-            this.FileName = this.media_media.Source.AbsolutePath;
+            this.FileName = this.media_media.Source.LocalPath;
         }
 
         void Pause()

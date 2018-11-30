@@ -146,11 +146,11 @@ namespace HeBianGu.Product.FFmpeg.UserControls
 
             if (this.IsFollow)
             {
-                string input_file_options =string.Empty;
+                string input_file_options = string.Empty;
 
                 string input_url = this.From.FullPath;
 
-                string output_file_options = this.IsCopy ? FFmpegParameter.ffmpeg_copy : string.Empty;
+                string output_file_options = this.IsCopy ? FFmpegParameter.ffmpeg_copy + " " + this.To.GetCutEnd() : string.Empty;
 
                 string output_url = this.To.FullPath;
 
