@@ -310,7 +310,7 @@
                 <!--<wpfcontrollib:FButton  FIcon="&#xe611;"   Content="視頻合并" Margin="10,0" />-->
                 <!--<wpfcontrollib:FButton  FIcon="&#xe606;"   Content="製作GIF" Margin="10,0" />-->
                 <wpfcontrollib:FButton  FIcon="&#xe606;"   Content="模板设置" Margin="10,0" />
-                <wpfcontrollib:FButton  FIcon="&#xe606;"   Content="FFmpeg参数设置" Margin="10,0" />
+                <wpfcontrollib:FButton  FIcon="&#xe606;"  Width="150" Content="FFmpeg参数设置" Margin="10,0" />
             </StackPanel>
         </DockPanel>
 
