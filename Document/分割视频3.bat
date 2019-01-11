@@ -1,4 +1,4 @@
 f:
-cd F:\Solution\HeBianGu.Product.FFmpeg.MediaConverter\HeBianGu.Product.FFmpeg.MediaConverter
-ffmpeg  -i from.mp4  -ss 0:1:30 -t 0:0:20 dst.mp4  
+cd F:\GitHub\WPF-MediaConverter\Product\Dll
+ffmpeg  -i F:\视频格式大全\S01E10.mkv  -ss 0:20:30 -t 0:0:30 F:\视频格式大全\S01E10-out.mkv  
 pause
