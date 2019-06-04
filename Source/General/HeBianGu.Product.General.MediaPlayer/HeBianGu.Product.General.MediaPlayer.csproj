@@ -33,11 +33,11 @@
   <ItemGroup>
     <Reference Include="HeBianGu.Base.WpfBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Product\Dll\HeBianGu.Base.WpfBase.dll</HintPath>
+      <HintPath>..\..\..\Solution\packages\HeBianGu.Base.WpfBase.1.0.0\lib\net45\HeBianGu.Base.WpfBase.dll</HintPath>
     </Reference>
     <Reference Include="HeBianGu.General.WpfControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Product\Dll\HeBianGu.General.WpfControlLib.dll</HintPath>
+      <HintPath>..\..\..\Solution\packages\HeBianGu.General.WpfControlLib.1.0.0\lib\net45\HeBianGu.General.WpfControlLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

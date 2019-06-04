@@ -33,15 +33,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HeBianGu.Base.WpfBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Product\Dll\HeBianGu.Base.WpfBase.dll</HintPath>
+      <HintPath>..\..\..\Solution\packages\HeBianGu.Base.WpfBase.1.0.0\lib\net45\HeBianGu.Base.WpfBase.dll</HintPath>
     </Reference>
     <Reference Include="HeBianGu.General.Logger">
       <HintPath>..\..\..\Product\Dll\HeBianGu.General.Logger.dll</HintPath>
     </Reference>
     <Reference Include="HeBianGu.General.WpfControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Product\Dll\HeBianGu.General.WpfControlLib.dll</HintPath>
+      <HintPath>..\..\..\Solution\packages\HeBianGu.General.WpfControlLib.1.0.0\lib\net45\HeBianGu.General.WpfControlLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,6 +113,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
