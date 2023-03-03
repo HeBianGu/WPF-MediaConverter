@@ -12,7 +12,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 {
     public class FFmpegProcess
     {
-        public string Execute(string parameters, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
+        public string Execute(string parameters, string exePath = @"D:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
         {
             string result = String.Empty;
 
@@ -100,7 +100,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
         }
 
 
-        public string ExecuteWithErr(string parameters, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
+        public string ExecuteWithErr(string parameters, string exePath = @"D:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
         {
             string result = String.Empty;
 
@@ -127,7 +127,7 @@ namespace HeBianGu.Product.FFmpeg.Driver
 
         }
 
-        public string ExecuteWithOutWait(string parameters, string exePath = @"F:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
+        public string ExecuteWithOutWait(string parameters, string exePath = @"D:\GitHub\WPF-MediaConverter\Product\Dll\ffmpeg.exe")
         {
             string result = String.Empty;
 

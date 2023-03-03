@@ -1,0 +1,104 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--<TargetFramework>net5.0-windows</TargetFramework>-->
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Product>H视频转换器</Product>
+    <Description>软件支持音频转换、视频转换、视频压缩、视频编辑、合并转换等多种功能</Description>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Copyright>Copyright © HeBianGu 2019-2023</Copyright>
+    <Authors></Authors>
+    <PackageProjectUrl>https://github.com/HeBianGu</PackageProjectUrl>
+    <XamlDebuggingInformation>True</XamlDebuggingInformation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FFMpegCore" Version="5.0.2" />
+    <PackageReference Include="FFMpegCore.Extensions.System.Drawing.Common" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Base\HeBianGu.Base.WpfBase\HeBianGu.Base.WpfBase.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Adorner\HeBianGu.Control.Adorner.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Chart2D\HeBianGu.Control.Chart2D.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.GridSplitter\HeBianGu.Control.GridSplitter.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Guide\HeBianGu.Control.Guide.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Host\HeBianGu.Control.Host.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.MessageContainer\HeBianGu.Control.MessageContainer.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.MessageListBox\HeBianGu.Control.MessageListBox.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Message\HeBianGu.Control.Message.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PagedDataGrid\HeBianGu.Control.PagedDataGrid.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Panel\HeBianGu.Control.Panel.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PasswordBox\HeBianGu.Control.PasswordBox.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PrintBox\HeBianGu.Control.PrintBox.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PropertyGrid\HeBianGu.Control.PropertyGrid.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.ThemeSet\HeBianGu.Control.ThemeSet.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Data\HeBianGu.DataBase.Sqlite\HeBianGu.DataBase.Sqlite.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Service\HeBianGu.Service.Animation\HeBianGu.Service.Animation.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Service\HeBianGu.Service.AppConfig\HeBianGu.Service.AppConfig.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Service\HeBianGu.Service.License\HeBianGu.Service.License.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Service\HeBianGu.Service.MarkupExtension\HeBianGu.Service.MarkupExtension.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Service\HeBianGu.Service.Mvp\HeBianGu.Service.Mvp.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.About\HeBianGu.Systems.About.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Feedback\HeBianGu.Systems.Feedback.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Identity\HeBianGu.Systems.Identity.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.License\HeBianGu.Systems.License.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Logger\HeBianGu.Systems.Logger.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Notification\HeBianGu.Systems.Notification.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Operation\HeBianGu.Systems.Operation.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Print\HeBianGu.Systems.Print.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Project\HeBianGu.Systems.Project.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Repository\HeBianGu.Systems.Repository.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Setting\HeBianGu.Systems.Setting.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Start\HeBianGu.Systems.Start.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Survey\HeBianGu.Systems.Survey.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Upgrade\HeBianGu.Systems.Upgrade.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.WinTool\HeBianGu.Systems.WinTool.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.XmlSerialize\HeBianGu.Systems.XmlSerialize.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Window\HeBianGu.Window.Main\HeBianGu.Window.Main.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Window\HeBianGu.Window.MessageDialog\HeBianGu.Window.MessageDialog.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Window\HeBianGu.Window.Message\HeBianGu.Window.Message.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Encryption\HeBianGu.Systems.Encryption.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Window\HeBianGu.Window.Notify\HeBianGu.Window.Notify.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\MainWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>
