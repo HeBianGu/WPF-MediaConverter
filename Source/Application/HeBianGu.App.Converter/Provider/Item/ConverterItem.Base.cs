@@ -1,4 +1,5 @@
 ﻿using FFMpegCore;
+using FFMpegCore.Enums;
 using HeBianGu.Base.WpfBase;
 using Microsoft.Extensions.Options;
 using System;
@@ -8,100 +9,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace HeBianGu.App.Converter
 {
-    public abstract class ProcessorConverterItemBase : ConverterItemBase
-    {
-        protected Action _cancel = null;
-
-        public ProcessorConverterItemBase(string filePath) : base(filePath)
-        {
-
-        }
-
-        protected override async Task<bool> StopAsnyc(IRelayCommand s, object e)
-        {
-            return await Task.Run(() =>
-            {
-                try
-                {
-                    _cancel?.Invoke();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    MessageProxy.Snacker.ShowTime(ex.Message);
-                    return false;
-                }
-            });
-
-        }
-
-        protected override string CreateOutputPath(string groupPath)
-        {
-            return Path.Combine(groupPath, Path.GetFileNameWithoutExtension(FilePath) + OutputMediaInfo.ContainerFormat.Extension);
-        }
-
-        protected virtual void AddArguments(FFMpegArgumentOptions options)
-        {
-            OutputMediaInfo.AddArguments(options);
-        }
-
-        protected virtual FFMpegArgumentProcessor CreateProcessor()
-        {
-            return FFMpegArguments.FromFileInput(this.FilePath).OutputToFile(this.OutputPath, false, AddArguments);
-        }
-
-        protected override bool Start(IRelayCommand s, object e)
-        {
-            if (File.Exists(this.OutputPath))
-            {
-                var r = MessageProxy.Messager.ShowResult("当前输出文件已存在，点击确定删除历史文件?").Result;
-                if (!r)
-                {
-                    this.Message = "用户取消操作";
-                    return false;
-                }
-                File.Delete(this.OutputPath);
-            }
-            var process = this.CreateProcessor();
-            process.NotifyOnProgress(x =>
-            {
-                Value = x;
-                if (x == 100.0)
-                {
-                    Success = true;
-                    Message = "完成";
-                }
-            }, InputMediaInfo.Model.Duration);
-
-            process.NotifyOnOutput(x =>
-            {
-                Message = x;
-            });
-
-            process.NotifyOnError(x =>
-            {
-                Message = x;
-                Success = false;
-                Debug.WriteLine(DateTime.Now + "   " + x);
-
-            });
-
-            process.NotifyOnProgress(x =>
-            {
-
-            });
-
-            process.CancellableThrough(out _cancel, 10000).ProcessSynchronously();
-            return true;
-        }
-
-    }
 
 
     public abstract class ItemBase : NotifyPropertyChangedBase
@@ -144,9 +58,18 @@ namespace HeBianGu.App.Converter
         {
             var result = new MediaInfo(mediaInfo, this.FilePath);
             result.Size = new FileInfo(this.FilePath).Length;
-            result.Codecs = FFMpeg.GetCodecs();
-            result.ContainerFormats = FFMpeg.GetContainerFormats();
-            result.PixelFormats = FFMpeg.GetPixelFormats();
+            result.VedioAnalysis.Codecs = FFMpeg.GetCodecs().Where(x => x.Type == CodecType.Video).ToList().AsReadOnly();
+            //  Do ：假定DemuxingSupported==true表示音频
+            result.VedioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().Where(x => x.DemuxingSupported == false).ToList().AsReadOnly();
+            result.VedioAnalysis.PixelFormats = FFMpeg.GetPixelFormats();
+            result.VedioAnalysis.Size = result.Size;
+
+            result.AudioAnalysis.Codecs = FFMpeg.GetCodecs().Where(x => x.Type == CodecType.Audio).ToList().AsReadOnly();
+            //  Do ：假定DemuxingSupported==true表示音频
+            result.AudioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().Where(x => x.DemuxingSupported == true).ToList().AsReadOnly();
+
+            result.AudioAnalysis.Size = result.Size;
+
             return result;
         }
 
@@ -281,19 +204,11 @@ namespace HeBianGu.App.Converter
             await StartAsync(s, e);
         });
 
-        [Displayer(Name = "设置输出参数", Icon = Icons.Set, GroupName = "操作", Description = "设置输出参数")]
-        public RelayCommand OutPutSetCommand => new RelayCommand(async (s, e) =>
-        {
-            await MessageProxy.PropertyGrid.ShowEdit(this.OutputMediaInfo, null, "设置输出参数");
 
-            //(视频码率 + 音频码率) * 时长 / 8 = 文件大小
-            this.OutputMediaInfo.Size = (long)((this.OutputMediaInfo.BitRate + this.OutputMediaInfo.BitRate) * this.OutputMediaInfo.Model.Duration.TotalSeconds / 8);
-        });
-
-        [Displayer(Name = "查看视频参数", Icon = "\xe76b", GroupName = "操作", Description = "查看视频参数")]
-        public RelayCommand InputViewCommand => new RelayCommand(async (s, e) =>
+        [Displayer(Name = "播放", Icon = Icons.Play, GroupName = "操作", Description = "播放")]
+        public RelayCommand PlayCommand => new RelayCommand(async (s, e) =>
         {
-            await MessageProxy.PropertyGrid.ShowView(this.InputMediaInfo, null, "查看视频参数");
+            Process.Start(new ProcessStartInfo("ffplay.exe", this.FilePath) { UseShellExecute = true });
         });
 
         protected virtual bool Start(IRelayCommand s, object e)

@@ -1,9 +1,44 @@
-﻿using HeBianGu.Base.WpfBase;
+﻿using FFMpegCore;
+using HeBianGu.Base.WpfBase;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace HeBianGu.App.Converter
 {
-    public class VideoConverterItem : ProcessorConverterItemBase
+    public abstract class VideoConverterItemBase : ProcessorConverterItemBase
+    {
+        public VideoConverterItemBase(string filePath) : base(filePath)
+        {
+
+        }
+
+        [Displayer(Name = "设置输出参数", Icon = Icons.Set, GroupName = "操作", Description = "设置输出参数")]
+        public RelayCommand OutPutSetCommand => new RelayCommand(async (s, e) =>
+        {
+            await MessageProxy.PropertyGrid.ShowEdit(this.OutputMediaInfo.VedioAnalysis, null, "设置输出参数");
+
+            //(视频码率 + 音频码率) * 时长 / 8 = 文件大小
+            this.OutputMediaInfo.Size = (long)((this.OutputMediaInfo.VedioAnalysis.BitRate + this.OutputMediaInfo.VedioAnalysis.BitRate) * this.OutputMediaInfo.Model.Duration.TotalSeconds / 8);
+        });
+
+        [Displayer(Name = "查看视频参数", Icon = "\xe76b", GroupName = "操作", Description = "查看视频参数")]
+        public RelayCommand InputViewCommand => new RelayCommand(async (s, e) =>
+        {
+            await MessageProxy.PropertyGrid.ShowView(this.OutputMediaInfo.VedioAnalysis, null, "查看视频参数", x => x.UseEnumerator = true);
+        });
+
+        protected override void CreateArguments(FFMpegArgumentOptions options)
+        {
+            this.OutputMediaInfo.VedioAnalysis.CreateArguments(options);
+        }
+
+        protected override string CreateOutputPath(string groupPath)
+        {
+            return Path.Combine(groupPath, Path.GetFileNameWithoutExtension(this.FilePath) + this.OutputMediaInfo.VedioAnalysis.ContainerFormat.Extension);
+        }
+
+    }
+    public class VideoConverterItem : VideoConverterItemBase
     {
         public VideoConverterItem(string filePath) : base(filePath)
         {
@@ -26,25 +61,6 @@ namespace HeBianGu.App.Converter
         {
             return await MessageProxy.Presenter.Show(VideoFormats, null, "选择格式");
         }
-
-        //protected override FFMpegArgumentProcessor CreateProcessor()
-        //{
-        //    return FFMpegArguments.FromFileInput(this.FilePath).OutputToFile(this.OutputPath, false,
-        //                         options => options
-        //                         .WithVideoCodec(this.OutVideoFormat.Codec)
-        //                         .WithFramerate(this.OutVideoFormat.FrameRate)
-        //                         .ForcePixelFormat(this.OutVideoFormat.PixelFormat)
-        //                         .WithConstantRateFactor(this.OutVideoFormat.ConstantRateFactor)
-        //                         .WithAudioCodec(AudioCodec.Aac)
-        //                         .WithVideoBitrate((int)this.OutVideoFormat.BitRate)
-        //                         .WithSpeedPreset(this.OutVideoFormat.Speed)
-        //                         //.Resize(this.OutVideoFormat.Width, this.OutVideoFormat.Height)
-        //                         .WithVariableBitrate((int)this.OutVideoFormat.VariableBitrate)
-        //                         .WithVideoFilters(filterOptions => filterOptions
-        //                         .Scale(this.OutVideoFormat.VideoSize))
-        //                         .WithFastStart());
-        //}
-
 
     }
 }

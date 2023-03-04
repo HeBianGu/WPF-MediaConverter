@@ -11,19 +11,25 @@ namespace HeBianGu.App.Converter
         {
 
         }
-        protected override FFMpegArgumentProcessor CreateProcessor()
+        //protected override FFMpegArgumentProcessor CreateProcessor()
+        //{
+        //    //FFMpegHelper.ExtensionExceptionCheck(OutputPath, FileExtension.Mp3);
+        //    return FFMpegArguments.FromFileInput(FilePath).OutputToFile(OutputPath, overwrite: true,
+        //        delegate (FFMpegArgumentOptions options)
+        //     {
+        //         options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading).CopyChannel(Channel.Audio).DisableChannel(Channel.Video);
+        //     });
+        //}
+
+        protected override void CreateArguments(FFMpegArgumentOptions options)
         {
-            FFMpegHelper.ExtensionExceptionCheck(OutputPath, FileExtension.Mp3);
-            return FFMpegArguments.FromFileInput(FilePath).OutputToFile(OutputPath, overwrite: true,
-                delegate (FFMpegArgumentOptions options)
-             {
-                 options.DisableChannel(Channel.Video);
-             });
+            options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading).CopyChannel(Channel.Audio).DisableChannel(Channel.Video);
         }
 
         protected override string CreateOutputPath(string groupPath)
         {
-            return Path.Combine(groupPath, Path.GetFileNameWithoutExtension(FilePath) + FileExtension.Mp3);
+            string extension = this.OutputMediaInfo.Model.PrimaryAudioStream.CodecName;
+            return Path.Combine(groupPath, Path.GetFileNameWithoutExtension(FilePath) + "."+ extension);
         }
     }
 }

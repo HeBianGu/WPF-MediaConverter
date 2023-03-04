@@ -281,7 +281,14 @@ namespace HeBianGu.App.Converter
         {
             base.Configure(app);
 
+            app.UseSetting(x =>
+            {
+                x.Settings.Add(new FFmpegSetting());
+            });
+
             app.UseStyle();
+
+           
 
             //  Do：设置默认主题
             app.UseLocalTheme(l =>

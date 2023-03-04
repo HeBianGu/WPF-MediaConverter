@@ -9,13 +9,13 @@ namespace HeBianGu.App.Converter
         protected override ConverterItemBase CreateConverterItem(string filePath)
         {
             var video = new VideoConverterItem(filePath);
-            video.OutputMediaInfo.BitRate = video.OutputMediaInfo.BitRate * 0.6;
-            video.OutputMediaInfo.FrameRate = video.OutputMediaInfo.FrameRate * 0.6;
-            video.OutputMediaInfo.VideoSize = VideoSize.Ld;
+            video.OutputMediaInfo.VedioAnalysis.BitRate = (int)video.OutputMediaInfo.VedioAnalysis.BitRate * 0.6;
+            video.OutputMediaInfo.VedioAnalysis.FrameRate = (int)video.OutputMediaInfo.VedioAnalysis.FrameRate * 0.6;
+            video.OutputMediaInfo.VedioAnalysis.VideoSize = VideoSize.Ld;
             //video.OutVideoFormat.PixelFormat=FFMpeg.GetPixelFormat()
-            video.OutputMediaInfo.ConstantRateFactor = 30;
+            video.OutputMediaInfo.VedioAnalysis.ConstantRateFactor = 30;
             //  Do ：编码速度越慢，则压缩效果及画质越好。preset选项的默认参数为medium
-            video.OutputMediaInfo.Speed = Speed.VerySlow;
+            video.OutputMediaInfo.VedioAnalysis.Speed = Speed.VerySlow;
             return video;
         }
     }

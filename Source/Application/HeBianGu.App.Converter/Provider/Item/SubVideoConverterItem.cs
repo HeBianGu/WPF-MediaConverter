@@ -1,12 +1,46 @@
-﻿namespace HeBianGu.App.Converter
+﻿using FFMpegCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using System.Xml.Linq;
+using FFMpegCore.Enums;
+
+namespace HeBianGu.App.Converter
 {
-    public class SubVideoConverterItem : ProcessorConverterItemBase
+    public class SubVideoConverterItem : VideoConverterItemBase
     {
         public SubVideoConverterItem(string filePath) : base(filePath)
         {
 
         }
 
+        private bool _useCopyChannel = true;
+        [DefaultValue(true)]
+        [Display(Name = "复制通道", Description = "启用后不转码，运行速度快")]
+        public bool UseCopyChannel
+        {
+            get { return _useCopyChannel; }
+            set
+            {
+                _useCopyChannel = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        protected override void CreateArguments(FFMpegArgumentOptions options)
+        {
+            if (this.UseCopyChannel)
+            {
+                options.CopyChannel(Channel.All)
+                    .UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading)
+                    .Seek(this.OutputMediaInfo.VedioAnalysis.StartTime)
+                    .EndSeek(this.OutputMediaInfo.VedioAnalysis.EndTime)
+                    .WithFastStart();
+            }
+            else
+            {
+                base.CreateArguments(options);
+            }
+        }
 
         //protected override FFMpegArgumentProcessor CreateProcessor()
         //{
