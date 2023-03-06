@@ -81,24 +81,21 @@ namespace HeBianGu.App.Converter
             return FFMpegArguments.FromFileInput(this.FilePath).OutputToFile(this.OutputPath, false, CreateArguments);
         }
 
-        [Displayer(Name = "查看命令参数", Icon = IconAll.Cmd, GroupName = "操作", Description = "查看命令参数")]
+        [Displayer(Name = "查看命令参数", Icon = IconAll.Cmd, GroupName = "操作,输出", Description = "查看命令参数")]
         public RelayCommand ViewArgumentsCommand => new RelayCommand((s, e) =>
         {
             var processor = this.CreateProcessor();
-
             MessageProxy.PropertyGrid.ShowView(processor, null, "查看命令参数");
         });
 
-        [Displayer(Name = "设置文件信息", Icon = IconAll.T, GroupName = "操作", Description = "设置文件信息")]
+        [Displayer(Name = "设置文件信息", Icon = IconAll.T, GroupName = "操作,输出", Description = "设置文件信息")]
         public RelayCommand SetMetaDataCommand => new RelayCommand((s, e) =>
         {
-            MetaData metaData = new MetaData();
-            MessageProxy.PropertyGrid.ShowEdit(metaData, null, "设置文件信息", x => x.UseEnumerator = true);
+            MessageProxy.PropertyGrid.ShowEdit(this.OutputMediaInfo.Meta, null, "设置文件信息", x => x.UseEnumerator = true);
         });
 
         protected override bool Start(IRelayCommand s, object e)
         {
-            this.StartTime = DateTime.Now;
             if (File.Exists(this.OutputPath))
             {
                 var r = MessageProxy.Messager.ShowResult("当前输出文件已存在，点击确定删除历史文件?").Result;
@@ -109,11 +106,16 @@ namespace HeBianGu.App.Converter
                 }
                 File.Delete(this.OutputPath);
             }
+            this.StartTime = DateTime.Now;
             var process = this.CreateProcessor();
+            this.StartProcessor(process);
+            return true;
+        }
 
+        protected virtual void StartProcessor(FFMpegArgumentProcessor process)
+        {
             System.Diagnostics.Debug.WriteLine(process.Arguments);
             this.Message = process.Arguments;
-
             process.NotifyOnProgress(x =>
             {
                 Value = x;
@@ -149,8 +151,6 @@ namespace HeBianGu.App.Converter
             });
 
             process.CancellableThrough(out _cancel, 10000).ProcessSynchronously();
-            return true;
         }
-
     }
 }

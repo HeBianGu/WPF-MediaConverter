@@ -72,7 +72,63 @@
             </TextBlock>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:VedioAnalysis}">
+        <DataTemplate DataType="{x:Type local:SubVideoAnalysis}">
+            <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" Columns="3">
+                <UniformGrid.Resources>
+                    <Style BasedOn="{StaticResource {x:Static h:TextBlockKeys.Default}}" TargetType="TextBlock">
+                        <Setter Property="Margin" Value="2,1" />
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                    </Style>
+                </UniformGrid.Resources>
+                <TextBlock>
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe781;" />
+                    <Run Text="{Binding ContainerFormat.Extension, Mode=OneWay}" />
+                </TextBlock>
+                <TextBlock>
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe61e;" />
+                    <Run Text="{Binding VideoSize, Mode=OneWay}" />
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe8c8;" />
+                    <Run Text="{Binding PixelFormat.Name, Mode=OneWay}" />
+                </TextBlock>
+                <TextBlock MaxWidth="100">
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe614;" />
+                    <Run Text="{Binding FrameRate, Mode=OneWay}" />
+                    <Run Text="fps" />
+                </TextBlock>
+
+                <TextBlock MaxWidth="100">
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe62c;" />
+                    <Run Text="{Binding Codec.Name, Mode=OneWay}" />
+                </TextBlock>
+
+                <TextBlock MaxWidth="100">
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe637;" />
+                    <Run Text="{Binding BitRate, Mode=OneWay}" />
+                    <Run Text="kbps" />
+                </TextBlock>
+                <TextBlock>
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe6f3;" />
+                    <Run Text="{Binding Model.Duration, Converter={x:Static h:Converter.GetTimeSpanStr}, Mode=OneWay}" />
+                </TextBlock>
+                <TextBox Height="Auto"
+                         MaxWidth="100"
+                         Margin="0"
+                         h:Cattach.CornerRadius="0"
+                         Text="{Binding StartTime}" />
+                <TextBox Height="Auto"
+                         MaxWidth="100"
+                         Margin="0"
+                         h:Cattach.CornerRadius="0"
+                         Text="{Binding EndTime}" />
+            </UniformGrid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:VideoAnalysis}">
             <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" Columns="3">
                 <UniformGrid.Resources>
                     <Style BasedOn="{StaticResource {x:Static h:TextBlockKeys.Default}}" TargetType="TextBlock">
@@ -155,11 +211,11 @@
 
                 <TextBlock>
                     <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe8c8;" />
-                    <Run Text="{Binding  AudioQuality, Mode=OneWay}" />
+                    <Run Text="{Binding AudioQuality, Mode=OneWay}" />
                 </TextBlock>
                 <TextBlock MaxWidth="100">
                     <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe614;" />
-                    <Run Text="{Binding  SamplingRate, Mode=OneWay}" />
+                    <Run Text="{Binding SamplingRate, Mode=OneWay}" />
                     <Run Text="fps" />
                 </TextBlock>
 
@@ -175,6 +231,40 @@
                 </TextBlock>
             </UniformGrid>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:SnapshotVideoAnalysis}">
+            <ItemsControl ItemsSource="{Binding Collection}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{DynamicResource {x:Static h:BrushKeys.BorderBrushDefault}}" BorderThickness="1">
+                            <Grid>
+                                <Image Width="60"
+                                       Height="Auto"
+                                       Margin="2"
+                                       Source="{Binding}">
+                                    <Image.ToolTip>
+                                        <ToolTip Height="Auto">
+                                            <Image Width="500" Margin="2" Source="{Binding}" />
+                                        </ToolTip>
+                                    </Image.ToolTip>
+                                </Image>
+                                <Button Margin="0,0" Style="{DynamicResource {x:Static h:ButtonKeys.CloseFlag}}" Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}">
+                                    <h:Interaction.Behaviors>
+                                        <h:RemoveItemVisualTreeButtonBehavior />
+                                    </h:Interaction.Behaviors>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type local:VideoFormats}">
             <TabControl MinWidth="600"
                         HorizontalAlignment="Stretch"
@@ -225,24 +315,16 @@
             </TabControl>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:AudioConverterItemBase}">
+        <DataTemplate DataType="{x:Type local:ConverterItemBase}">
             <Grid>
                 <Border Background="{DynamicResource {x:Static h:BrushKeys.Dark0_1}}" DockPanel.Dock="Top" Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
                     <DockPanel>
                         <DockPanel Width="140">
-                            <UniformGrid DockPanel.Dock="Bottom" Rows="1">
-                                <Button h:Cattach.Icon="&#xe843;" Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button h:Cattach.Icon="&#xe842;" Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button h:Cattach.Icon="&#xeabe;"
-                                        Command="{h:PropertyGridViewMessageCommand}"
-                                        CommandParameter="{Binding OutputMediaInfo.Model}"
-                                        Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button h:Cattach.Icon="&#xe76b;"
-                                        Command="{h:PropertyGridViewMessageCommand}"
-                                        CommandParameter="{Binding InputMediaInfo.Model}"
-                                        Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                            </UniformGrid>
-                            <!--<Image Style="{DynamicResource {x:Static h:ImageKeys.Logo}}" />-->
+                            <h:PropertyGrid HorizontalAlignment="Center"
+                                            DockPanel.Dock="Bottom"
+                                            SelectObject="{Binding}"
+                                            Style="{DynamicResource {x:Static h:PropertyGrid.CommandIconKey}}"
+                                            UseGroupNames="输入" />
                             <Border Background="Black" />
                         </DockPanel>
 
@@ -286,158 +368,10 @@
                                        Grid.ColumnSpan="2"
                                        Margin="5"
                                        HorizontalAlignment="Center">
-                                <!--<Run Text="用时:" />-->
                                 <Run Text="{Binding Duration, Converter={x:Static h:Converter.GetTimeSpanStr}}" />
                                 <Run Text="/" />
                                 <Run Text="{Binding DownDuration, Converter={x:Static h:Converter.GetTimeSpanStr}}" />
                             </TextBlock>
-
-                            <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                                <Run Text="预计完成时间:" />
-                                <Run Text="10:22:33" />
-                            </TextBlock>-->
-                        </Grid>
-
-                        <DockPanel>
-                            <TextBlock Margin="5,5"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Top"
-                                       FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}"
-                                       Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundTitle}}"
-                                       Text="{Binding FileName}"
-                                       TextWrapping="Wrap"
-                                       ToolTip="{Binding FilePath}" />
-                            <ProgressBar Height="5"
-                                         Margin="5"
-                                         DockPanel.Dock="Bottom"
-                                         Style="{DynamicResource {x:Static h:ProgressBarKeys.Dynamic}}"
-                                         Value="{Binding Value}" />
-                            <TextBlock Margin="5,0"
-                                       DockPanel.Dock="Bottom"
-                                       Text="{Binding Message}"
-                                       ToolTip="{Binding Message}" />
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="110" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <ContentPresenter Grid.Column="0" Content="{Binding InputMediaInfo.AudioAnalysis}" />
-                                <ContentPresenter Grid.Column="2" Content="{Binding OutputMediaInfo.AudioAnalysis}" />
-                                <TextBlock Grid.Column="0"
-                                           Grid.ColumnSpan="4"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="40"
-                                           Foreground="{DynamicResource {x:Static h:BrushKeys.BorderBrushTitle}}"
-                                           RenderTransform="{DynamicResource {x:Static h:SystemKeys.TransformGroup}}"
-                                           Text="&#xe8ce;">
-                                    <TextBlock.Style>
-                                        <Style BasedOn="{StaticResource {x:Static h:TextBlockKeys.Icon}}" TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsBuzy}" Value="True">
-                                                    <DataTrigger.EnterActions>
-                                                        <BeginStoryboard x:Name="bsb_buzy">
-                                                            <Storyboard Timeline.DesiredFrameRate="{x:Static h:StoryboardSetting.DesiredFrameRate}">
-                                                                <DoubleAnimation AutoReverse="False"
-                                                                                 RepeatBehavior="Forever"
-                                                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                                                                 From="-250" To="250"
-                                                                                 Duration="0:0:01" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </DataTrigger.EnterActions>
-                                                    <DataTrigger.ExitActions>
-                                                        <StopStoryboard BeginStoryboardName="bsb_buzy" />
-                                                    </DataTrigger.ExitActions>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
-                        </DockPanel>
-                    </DockPanel>
-                </Border>
-                <h:PropertyGrid HorizontalAlignment="Right"
-                                SelectObject="{Binding}"
-                                Style="{DynamicResource {x:Static h:PropertyGrid.CommandMouseOverKey}}"
-                                UseGroupNames="操作"
-                                Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type local:VideoConverterItemBase}">
-            <Grid>
-                <Border Background="{DynamicResource {x:Static h:BrushKeys.Dark0_1}}" DockPanel.Dock="Top" Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
-                    <DockPanel>
-                        <DockPanel Width="140">
-                            <UniformGrid DockPanel.Dock="Bottom" Rows="1">
-                                <Button h:Cattach.Icon="&#xe843;" Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button h:Cattach.Icon="&#xe842;" Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button h:Cattach.Icon="&#xeabe;"
-                                        Command="{h:PropertyGridViewMessageCommand}"
-                                        CommandParameter="{Binding OutputMediaInfo.Model}"
-                                        Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button h:Cattach.Icon="&#xe76b;"
-                                        Command="{h:PropertyGridViewMessageCommand}"
-                                        CommandParameter="{Binding InputMediaInfo.Model}"
-                                        Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                            </UniformGrid>
-                            <!--<Image Style="{DynamicResource {x:Static h:ImageKeys.Logo}}" />-->
-                            <Border Background="Black" />
-                        </DockPanel>
-
-                        <Grid Width="150"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"
-                              DockPanel.Dock="Right">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <h:ProgressButton Grid.Row="0"
-                                              Grid.Column="0"
-                                              Width="Auto"
-                                              HorizontalAlignment="Center"
-                                              h:Cattach.Icon="&#xe8dc;"
-                                              h:Cattach.IconSize="10"
-                                              Command="{Binding StartCommand}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                              Content="转换"
-                                              Message="转换中"
-                                              ToolTip="点击更多，显示详细数据" />
-
-                            <h:ProgressButton Grid.Row="0"
-                                              Grid.Column="1"
-                                              Width="Auto"
-                                              HorizontalAlignment="Center"
-                                              h:Cattach.Icon="&#xe884;"
-                                              h:Cattach.IconSize="10"
-                                              Command="{Binding StopCommand}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                              Content="停止"
-                                              Message="停止中 "
-                                              ToolTip="点击更多，显示详细数据" />
-                            <TextBlock Grid.Row="1"
-                                       Grid.ColumnSpan="2"
-                                       Margin="5"
-                                       HorizontalAlignment="Center">
-                                <!--<Run Text="用时:" />-->
-                                <Run Text="{Binding Duration, Converter={x:Static h:Converter.GetTimeSpanStr}}" />
-                                <Run Text="/" />
-                                <Run Text="{Binding DownDuration, Converter={x:Static h:Converter.GetTimeSpanStr}}" />
-                            </TextBlock>
-
-                            <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                                <Run Text="预计完成时间:" />
-                                <Run Text="10:22:33" />
-                            </TextBlock>-->
                         </Grid>
 
                         <DockPanel>
@@ -464,8 +398,8 @@
                                     <ColumnDefinition Width="60" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <ContentPresenter Grid.Column="0" Content="{Binding InputMediaInfo.VedioAnalysis}" />
-                                <ContentPresenter Grid.Column="2" Content="{Binding OutputMediaInfo.VedioAnalysis}" />
+                                <ContentPresenter Grid.Column="0" VerticalAlignment="Top" Content="{Binding InputAnalysis}" />
+                                <ContentPresenter Grid.Column="2" VerticalAlignment="Top" Content="{Binding OutputAnalysis}" />
                                 <TextBlock Grid.Column="0"
                                            Grid.ColumnSpan="4"
                                            HorizontalAlignment="Center"
@@ -504,240 +438,7 @@
                 <h:PropertyGrid HorizontalAlignment="Right"
                                 SelectObject="{Binding}"
                                 Style="{DynamicResource {x:Static h:PropertyGrid.CommandMouseOverKey}}"
-                                UseGroupNames="操作"
-                                Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type local:ConverterItemBase}">
-            <Grid>
-                <Border Background="{DynamicResource {x:Static h:BrushKeys.Dark0_1}}" DockPanel.Dock="Top" Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
-                    <DockPanel>
-                        <DockPanel Width="140">
-                            <UniformGrid DockPanel.Dock="Bottom" Rows="1">
-                                <Button Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button Command="{h:PropertyGridViewMessageCommand}" CommandParameter="{Binding Model}" Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                            </UniformGrid>
-                            <Border Background="Black" />
-                        </DockPanel>
-
-                        <UniformGrid Width="120"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Columns="2"
-                                     DockPanel.Dock="Right"
-                                     Rows="1">
-                            <h:ProgressButton Width="Auto"
-                                              HorizontalAlignment="Center"
-                                              Command="{Binding StartCommand}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                              Content="转换"
-                                              IsBusy="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.IsBusy, Mode=TwoWay}"
-                                              Style="{DynamicResource {x:Static h:ButtonKeys.Dynamic}}"
-                                              ToolTip="点击更多，显示详细数据" />
-
-                            <h:ProgressButton Width="Auto"
-                                              HorizontalAlignment="Center"
-                                              Command="{Binding StopCommand}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                              Content="停止"
-                                              IsBusy="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.IsBusy, Mode=TwoWay}"
-                                              Style="{DynamicResource {x:Static h:ButtonKeys.Dynamic}}"
-                                              ToolTip="点击更多，显示详细数据" />
-                        </UniformGrid>
-
-                        <DockPanel>
-                            <TextBlock Margin="5"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Top"
-                                       FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}"
-                                       Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundTitle}}"
-                                       Text="{Binding FileName}"
-                                       TextWrapping="Wrap"
-                                       ToolTip="{Binding FilePath}" />
-                            <ProgressBar Height="5"
-                                         Margin="5"
-                                         DockPanel.Dock="Bottom"
-                                         Style="{DynamicResource {x:Static h:ProgressBarKeys.Dynamic}}"
-                                         Value="{Binding Value}" />
-
-                            <TextBlock Margin="5,0" DockPanel.Dock="Bottom" Text="{Binding Message}" />
-
-                            <ContentPresenter Content="{Binding InputMediaInfo}" />
-                        </DockPanel>
-                    </DockPanel>
-                </Border>
-                <h:PropertyGrid HorizontalAlignment="Right"
-                                SelectObject="{Binding}"
-                                Style="{DynamicResource {x:Static h:PropertyGrid.CommandMouseOverKey}}"
-                                UseGroupNames="操作"
-                                Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type local:SnapshotConverterItem}">
-            <Grid>
-                <Border Background="{DynamicResource {x:Static h:BrushKeys.Dark0_1}}" DockPanel.Dock="Top" Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
-                    <DockPanel>
-                        <DockPanel Width="140">
-                            <UniformGrid DockPanel.Dock="Bottom" Rows="1">
-                                <Button Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                                <Button Command="{h:PropertyGridViewMessageCommand}" CommandParameter="{Binding Model}" Style="{DynamicResource {x:Static h:ButtonKeys.Icon}}" />
-                            </UniformGrid>
-                            <!--<Image Style="{DynamicResource {x:Static h:ImageKeys.Logo}}" />-->
-                            <Border Background="Black" />
-                        </DockPanel>
-
-                        <UniformGrid Width="120"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Columns="2"
-                                     DockPanel.Dock="Right"
-                                     Rows="1">
-                            <h:ProgressButton Width="Auto"
-                                              HorizontalAlignment="Center"
-                                              Command="{Binding StartCommand}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                              Content="转换"
-                                              IsBusy="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.IsBusy, Mode=TwoWay}"
-                                              Style="{DynamicResource {x:Static h:ButtonKeys.Dynamic}}"
-                                              ToolTip="点击更多，显示详细数据" />
-
-                            <h:ProgressButton Width="Auto"
-                                              HorizontalAlignment="Center"
-                                              Command="{Binding StopCommand}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                              Content="停止"
-                                              IsBusy="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.IsBusy, Mode=TwoWay}"
-                                              Style="{DynamicResource {x:Static h:ButtonKeys.Dynamic}}"
-                                              ToolTip="点击更多，显示详细数据" />
-                        </UniformGrid>
-
-                        <DockPanel>
-                            <TextBlock Margin="5"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Top"
-                                       FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}"
-                                       Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundTitle}}"
-                                       Text="{Binding FileName}"
-                                       TextWrapping="Wrap"
-                                       ToolTip="{Binding FilePath}" />
-                            <ProgressBar Height="5"
-                                         Margin="5"
-                                         DockPanel.Dock="Bottom"
-                                         Style="{DynamicResource {x:Static h:ProgressBarKeys.Dynamic}}"
-                                         Value="{Binding Value}" />
-
-                            <TextBlock Margin="5,0" DockPanel.Dock="Bottom" Text="{Binding Message}" />
-
-                            <DockPanel>
-                                <StackPanel HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            DockPanel.Dock="Top"
-                                            Orientation="Horizontal">
-                                    <TextBlock Margin="5"
-                                               VerticalAlignment="Center"
-                                               Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                               TextTrimming="CharacterEllipsis"
-                                               TextWrapping="Wrap"
-                                               ToolTip="{Binding Description}">
-                                        <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                        <Run Text="{Binding Extend}" />
-                                    </TextBlock>
-                                    <TextBlock Margin="5"
-                                               VerticalAlignment="Center"
-                                               Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                               TextWrapping="Wrap">
-                                        <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                        <Run Text="{Binding InputMediaInfo.Model.PrimaryVideoStream.Width, Mode=OneWay}" /><Run Text="×" /><Run Text="{Binding InputMediaInfo.Model.PrimaryVideoStream.Height, Mode=OneWay}" />
-                                    </TextBlock>
-                                    <TextBlock Margin="5"
-                                               VerticalAlignment="Center"
-                                               Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                               TextTrimming="CharacterEllipsis"
-                                               TextWrapping="Wrap"
-                                               ToolTip="{Binding Description}">
-                                        <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                        <Run Text="{Binding InputMediaInfo.Size}" />
-                                    </TextBlock>
-                                    <TextBlock Margin="5"
-                                               VerticalAlignment="Center"
-                                               DockPanel.Dock="Right"
-                                               Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                               TextWrapping="Wrap">
-                                        <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                        <Run Text="{Binding InputMediaInfo.VedioAnalysis.EndTime, Converter={x:Static h:Converter.GetTimeSpanStr}, Mode=OneWay}" />
-                                    </TextBlock>
-                                    <!--<TextBlock Margin="5"
-                                                                   VerticalAlignment="Center"
-                                                                   DockPanel.Dock="Right"
-                                                                   Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                                                   TextWrapping="Wrap">
-                                                            <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                                            <Run Text="{Binding Model.PrimaryVideoStream.BitRate, Mode=OneWay}" />
-                                                            <Run Text="kbps" />
-                                                        </TextBlock>-->
-
-                                    <TextBlock Margin="5"
-                                               VerticalAlignment="Center"
-                                               DockPanel.Dock="Right"
-                                               Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                               TextWrapping="Wrap">
-                                        <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                        <Run Text="{Binding InputMediaInfo.Model.PrimaryVideoStream.PixelFormat, Mode=OneWay}" />
-                                    </TextBlock>
-                                    <TextBlock Margin="5"
-                                               VerticalAlignment="Center"
-                                               DockPanel.Dock="Right"
-                                               Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
-                                               TextWrapping="Wrap">
-                                        <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="{x:Static h:Icons.Mail}" />
-                                        <Run Text="{Binding InputMediaInfo.Model.PrimaryVideoStream.FrameRate, Mode=OneWay}" />
-                                        <Run Text="fps" />
-                                    </TextBlock>
-                                </StackPanel>
-
-                                <ItemsControl ItemsSource="{Binding Collection}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Image Width="60"
-                                                       Height="60"
-                                                       Margin="2"
-                                                       Source="{Binding}">
-                                                    <Image.ToolTip>
-                                                        <ToolTip>
-                                                            <Image Width="300"
-                                                                   Height="300"
-                                                                   Margin="2"
-                                                                   Source="{Binding}" />
-                                                        </ToolTip>
-                                                    </Image.ToolTip>
-                                                </Image>
-                                                <Button Margin="0,0" Style="{DynamicResource {x:Static h:ButtonKeys.CloseFlag}}" Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}">
-                                                    <h:Interaction.Behaviors>
-                                                        <h:RemoveItemVisualTreeButtonBehavior />
-                                                    </h:Interaction.Behaviors>
-                                                </Button>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </DockPanel>
-                        </DockPanel>
-                    </DockPanel>
-                </Border>
-                <h:PropertyGrid HorizontalAlignment="Right"
-                                SelectObject="{Binding}"
-                                Style="{DynamicResource {x:Static h:PropertyGrid.CommandMouseOverKey}}"
-                                UseGroupNames="操作"
+                                UseGroupNames="输出"
                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}" />
             </Grid>
         </DataTemplate>
@@ -782,8 +483,16 @@
                            DockPanel.Dock="Top"
                            Style="{DynamicResource {x:Static h:SeparatorKeys.Default}}" />
 
-                <h:PropertyGrid h:Cattach.TitleWidth="Auto"
-                                DockPanel.Dock="Bottom"
+
+                <TextBox h:Cattach.BackgroundColumn="1"
+                         h:Cattach.Title="输出路径"
+                         h:Cattach.TitleMargin="12 0"
+                         h:Cattach.TitleWidth="120"
+                         DockPanel.Dock="Bottom" Margin="0 2"
+                         Style="{DynamicResource {x:Static h:TextBoxKeys.OpenFolder}}"
+                         Text="{Binding OutPath}" />
+
+                <h:PropertyGrid DockPanel.Dock="Bottom"
                                 SelectObject="{Binding}"
                                 Style="{DynamicResource {x:Static h:PropertyGrid.ClearlyKey}}"
                                 UseGroupNames="配置">
@@ -793,6 +502,11 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </h:PropertyGrid>
+
+                <Separator Margin="0,0,0,5"
+                           Background="{DynamicResource {x:Static h:BrushKeys.Dark0_6}}"
+                           DockPanel.Dock="Bottom"
+                           Style="{DynamicResource {x:Static h:SeparatorKeys.Default}}" />
 
                 <DockPanel Margin="0,2">
                     <h:Pagination HorizontalAlignment="Right"

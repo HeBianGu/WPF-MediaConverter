@@ -1,35 +1,47 @@
 ﻿using FFMpegCore;
 using FFMpegCore.Enums;
 using FFMpegCore.Helpers;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 
 namespace HeBianGu.App.Converter
 {
-    public class ExtractAudioConverterItem : ProcessorConverterItemBase
+    public class ExtractAudioConverterItem : AudioConverterItemBase
     {
         public ExtractAudioConverterItem(string filePath) : base(filePath)
         {
 
         }
-        //protected override FFMpegArgumentProcessor CreateProcessor()
-        //{
-        //    //FFMpegHelper.ExtensionExceptionCheck(OutputPath, FileExtension.Mp3);
-        //    return FFMpegArguments.FromFileInput(FilePath).OutputToFile(OutputPath, overwrite: true,
-        //        delegate (FFMpegArgumentOptions options)
-        //     {
-        //         options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading).CopyChannel(Channel.Audio).DisableChannel(Channel.Video);
-        //     });
-        //}
+
+        private bool _useCopyChannel = true;
+        [DefaultValue(true)]
+        [Display(Name = "复制通道", Description = "启用后不转码，运行速度快")]
+        public bool UseCopyChannel
+        {
+            get { return _useCopyChannel; }
+            set
+            {
+                _useCopyChannel = value;
+                RaisePropertyChanged();
+            }
+        }
 
         protected override void CreateArguments(FFMpegArgumentOptions options)
         {
-            options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading).CopyChannel(Channel.Audio).DisableChannel(Channel.Video);
+            if (this.UseCopyChannel)
+                options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading).CopyChannel(Channel.Audio).DisableChannel(Channel.Video);
+            else
+            {
+                base.CreateArguments(options);
+                options.DisableChannel(Channel.Video);
+            }
         }
 
         protected override string CreateOutputPath(string groupPath)
         {
             string extension = this.OutputMediaInfo.Model.PrimaryAudioStream.CodecName;
-            return Path.Combine(groupPath, Path.GetFileNameWithoutExtension(FilePath) + "."+ extension);
+            return Path.Combine(groupPath, Path.GetFileNameWithoutExtension(FilePath) + "." + extension);
         }
     }
 }

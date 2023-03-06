@@ -63,13 +63,13 @@ namespace HeBianGu.App.Converter
             result.VedioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().Where(x => x.DemuxingSupported == false).ToList().AsReadOnly();
             result.VedioAnalysis.PixelFormats = FFMpeg.GetPixelFormats();
             result.VedioAnalysis.Size = result.Size;
-
             result.AudioAnalysis.Codecs = FFMpeg.GetCodecs().Where(x => x.Type == CodecType.Audio).ToList().AsReadOnly();
             //  Do ：假定DemuxingSupported==true表示音频
             result.AudioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().Where(x => x.DemuxingSupported == true).ToList().AsReadOnly();
-
             result.AudioAnalysis.Size = result.Size;
 
+
+            //result.Meta.Copyright
             return result;
         }
 
@@ -167,6 +167,31 @@ namespace HeBianGu.App.Converter
             }
         }
 
+        private AnalysisBase _outputAnalysis;
+        /// <summary> 说明  </summary>
+        public AnalysisBase OutputAnalysis
+        {
+            get { return _outputAnalysis; }
+            set
+            {
+                _outputAnalysis = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private AnalysisBase _inputAnalysis;
+        /// <summary> 说明  </summary>
+        public AnalysisBase InputAnalysis
+        {
+            get { return _inputAnalysis; }
+            set
+            {
+                _inputAnalysis = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
         private MediaInfo _outputMediaInfo;
         public MediaInfo OutputMediaInfo
         {
@@ -190,13 +215,13 @@ namespace HeBianGu.App.Converter
         //    return null;
         //}
 
-        protected virtual async Task<bool> Set()
-        {
-            //var setter = CreateSetter();
-            //if (setter == null)
-            //    return false;
-            return await MessageProxy.PropertyGrid.ShowEdit(this, null, "参数设置");
-        }
+        //protected virtual async Task<bool> Set()
+        //{
+        //    //var setter = CreateSetter();
+        //    //if (setter == null)
+        //    //    return false;
+        //    return await MessageProxy.PropertyGrid.ShowEdit(this, null, "参数设置");
+        //}
 
         [Displayer(Name = "开始转换", Icon = Icons.Play, GroupName = "转换", Description = "开始转换")]
         public RelayCommand StartCommand => new RelayCommand(async (s, e) =>
@@ -205,11 +230,18 @@ namespace HeBianGu.App.Converter
         });
 
 
-        [Displayer(Name = "播放", Icon = Icons.Play, GroupName = "操作", Description = "播放")]
-        public RelayCommand PlayCommand => new RelayCommand(async (s, e) =>
+        [Displayer(Name = "播放源文件", Icon = Icons.Play, GroupName = "操作,输入", Description = "播放源文件")]
+        public RelayCommand PlayInputCommand => new RelayCommand(async (s, e) =>
         {
             Process.Start(new ProcessStartInfo("ffplay.exe", this.FilePath) { UseShellExecute = true });
-        });
+        }, (s, e) => File.Exists(this.FilePath));
+
+
+        [Displayer(Name = "播放输出文件", Icon = Icons.Play, GroupName = "操作,输出", Description = "播放输出文件")]
+        public RelayCommand PlayOutputCommand => new RelayCommand(async (s, e) =>
+        {
+            Process.Start(new ProcessStartInfo("ffplay.exe", this.OutputPath) { UseShellExecute = true });
+        }, (s, e) => File.Exists(this.OutputPath));
 
         protected virtual bool Start(IRelayCommand s, object e)
         {
@@ -229,7 +261,9 @@ namespace HeBianGu.App.Converter
             {
                 IsBuzy = true;
                 s.IsBusy = true;
-                OutputPath = CreateOutputPath(group.OutPath);
+                this.OutputPath = CreateOutputPath(group.OutPath);
+                if (!Directory.Exists(Path.GetDirectoryName(this.OutputPath)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(this.OutputPath));
                 return await Task.Run(() =>
                  {
                      try
@@ -266,18 +300,14 @@ namespace HeBianGu.App.Converter
 
         protected abstract Task<bool> StopAsnyc(IRelayCommand s, object e);
 
-        [Displayer(Name = "打开文件夹", Icon = Icons.OpenFolder, GroupName = "操作", Description = "处理器相关数据监控")]
+        [Displayer(Name = "打开文件夹", Icon = Icons.OpenFolder, GroupName = "操作,输出", Description = "处理器相关数据监控")]
         public RelayCommand OpenCommand => new RelayCommand((s, e) =>
         {
-            if (!File.Exists(_outputPath))
-            {
-                MessageProxy.Snacker.ShowTime("文件不存在，请先转换");
-                return;
-            }
             Process.Start(new ProcessStartInfo(Path.GetDirectoryName(_outputPath)) { UseShellExecute = true });
 
-        });
-        [Displayer(Name = "删除", Icon = IconAll.Close, GroupName = "操作", Description = "处理器相关数据监控")]
+        }, (s, e) => File.Exists(_outputPath));
+
+        [Displayer(Name = "删除", Icon = IconAll.Close, GroupName = "操作,输出", Description = "处理器相关数据监控")]
         public RelayCommand DeleteCommand => new RelayCommand(async (s, e) =>
         {
             s.IsBusy = true;
@@ -295,7 +325,7 @@ namespace HeBianGu.App.Converter
             s.IsBusy = false;
         });
 
-        [Displayer(Name = "彻底删除", Icon = Icons.Delete, GroupName = "操作", Description = "处理器相关数据监控")]
+        [Displayer(Name = "彻底删除", Icon = Icons.Delete, GroupName = "操作,输出", Description = "处理器相关数据监控")]
         public RelayCommand DeleteFileCommand => new RelayCommand(async (s, e) =>
         {
             s.IsBusy = true;

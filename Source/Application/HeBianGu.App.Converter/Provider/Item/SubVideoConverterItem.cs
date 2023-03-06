@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Xml.Linq;
 using FFMpegCore.Enums;
+using System.Linq;
 
 namespace HeBianGu.App.Converter
 {
@@ -13,9 +14,14 @@ namespace HeBianGu.App.Converter
 
         }
 
+        public override MediaInfo CreateOutputMediaInfo(IMediaAnalysis mediaInfo)
+        {
+            return new SubMediaInfo(mediaInfo, this.FilePath);
+        }
+
         private bool _useCopyChannel = true;
         [DefaultValue(true)]
-        [Display(Name = "复制通道", Description = "启用后不转码，运行速度快")]
+        [Display(Name = "复制通道", GroupName = "配置", Description = "启用后不转码，运行速度快")]
         public bool UseCopyChannel
         {
             get { return _useCopyChannel; }
@@ -41,54 +47,28 @@ namespace HeBianGu.App.Converter
                 base.CreateArguments(options);
             }
         }
+    }
 
-        //protected override FFMpegArgumentProcessor CreateProcessor()
-        //{
-        //    return FFMpegArguments.FromFileInput(this.FilePath, true,
-        //        options =>
-        //        options.Seek(this.Setter.StartTime).EndSeek(this.Setter.EndTime))
-        //        .OutputToFile(this.OutputPath, true, options => options.CopyChannel());
-        //}
+    public class SubMediaInfo : MediaInfo
+    {
+        public SubMediaInfo(IMediaAnalysis model, string filePath) : base(model, filePath)
+        {
 
-        //protected override object CreateSetter()
-        //{
-        //    return this.Setter;
-        //}
+        }
 
-        //public override void CreateVideoFormat(string filePath)
-        //{
-        //    base.CreateVideoFormat(filePath);
-        //    this.Setter.StartTime = this.InVideoFormat.Model.Format.StartTime;
-        //    this.Setter.EndTime = this.InVideoFormat.Model.Format.Duration;
-        //}
+        protected override VideoAnalysis CreateVedioAnalysis(string filePath)
+        {
+            return new SubVideoAnalysis(this.Model, filePath);
+        }
 
-        //public SubTimeSpanSetter Setter { get; } = new SubTimeSpanSetter();
+    }
 
-        //public class SubTimeSpanSetter : NotifyPropertyChangedBase
-        //{
-        //    private TimeSpan _startTime;
-        //    [TypeConverter(typeof(TimeSpanConverter))]
-        //    public TimeSpan StartTime
-        //    {
-        //        get { return _startTime; }
-        //        set
-        //        {
-        //            _startTime = value;
-        //            RaisePropertyChanged();
-        //        }
-        //    }
-
-        //    private TimeSpan _endTime;
-        //    [TypeConverter(typeof(TimeSpanConverter))]
-        //    public TimeSpan EndTime
-        //    {
-        //        get { return _endTime; }
-        //        set
-        //        {
-        //            _endTime = value;
-        //            RaisePropertyChanged();
-        //        }
-        //    }
-        //}
+    public class SubVideoAnalysis : VideoAnalysis
+    {
+        public SubVideoAnalysis(IMediaAnalysis model, string filePath) : base(model, filePath)
+        {
+            this.StartTime = model.Format.StartTime;
+            this.EndTime = model.Format.Duration;
+        }
     }
 }

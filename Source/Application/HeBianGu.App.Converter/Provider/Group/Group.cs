@@ -4,7 +4,9 @@ using HeBianGu.Control.PropertyGrid;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,11 +21,13 @@ namespace HeBianGu.App.Converter
         public override void LoadDefault()
         {
             base.LoadDefault();
-            this.OutPath = AppDomain.CurrentDomain.BaseDirectory;
+            this.OutPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this.Name);
+            if (!Directory.Exists(this.OutPath))
+                Directory.CreateDirectory(this.OutPath);
         }
         private string _outPath;
         [PropertyItemType(typeof(OpenPathTextPropertyItem))]
-        [Displayer(Name = "输出文件夹", Icon = "\xe751", GroupName = "配置", Description = "处理器相关数据监控")]
+        [Displayer(Name = "输出文件夹", Icon = "\xe751", GroupName = "输出文件夹", Description = "处理器相关数据监控")]
         public string OutPath
         {
             get { return _outPath; }
@@ -35,17 +39,17 @@ namespace HeBianGu.App.Converter
         }
 
 
-        private bool _combineAll;
-        [Displayer(Name = "合并全部文件", Icon = "\xe751", GroupName = "配置", Description = "处理器相关数据监控")]
-        public bool CombineAll
-        {
-            get { return _combineAll; }
-            set
-            {
-                _combineAll = value;
-                RaisePropertyChanged();
-            }
-        }
+        //private bool _combineAll;
+        //[Displayer(Name = "合并全部文件", Icon = "\xe751", GroupName = "配置", Description = "处理器相关数据监控")]
+        //public bool CombineAll
+        //{
+        //    get { return _combineAll; }
+        //    set
+        //    {
+        //        _combineAll = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
 
 
     }
@@ -53,13 +57,6 @@ namespace HeBianGu.App.Converter
     /// <summary> 说明</summary>
     public abstract class ConverterGroupBase : GroupBase
     {
-        public ConverterGroupBase()
-        {
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    this.Collection.Add(new ConverterItem() { Name = i.ToString() });
-            //}
-        }
         [Displayer(Name = "添加文件", Icon = "\xe751", GroupName = "Processor", Description = "处理器相关数据监控")]
         public RelayCommand AddFileCommand => new RelayCommand(async (s, e) =>
         {
@@ -129,7 +126,7 @@ namespace HeBianGu.App.Converter
         {
             this.Collection.Foreach(x =>
             {
-                x.StopCommand.Execute(e); 
+                x.StopCommand.Execute(e);
             });
             this.Collection.Clear();
         });

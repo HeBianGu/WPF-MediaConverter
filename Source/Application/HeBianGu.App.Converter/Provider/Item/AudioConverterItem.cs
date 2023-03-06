@@ -10,11 +10,12 @@ namespace HeBianGu.App.Converter
     {
         public AudioConverterItemBase(string filePath) : base(filePath)
         {
-
+            this.InputAnalysis = this.InputMediaInfo.AudioAnalysis;
+            this.OutputAnalysis = this.OutputMediaInfo.AudioAnalysis;
         }
 
 
-        [Displayer(Name = "设置输出参数", Icon = Icons.Set, GroupName = "操作", Description = "设置输出参数")]
+        [Displayer(Name = "设置输出参数", Icon = Icons.Set, GroupName = "操作,输出", Description = "设置输出参数")]
         public RelayCommand OutPutSetCommand => new RelayCommand(async (s, e) =>
         {
             await MessageProxy.PropertyGrid.ShowEdit(this.OutputMediaInfo.AudioAnalysis, null, "设置输出参数");
@@ -23,10 +24,10 @@ namespace HeBianGu.App.Converter
             this.OutputMediaInfo.Size = (long)((this.OutputMediaInfo.AudioAnalysis.BitRate + this.OutputMediaInfo.AudioAnalysis.BitRate) * this.OutputMediaInfo.Model.Duration.TotalSeconds / 8);
         });
 
-        [Displayer(Name = "查看视频参数", Icon = "\xe76b", GroupName = "操作", Description = "查看视频参数")]
+        [Displayer(Name = "查看音频参数", Icon = "\xe76b", GroupName = "操作,输入", Description = "查看音频参数")]
         public RelayCommand InputViewCommand => new RelayCommand(async (s, e) =>
         {
-            await MessageProxy.PropertyGrid.ShowView(this.InputMediaInfo.AudioAnalysis, null, "查看视频参数", x => x.UseEnumerator = true);
+            await MessageProxy.PropertyGrid.ShowView(this.InputMediaInfo.AudioAnalysis, null, "查看音频参数", x => x.UseEnumerator = true);
         });
 
         protected override void CreateArguments(FFMpegArgumentOptions options)
