@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>5.0.0.0</AssemblyVersion>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>preview</LangVersion>

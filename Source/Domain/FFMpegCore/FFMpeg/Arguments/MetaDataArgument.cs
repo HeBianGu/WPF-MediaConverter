@@ -1,11 +1,11 @@
 ﻿namespace FFMpegCore.Arguments
 {
-    public class MetaDataArgument : IInputArgument, IDynamicArgument
+    public class MapMetaDataArgument : IInputArgument, IDynamicArgument
     {
         private readonly string _metaDataContent;
         private readonly string _tempFileName = Path.Combine(GlobalFFOptions.Current.TemporaryFilesFolder, $"metadata_{Guid.NewGuid()}.txt");
 
-        public MetaDataArgument(string metaDataContent)
+        public MapMetaDataArgument(string metaDataContent)
         {
             _metaDataContent = metaDataContent;
         }
@@ -28,6 +28,29 @@
                 .Count();
 
             return $"-i \"{_tempFileName}\" -map_metadata {index}";
+        }
+    }
+
+    public class MetaDataArgument : IInputArgument
+    {
+        private readonly string _metaDataContent;
+
+        public MetaDataArgument(string metaDataContent)
+        {
+            _metaDataContent = metaDataContent;
+        }
+
+        public string Text => GetText(); 
+
+        public Task During(CancellationToken cancellationToken = default) => Task.CompletedTask;
+
+        public void Pre() { }
+
+        public void Post() { }
+
+        public string GetText()
+        {
+            return $"-metadata {_metaDataContent}";
         }
     }
 }

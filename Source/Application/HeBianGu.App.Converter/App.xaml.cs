@@ -2,6 +2,7 @@
 using HeBianGu.Control.Guide;
 using HeBianGu.Control.MessageListBox;
 using HeBianGu.Control.ThemeSet;
+using HeBianGu.Domain.Converter;
 using HeBianGu.General.WpfControlLib;
 using HeBianGu.Service.Mvp;
 using HeBianGu.Systems.About;

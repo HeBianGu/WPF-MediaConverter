@@ -13,6 +13,9 @@ namespace FFMpegCore
 
         [JsonIgnore]
         public IReadOnlyList<string> ErrorData { get; set; } = new List<string>();
+
+        [JsonPropertyName("chapters")]
+        public List<Chapter> Chapters { get; set; } = null!;
     }
 
     public class FFProbeStream : ITagsContainer, IDispositionContainer
@@ -171,5 +174,20 @@ namespace FFMpegCore
 
         public static int? GetDefault(this IDispositionContainer tagsContainer) => TryGetDispositionValue(tagsContainer, "default");
         public static int? GetForced(this IDispositionContainer tagsContainer) => TryGetDispositionValue(tagsContainer, "forced");
+    }
+
+    public class Chapter : ITagsContainer
+    {
+        [JsonPropertyName("id")]
+        public int id { get; set; }
+
+        [JsonPropertyName("start_time")]
+        public string start_time { get; set; } = null!;
+
+        [JsonPropertyName("end_time")]
+        public string end_time { get; set; } = null!;
+
+        [JsonPropertyName("tags")]
+        public Dictionary<string, string> Tags { get; set; } = null!;
     }
 }

@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="https://github.com/HeBianGu"
+                    xmlns:local="clr-namespace:HeBianGu.Domain.Converter">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/HeBianGu.Domain.Converter;component/Analysis/Analysis.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HeBianGu.Domain.Converter;component/Group/ConverterGroup.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HeBianGu.Domain.Converter;component/Item/ConverterItem.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <DataTemplate DataType="{x:Type local:ChapterItemPresenter}">
+        <UniformGrid Rows="1" Margin="0 2">
+            <TextBox h:Cattach.Title="时间" h:Cattach.TitleWidth="Auto" Style="{DynamicResource {x:Static h:TextBoxKeys.Label}}" Text="{Binding Start}"/>
+            <TextBox h:Cattach.Title="标题" h:Cattach.TitleWidth="Auto"  Style="{DynamicResource {x:Static h:TextBoxKeys.Label}}" Text="{Binding Title}"/>
+        </UniformGrid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:VideoFormats}">
+        <TabControl MinWidth="600"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        h:Cattach.ItemHorizontalAlignment="Stretch"
+                        h:Cattach.ItemHorizontalContentAlignment="Stretch"
+                        h:Cattach.SearchDock="Bottom"
+                        h:Cattach.UseSearch="False"
+                        BorderThickness="1"
+                        ItemsSource="{Binding Collection}"
+                        TabStripPlacement="Left">
+            <TabControl.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Static h:TabItemKeys.Default}}" TargetType="TabItem">
+                    <Setter Property="Width" Value="100" />
+                    <Setter Property="h:Cattach.IconMargin" Value="20 0 10 0" />
+                    <Setter Property="h:Cattach.Icon" Value="{x:Static h:Icons.Clock}" />
+                    <Setter Property="Background" Value="{DynamicResource {x:Static h:BrushKeys.Dark0_2}}" />
+                    <Setter Property="Header" Value="{Binding Key.Name}" />
+                    <!--<Setter Property="h:Cattach.Icon" Value="{Binding Icon}" />-->
+                    <Setter Property="h:Cattach.IconSize" Value="15" />
+                    <Setter Property="h:Cattach.UseGuide" Value="True" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                </Style>
+            </TabControl.ItemContainerStyle>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top">
+                                <Run Text="{Binding Key.Description, Mode=OneWay}" />
+                                <Run Text="{Binding Key.Extension, Mode=OneWay}" />
+                                <Run Text="{Binding Key.DemuxingSupported, Mode=OneWay}" />
+                                <Run Text="{Binding Key.MuxingSupported, Mode=OneWay}" />
+                        </TextBlock>
+                        <ListBox ItemsSource="{Binding}" SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=TabControl}, Path=DataContext.SelectedItem}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <UniformGrid Rows="1">
+                                        <TextBlock Text="{Binding VideoSize, Mode=OneWay}" />
+                                        <TextBlock Text="{Binding VideoSize, Mode=OneWay}" />
+                                    </UniformGrid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </DataTemplate>
+
+</ResourceDictionary>

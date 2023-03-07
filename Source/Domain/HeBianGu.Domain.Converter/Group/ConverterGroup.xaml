@@ -1,0 +1,90 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="https://github.com/HeBianGu"
+                    xmlns:local="clr-namespace:HeBianGu.Domain.Converter">
+    <DataTemplate DataType="{x:Type local:ConverterGroupBase}">
+        <DockPanel>
+            <!--<Border Height="60"
+                        Background="{DynamicResource {x:Static h:BrushKeys.Dark0_2}}"
+                        DockPanel.Dock="Top"
+                        Style="{DynamicResource {x:Static h:BorderKeys.Card}}">-->
+            <DockPanel Margin="0,10" VerticalAlignment="Center" DockPanel.Dock="Top">
+                <Border Width="30"
+                        Height="30"
+                        Margin="10,0"
+                        BorderBrush="{DynamicResource {x:Static h:BrushKeys.ForegroundAssist}}"
+                        BorderThickness="1"
+                        CornerRadius="60">
+                    <TextBlock FontSize="15" Style="{DynamicResource {x:Static h:TextBlockKeys.Icon}}" Text="{Binding Icon}" />
+                </Border>
+                <TextBlock Margin="5,0" VerticalAlignment="Center" DockPanel.Dock="Right">
+                    <Run Text="[" />
+                    <Run Text="{Binding Collection.Cache.Count, Mode=OneWay}" />
+                    <Run Text="]" />
+                </TextBlock>
+
+                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundAssist}}">
+                    <Run FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}" Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundTitle}}" Text="{Binding Name}" />
+                    <Run Text=" [" />
+                    <Run Text="{Binding Description}" />
+                    <Run Text="]" />
+                </TextBlock>
+            </DockPanel>
+            <!--</Border>-->
+
+            <h:PropertyGrid HorizontalAlignment="Left"
+                            DockPanel.Dock="Top"
+                            SelectObject="{Binding}"
+                            Style="{DynamicResource {x:Static h:PropertyGrid.CommandKey}}" />
+
+            <Separator Margin="0,5,0,0"
+                       Background="{DynamicResource {x:Static h:BrushKeys.Dark0_6}}"
+                       DockPanel.Dock="Top"
+                       Style="{DynamicResource {x:Static h:SeparatorKeys.Default}}" />
+
+
+            <TextBox Margin="0,2"
+                     h:Cattach.BackgroundColumn="1"
+                     h:Cattach.Title="输出路径"
+                     h:Cattach.TitleMargin="12 0"
+                     h:Cattach.TitleWidth="120"
+                     DockPanel.Dock="Bottom"
+                     Style="{DynamicResource {x:Static h:TextBoxKeys.OpenFolder}}"
+                     Text="{Binding OutPath}" />
+
+            <h:PropertyGrid DockPanel.Dock="Bottom"
+                            SelectObject="{Binding}"
+                            Style="{DynamicResource {x:Static h:PropertyGrid.ClearlyKey}}"
+                            UseGroupNames="配置">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </h:PropertyGrid>
+
+            <Separator Margin="0,0,0,5"
+                       Background="{DynamicResource {x:Static h:BrushKeys.Dark0_6}}"
+                       DockPanel.Dock="Bottom"
+                       Style="{DynamicResource {x:Static h:SeparatorKeys.Default}}" />
+
+            <DockPanel Margin="0,2">
+                <h:Pagination HorizontalAlignment="Right"
+                              DockPanel.Dock="Bottom"
+                              MaxPageCount="{Binding Collection.TotalPage}"
+                              PageIndex="{Binding Collection.PageIndex, Mode=TwoWay}" />
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Collection.Source}">
+                        <!--<ItemsControl.ItemTemplate>
+
+                            </ItemsControl.ItemTemplate>-->
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:ScreenConverterGroup}">
+        <TextBlock Text="{Binding Name}" />
+    </DataTemplate>
+</ResourceDictionary>

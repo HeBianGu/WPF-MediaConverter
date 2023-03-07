@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+	  <UseWPF>true</UseWPF>
+	  <PackageIcon>logo.jpg</PackageIcon>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Base\HeBianGu.Base.WpfBase\HeBianGu.Base.WpfBase.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PagedDataGrid\HeBianGu.Control.PagedDataGrid.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PropertyGrid\HeBianGu.Control.PropertyGrid.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\General\HeBianGu.General.WpfControlLib\HeBianGu.General.WpfControlLib.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Setting\HeBianGu.Systems.Setting.csproj" />
+    <ProjectReference Include="..\FFMpegCore.Extensions.System.Drawing.Common\FFMpegCore.Extensions.System.Drawing.Common.csproj" />
+    <ProjectReference Include="..\FFMpegCore\FFMpegCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="PropertyControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PropertyTabControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>

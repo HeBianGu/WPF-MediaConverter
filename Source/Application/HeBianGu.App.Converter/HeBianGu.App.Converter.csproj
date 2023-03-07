@@ -26,11 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FFMpegCore" Version="5.0.2" />
-    <PackageReference Include="FFMpegCore.Extensions.System.Drawing.Common" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Base\HeBianGu.Base.WpfBase\HeBianGu.Base.WpfBase.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Adorner\HeBianGu.Control.Adorner.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.Chart2D\HeBianGu.Control.Chart2D.csproj" />
@@ -73,6 +68,9 @@
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Window\HeBianGu.Window.Message\HeBianGu.Window.Message.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Encryption\HeBianGu.Systems.Encryption.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Window\HeBianGu.Window.Notify\HeBianGu.Window.Notify.csproj" />
+    <ProjectReference Include="..\..\Domain\FFMpegCore.Extensions.System.Drawing.Common\FFMpegCore.Extensions.System.Drawing.Common.csproj" />
+    <ProjectReference Include="..\..\Domain\FFMpegCore\FFMpegCore.csproj" />
+    <ProjectReference Include="..\..\Domain\HeBianGu.Domain.Converter\HeBianGu.Domain.Converter.csproj" />
   </ItemGroup>
 
   <ItemGroup>

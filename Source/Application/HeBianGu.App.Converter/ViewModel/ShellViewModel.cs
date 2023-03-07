@@ -2,6 +2,7 @@
 using FFMpegCore.Enums;
 using HeBianGu.Base.WpfBase;
 using HeBianGu.Control.PropertyGrid;
+using HeBianGu.Domain.Converter;
 using HeBianGu.Service.AppConfig;
 using HeBianGu.Systems.Print;
 using HeBianGu.Systems.Project;
@@ -26,7 +27,7 @@ namespace HeBianGu.App.Converter
     {
         public ShellViewModel()
         {
-            var types = this.GetType().Assembly.GetTypes().Where(x => typeof(GroupBase).IsAssignableFrom(x)).Where(x => x.GetCustomAttribute<DisplayerAttribute>() != null);
+            var types = typeof(GroupBase).Assembly.GetTypes().Where(x => typeof(GroupBase).IsAssignableFrom(x)).Where(x => x.GetCustomAttribute<DisplayerAttribute>() != null);
             this.Collection = types.Where(x => x.IsClass && !x.IsAbstract).Select(x => Activator.CreateInstance(x)).OfType<GroupBase>().OrderBy(x => x.Order).ToObservable();
             this.SelectedItem = this.Collection.FirstOrDefault();
         }

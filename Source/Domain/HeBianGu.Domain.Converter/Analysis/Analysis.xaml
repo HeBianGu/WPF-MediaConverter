@@ -1,0 +1,205 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="https://github.com/HeBianGu"
+                    xmlns:local="clr-namespace:HeBianGu.Domain.Converter">
+
+    <!--<DataTemplate DataType="{x:Type local:SubVideoAnalysis}">
+        <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" Columns="3">
+            <UniformGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Static h:TextBlockKeys.Default}}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="2,1" />
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                </Style>
+            </UniformGrid.Resources>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe781;" />
+                <Run Text="{Binding ContainerFormat.Extension, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe61e;" />
+                <Run Text="{Binding VideoSize, Mode=OneWay}" />
+            </TextBlock>
+
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe8c8;" />
+                <Run Text="{Binding PixelFormat.Name, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe614;" />
+                <Run Text="{Binding FrameRate, Mode=OneWay}" />
+                <Run Text="fps" />
+            </TextBlock>
+
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe62c;" />
+                <Run Text="{Binding Codec.Name, Mode=OneWay}" />
+            </TextBlock>
+
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe637;" />
+                <Run Text="{Binding BitRate, Mode=OneWay}" />
+                <Run Text="kbps" />
+            </TextBlock>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe6f3;" />
+                <Run Text="{Binding Model.Duration, Converter={x:Static h:Converter.GetTimeSpanStr}, Mode=OneWay}" />
+            </TextBlock>
+            <TextBox Height="Auto"
+                     MaxWidth="100"
+                     Margin="0"
+                     h:Cattach.CornerRadius="0"
+                     Text="{Binding StartTime}" />
+            <TextBox Height="Auto"
+                     MaxWidth="100"
+                     Margin="0"
+                     h:Cattach.CornerRadius="0"
+                     Text="{Binding EndTime}" />
+        </UniformGrid>
+    </DataTemplate>-->
+
+    <DataTemplate DataType="{x:Type local:VideoAnalysis}">
+        <h:PropertyGrid SelectObject="{Binding}" UsePropertyView="True" UseGroupNames="视频" Style="{DynamicResource {x:Static h:PropertyGrid.ClearlyKey}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </h:PropertyGrid>
+        <!--<UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" Columns="3">
+            <UniformGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Static h:TextBlockKeys.Default}}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="2,1" />
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                </Style>
+            </UniformGrid.Resources>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe781;" />
+                <Run Text="{Binding ContainerFormat.Extension, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe61e;" />
+                <Run Text="{Binding Model.PrimaryVideoStream.Width, Mode=OneWay}" />
+                <Run Text="×" />
+                <Run Text="{Binding Model.PrimaryVideoStream.Height, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe632;" />
+                <Run Text="{Binding Size, Converter={x:Static h:XConverter.ByteSizeDisplayConverter}, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe6f3;" />
+                <Run Text="{Binding Model.Duration, Converter={x:Static h:Converter.GetTimeSpanStr}, Mode=OneWay}" />
+            </TextBlock>
+
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe8c8;" />
+                <Run Text="{Binding PixelFormat.Name, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe614;" />
+                <Run Text="{Binding FrameRate, Mode=OneWay}" />
+                <Run Text="fps" />
+            </TextBlock>
+
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe62c;" />
+                <Run Text="{Binding Codec.Name, Mode=OneWay}" />
+            </TextBlock>
+
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe637;" />
+                <Run Text="{Binding BitRate, Mode=OneWay}" />
+                <Run Text="kbps" />
+            </TextBlock>
+        </UniformGrid>-->
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:AudioAnalysis}">
+        <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" Columns="3">
+            <UniformGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Static h:TextBlockKeys.Default}}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="2,1" />
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                </Style>
+            </UniformGrid.Resources>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe781;" />
+                <Run Text="{Binding ContainerFormat.Extension, Mode=OneWay}" />
+            </TextBlock>
+            <!--<TextBlock>
+                    <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe61e;" />
+                    <Run Text="{Binding Model.PrimaryVideoStream.Width, Mode=OneWay}" />
+                    <Run Text="×" />
+                    <Run Text="{Binding Model.PrimaryVideoStream.Height, Mode=OneWay}" />
+                </TextBlock>-->
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe632;" />
+                <Run Text="{Binding Size, Converter={x:Static h:XConverter.ByteSizeDisplayConverter}, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe6f3;" />
+                <Run Text="{Binding Model.PrimaryAudioStream.Duration, Converter={x:Static h:Converter.GetTimeSpanStr}, Mode=OneWay}" />
+            </TextBlock>
+
+            <TextBlock>
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe8c8;" />
+                <Run Text="{Binding AudioQuality, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe614;" />
+                <Run Text="{Binding SamplingRate, Mode=OneWay}" />
+                <Run Text="fps" />
+            </TextBlock>
+
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe62c;" />
+                <Run Text="{Binding Codec.Name, Mode=OneWay}" />
+            </TextBlock>
+
+            <TextBlock MaxWidth="100">
+                <Run FontFamily="{DynamicResource {x:Static h:FontFamilyKeys.Icon}}" Text="&#xe637;" />
+                <Run Text="{Binding BitRate, Mode=OneWay}" />
+                <Run Text="kbps" />
+            </TextBlock>
+        </UniformGrid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:SnapshotVideoAnalysis}">
+        <ItemsControl ItemsSource="{Binding Collection}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="{DynamicResource {x:Static h:BrushKeys.BorderBrushDefault}}" BorderThickness="1">
+                        <Grid>
+                            <Image Width="60"
+                                   Height="Auto"
+                                   Margin="2"
+                                   Source="{Binding}">
+                                <Image.ToolTip>
+                                    <ToolTip Height="Auto">
+                                        <Image Width="500" Margin="2" Source="{Binding}" />
+                                    </ToolTip>
+                                </Image.ToolTip>
+                            </Image>
+                            <Button Margin="0,0" Style="{DynamicResource {x:Static h:ButtonKeys.CloseFlag}}" Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}">
+                                <h:Interaction.Behaviors>
+                                    <h:RemoveItemVisualTreeButtonBehavior />
+                                </h:Interaction.Behaviors>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </DataTemplate>
+</ResourceDictionary>

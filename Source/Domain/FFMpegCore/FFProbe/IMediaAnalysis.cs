@@ -14,5 +14,6 @@ namespace FFMpegCore
         List<AudioStream> AudioStreams { get; }
         List<SubtitleStream> SubtitleStreams { get; }
         IReadOnlyList<string> ErrorData { get; }
+        List<Chapter> Chapters { get; }
     }
 }
