@@ -77,7 +77,7 @@
     <TabControl h:Cattach.AttachDock="Top"
                 h:Cattach.CaptionBackground="{DynamicResource {x:Static h:BrushKeys.Dark0_2}}"
                 h:Cattach.CaptionVerticalAlignment="Stretch"
-                h:Cattach.CornerRadius="0"
+                h:Cattach.CornerRadius="0" 
                 h:Cattach.UseSearch="False"
                 BorderThickness="0"
                 ItemsSource="{Binding Collection}"
@@ -108,5 +108,67 @@
                 <h:InvokeCommandAction Command="{Binding LoadedCommand}" />
             </h:EventTrigger>
         </h:Interaction.Triggers>
+        <!--<TabControl.ContentTemplate>
+            <DataTemplate>
+                <DockPanel>
+                    <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1">
+                        <Border Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
+                            <UniformGrid Height="80" Columns="2" HorizontalAlignment="Center" Rows="1">
+                                <TextBlock Text="全开" FontSize="40" VerticalAlignment="Center"/>
+                                <h:SwitchToggleButton IsChecked="{Binding Bool1}"/>
+                            </UniformGrid>
+                        </Border>
+                        <Border Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
+                            <UniformGrid Height="80" Columns="2" HorizontalAlignment="Center" Rows="1">
+                                <TextBlock Text="全关" FontSize="40" VerticalAlignment="Center"/>
+                                <h:SwitchToggleButton IsChecked="{Binding Bool1}"/>
+                            </UniformGrid>
+                        </Border>
+                    </UniformGrid>
+                    <Separator DockPanel.Dock="Top" Margin="10"/>
+                    <ItemsControl>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{DynamicResource {x:Static h:BorderKeys.Card}}">
+                                    <UniformGrid Height="80" Columns="2" HorizontalAlignment="Center" Rows="1">
+                                        <TextBlock Text="{Binding Value}" FontSize="20" VerticalAlignment="Center"/>
+                                        <h:SwitchToggleButton IsChecked="{Binding Bool1}"/>
+                                    </UniformGrid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid VerticalAlignment="Top" Columns="4"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <h:TestViewModel Value="客厅" Bool1="True"/>
+                        <h:TestViewModel Value="厨房" Bool1="False"/>
+                        <h:TestViewModel Value="卧室" Bool1="True"/>
+                        <h:TestViewModel Value="阳台" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间1" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间2" Bool1="False"/>
+                        <h:TestViewModel Value="客厅" Bool1="True"/>
+                        <h:TestViewModel Value="厨房" Bool1="False"/>
+                        <h:TestViewModel Value="卧室" Bool1="True"/>
+                        <h:TestViewModel Value="阳台" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间1" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间2" Bool1="False"/>
+                        <h:TestViewModel Value="客厅" Bool1="True"/>
+                        <h:TestViewModel Value="厨房" Bool1="False"/>
+                        <h:TestViewModel Value="卧室" Bool1="True"/>
+                        <h:TestViewModel Value="阳台" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间1" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间2" Bool1="False"/>
+                        <h:TestViewModel Value="客厅" Bool1="True"/>
+                        <h:TestViewModel Value="厨房" Bool1="False"/>
+                        <h:TestViewModel Value="卧室" Bool1="True"/>
+                        <h:TestViewModel Value="阳台" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间1" Bool1="False"/>
+                        <h:TestViewModel Value="卫生间2" Bool1="False"/>
+                    </ItemsControl>
+                </DockPanel>
+            </DataTemplate>
+        </TabControl.ContentTemplate>-->
     </TabControl>
 </h:MainWindow>

@@ -14,4 +14,5 @@
 
         public string Text => $"-b:v {Bitrate}k";
     }
+    
 }

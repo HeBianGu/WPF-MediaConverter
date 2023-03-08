@@ -37,14 +37,19 @@ namespace HeBianGu.Domain.Converter
 
             Task.Run(() =>
             {
-                CreateMediaInfo(filePath);
-                TimeSpan timeSpan = this.InputMediaInfo.VedioAnalysis.Model.Duration / 10;
-                var bitmap = FFMpegImage.Snapshot(FilePath, null, timeSpan);
-                var source = ImageService.BitmapToBitmapImage(bitmap, x => x.DecodePixelWidth = 140);
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    this.ImageSource = source;
-                });
+                this.CreateMediaInfo(filePath);
+                this.CreateImageSource(filePath);
+            });
+        }
+
+        protected virtual void CreateImageSource(string filePath)
+        {
+            TimeSpan timeSpan = this.InputMediaInfo.VedioAnalysis.Model.Duration / 10;
+            var bitmap = FFMpegImage.Snapshot(FilePath, null, timeSpan);
+            var source = ImageService.BitmapToBitmapImage(bitmap, x => x.DecodePixelWidth = 140);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.ImageSource = source;
             });
         }
 
@@ -258,7 +263,7 @@ namespace HeBianGu.Domain.Converter
             return groupPath;
         }
 
-        protected virtual async Task<bool> StartAsync(IRelayCommand s, object e)
+        public virtual async Task<bool> StartAsync(IRelayCommand s, object e)
         {
             Value = 0.0;
             Message = "正在开始...";
@@ -329,10 +334,15 @@ namespace HeBianGu.Domain.Converter
             if (e is FrameworkElement element)
             {
                 var items = element.GetParent<ItemsControl>().GetParent<ItemsControl>();
-                if (items.ItemsSource is IList list)
+
+                if (items.DataContext is ConverterGroupBase group)
                 {
-                    list.Remove(this);
+                    group.Collection.Remove(this);
                 }
+                //if (items.ItemsSource is IList list)
+                //{
+                //    list.Remove(this);
+                //}
             }
             s.IsBusy = false;
         });

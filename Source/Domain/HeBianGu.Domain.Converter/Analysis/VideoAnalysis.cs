@@ -253,7 +253,6 @@ namespace HeBianGu.Domain.Converter
                                        .WithParameter("x", X)
                                        .WithParameter("y", Y));
                                    }
-
                                })
                                .WithFastStart();
         }

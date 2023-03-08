@@ -173,7 +173,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFMpegCore", "..\Source\Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFMpegCore.Extensions.System.Drawing.Common", "..\Source\Domain\FFMpegCore.Extensions.System.Drawing.Common\FFMpegCore.Extensions.System.Drawing.Common.csproj", "{B0E39660-EEDC-4BC1-B93E-811DBA8AF4D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeBianGu.Domain.Converter", "..\Source\Domain\HeBianGu.Domain.Converter\HeBianGu.Domain.Converter.csproj", "{23B84A86-11FB-481C-875A-5CA64B2E5977}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeBianGu.Domain.Converter", "..\Source\Domain\HeBianGu.Domain.Converter\HeBianGu.Domain.Converter.csproj", "{23B84A86-11FB-481C-875A-5CA64B2E5977}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
