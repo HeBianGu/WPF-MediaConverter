@@ -2,13 +2,15 @@
 using FFMpegCore.Enums;
 using FFMpegCore.Helpers;
 using HeBianGu.Base.WpfBase;
+using System;
 
 namespace HeBianGu.Domain.Converter
 {
     public class MuteConverterItem : VideoConverterItemBase
     {
-        public MuteConverterItem(string filePath) : base(filePath)
+        public MuteConverterItem(string filePath, Action<ConverterItemBase> builder = null) : base(filePath, builder)
         {
+            this.UseOutToolCommadNames = $"{nameof(PlayOutputCommand)},{nameof(ViewArgumentsCommand)},{nameof(OpenCommand)},{nameof(DeleteCommand)},{nameof(DeleteFileCommand)}";
 
         }
 

@@ -48,7 +48,7 @@ namespace HeBianGu.Domain.Converter
             }
         }
 
-        private VideoSize _videoSize = VideoSize.Ld;
+        private VideoSize _videoSize = VideoSize.LD;
         [Display(Name = "清晰度", GroupName = "配置", Description = "清晰度")]
         public VideoSize VideoSize
         {
@@ -62,14 +62,17 @@ namespace HeBianGu.Domain.Converter
 
         protected override ConverterItemBase CreateConverterItem(string filePath)
         {
-            var video = new VideoConverterItem(filePath);
-            video.OutputMediaInfo.VedioAnalysis.BitRate = (int)video.OutputMediaInfo.VedioAnalysis.BitRate * Persent;
-            video.OutputMediaInfo.VedioAnalysis.FrameRate = (int)video.OutputMediaInfo.VedioAnalysis.FrameRate * Persent;
-            video.OutputMediaInfo.VedioAnalysis.VideoSize = VideoSize;
-            //video.OutVideoFormat.PixelFormat=FFMpeg.GetPixelFormat()
-            video.OutputMediaInfo.VedioAnalysis.ConstantRateFactor = ConstantRateFactor;
-            //  Do ：编码速度越慢，则压缩效果及画质越好。preset选项的默认参数为medium
-            video.OutputMediaInfo.VedioAnalysis.Speed = Speed;
+            var video = new VideoConverterItem(filePath, x =>
+            {
+                x.OutputMediaInfo.VedioAnalysis.BitRate = (int)x.OutputMediaInfo.VedioAnalysis.BitRate * Persent;
+                x.OutputMediaInfo.VedioAnalysis.FrameRate = (int)x.OutputMediaInfo.VedioAnalysis.FrameRate * Persent;
+                x.OutputMediaInfo.VedioAnalysis.VideoSize = VideoSize;
+                //video.OutVideoFormat.PixelFormat=FFMpeg.GetPixelFormat()
+                x.OutputMediaInfo.VedioAnalysis.ConstantRateFactor = ConstantRateFactor;
+                //  Do ：编码速度越慢，则压缩效果及画质越好。preset选项的默认参数为medium
+                x.OutputMediaInfo.VedioAnalysis.Speed = Speed;
+            });
+
             return video;
         }
     }

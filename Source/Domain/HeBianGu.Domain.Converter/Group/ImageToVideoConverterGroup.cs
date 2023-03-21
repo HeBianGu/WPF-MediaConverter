@@ -1,16 +1,16 @@
 ﻿using HeBianGu.Base.WpfBase;
-using HeBianGu.Domain.Converter;
 using System;
 
 namespace HeBianGu.Domain.Converter
 {
-    [Vip(3)]
-    [Displayer(Name = "背景音乐", Icon = "\xe6ba", GroupName = "视频,音频", Order = 10, Description = "添加背景音乐")]
-    public class BackgroundConverterGroup : ConverterGroupBase
+    [Vip(1)]
+    [Displayer(Name = "图片转视频", Icon = "\xe7e7", GroupName = "视频", Order = 12, Description = "将一个JPG 图片 经过h264压缩循环输出为mp4视频")]
+    public class ImageToVideoConverterGroup : ConverterGroupBase
     {
         protected override ConverterItemBase CreateConverterItem(string filePath)
         {
             throw new NotImplementedException();
         }
     }
+
 }

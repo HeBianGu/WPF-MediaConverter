@@ -1,24 +1,30 @@
 ﻿using FFMpegCore;
+using FFMpegCore.Enums;
 using HeBianGu.Base.WpfBase;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using FFMpegImage = FFMpegCore.Extensions.System.Drawing.Common.FFMpegImage;
 
 namespace HeBianGu.Domain.Converter
 {
+    /// <summary>
+    /// ffmpeg -i test.avi -y -f image2 -ss 8 -t 0.001 -s 350x240 test.jpg
+    /// </summary>
     public class SnapshotConverterItem : ConverterItemBase
     {
-        public SnapshotConverterItem(string filePath) : base(filePath)
+        public SnapshotConverterItem(string filePath, Action<ConverterItemBase> builder) : base(filePath, builder)
         {
-            InputAnalysis = InputMediaInfo.VedioAnalysis;
-            OutputAnalysis = OutputMediaInfo.VedioAnalysis;
+            this.UseOutToolCommadNames = $"{nameof(PlayOutputCommand)},{nameof(OpenCommand)},{nameof(DeleteCommand)},{nameof(DeleteFileCommand)},{nameof(OutputTimePanCommand)},{nameof(SaveCommand)}";
         }
 
 
@@ -30,6 +36,15 @@ namespace HeBianGu.Domain.Converter
         public override MediaInfo CreateOutputMediaInfo(IMediaAnalysis mediaInfo)
         {
             return new SnapshotMediaInfo(mediaInfo, FilePath);
+
+
+        }
+
+        public override void CreateMediaInfo(string filePath)
+        {
+            base.CreateMediaInfo(filePath);
+            InputAnalysis = InputMediaInfo.VedioAnalysis;
+            OutputAnalysis = OutputMediaInfo.VedioAnalysis;
         }
 
         protected override bool Start(IRelayCommand s, object e)
@@ -41,16 +56,17 @@ namespace HeBianGu.Domain.Converter
                 snapshotVideoAnalysis.Collection.Clear();
             });
 
-            var span = InputMediaInfo.Model.Duration.Ticks / snapshotVideoAnalysis.Count;
-            for (long i = 0; i < InputMediaInfo.Model.Duration.Ticks; i = i + span)
+            var timeSpan = this.OutputMediaInfo.VedioAnalysis.EndTime - this.OutputMediaInfo.VedioAnalysis.StartTime;
+            var span = timeSpan.Ticks / snapshotVideoAnalysis.Count;
+            for (long i = this.OutputMediaInfo.VedioAnalysis.StartTime.Ticks; i < this.OutputMediaInfo.VedioAnalysis.EndTime.Ticks; i = i + span)
             {
-                var bitmap = FFMpegImage.Snapshot(FilePath, null, TimeSpan.FromTicks(i));
-                var source = ImageService.BitmapToBitmapImage(bitmap);
+                var bitmap = FFMpegImage.Snapshot(this.FilePath, null, TimeSpan.FromTicks(i));
+                ImageSource source = ImageService.BitmapToBitmapImage(bitmap);
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
                           {
-                              snapshotVideoAnalysis.Collection.Add(source);
-                              Value = i * 1.0 / InputMediaInfo.Model.Duration.Ticks * 1.0 * 100.0;
-                              if (i == InputMediaInfo.Model.Duration.Ticks)
+                              snapshotVideoAnalysis.Collection.Add(Tuple.Create(TimeSpan.FromTicks(i), source));
+                              Value = i * 1.0 / timeSpan.Ticks * 1.0 * 100.0;
+                              if (i == timeSpan.Ticks)
                                   Message = "完成";
                               else
                                   Message = Math.Round(Value, 2) + "/100";
@@ -59,11 +75,29 @@ namespace HeBianGu.Domain.Converter
             return true;
         }
 
-        [Displayer(Name = "设置输出参数", Icon = Icons.Set, GroupName = "操作,输出", Description = "设置输出参数")]
-        public RelayCommand OutPutSetCommand => new RelayCommand(async (s, e) =>
+        [Displayer(Name = "保存截图", Icon = "\xe8cb", GroupName = "操作,输出", Description = "保存截图")]
+        public RelayCommand SaveCommand => new RelayCommand(async (s, e) =>
         {
-            await MessageProxy.PropertyGrid.ShowEdit(OutputMediaInfo.VedioAnalysis, null, "设置输出参数");
+            SnapshotVideoAnalysis snapshotVideoAnalysis = OutputAnalysis as SnapshotVideoAnalysis;
+            var collection = snapshotVideoAnalysis.Collection;
+            if (!Directory.Exists(this.OutputPath))
+                Directory.CreateDirectory(this.OutputPath);
+            await MessageProxy.Messager.ShowWaitter(() =>
+              {
+                  foreach (var item in collection)
+                  {
+                      var bitmap = ImageService.ImageSourceToBitmap(item.Item2);
+                      //var p = System.IO.Path.Combine(this.OutputPath, item.Item1.ToString().Split('.')[0] + FileExtension.Png);
+                      var p = System.IO.Path.Combine(this.OutputPath, item.Item1.TimespanToDislay() + FileExtension.Png);
+                      bitmap.Save(System.IO.Path.Combine(this.OutputPath, p));
+                  }
+              });
         });
+
+        protected override string CreateOutputPath(string groupPath)
+        {
+            return System.IO.Path.Combine(groupPath, System.IO.Path.GetFileNameWithoutExtension(FilePath));
+        }
     }
 
     public class SnapshotMediaInfo : MediaInfo
@@ -88,8 +122,8 @@ namespace HeBianGu.Domain.Converter
         }
 
 
-        private int _count = 10;
-        [DefaultValue(10)]
+        private int _count = 12;
+        [DefaultValue(12)]
         [Display(Name = "截图数量", GroupName = "视频", Description = "截图数量")]
         public int Count
         {
@@ -102,9 +136,9 @@ namespace HeBianGu.Domain.Converter
         }
 
 
-        private ObservableCollection<ImageSource> _collection = new ObservableCollection<ImageSource>();
+        private ObservableCollection<Tuple<TimeSpan, ImageSource>> _collection = new ObservableCollection<Tuple<TimeSpan, ImageSource>>();
         /// <summary> 说明  </summary>
-        public ObservableCollection<ImageSource> Collection
+        public ObservableCollection<Tuple<TimeSpan, ImageSource>> Collection
         {
             get { return _collection; }
             set

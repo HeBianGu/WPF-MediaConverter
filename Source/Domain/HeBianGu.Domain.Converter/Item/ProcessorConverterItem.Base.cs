@@ -12,7 +12,7 @@ namespace HeBianGu.Domain.Converter
     {
         protected Action _cancel = null;
 
-        public ProcessorConverterItemBase(string filePath) : base(filePath)
+        public ProcessorConverterItemBase(string filePath, Action<ConverterItemBase> builder) : base(filePath, builder)
         {
 
         }
@@ -86,7 +86,7 @@ namespace HeBianGu.Domain.Converter
         {
             var processor = CreateProcessor();
             MessageProxy.PropertyGrid.ShowView(processor, null, "查看命令参数");
-        });
+        }, (s, e) => this.IsBuzy == false);
 
         protected override bool Start(IRelayCommand s, object e)
         {
@@ -103,6 +103,16 @@ namespace HeBianGu.Domain.Converter
             StartTime = DateTime.Now;
             var process = CreateProcessor();
             StartProcessor(process);
+
+            if(File.Exists(this.OutputPath))
+            {
+                this.OutputMediaInfo.VedioAnalysis.Size = new FileInfo(this.OutputPath).Length;
+                this.OutputMediaInfo.AudioAnalysis.Size = new FileInfo(this.OutputPath).Length;
+                this.OutputAnalysis = this.InputMediaInfo.VedioAnalysis;
+                this.OutputAnalysis = this.OutputMediaInfo.VedioAnalysis;
+
+                this.RefreshAnalysis();
+            }
             return true;
         }
 

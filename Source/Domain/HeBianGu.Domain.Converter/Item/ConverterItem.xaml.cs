@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,7 +25,7 @@ namespace HeBianGu.Domain.Converter
 
     public abstract class ConverterItemBase : ItemBase
     {
-        public ConverterItemBase(string filePath)
+        public ConverterItemBase(string filePath, Action<ConverterItemBase> builder)
         {
             FilePath = filePath;
             FileName = Path.GetFileName(filePath);
@@ -37,10 +38,43 @@ namespace HeBianGu.Domain.Converter
 
             Task.Run(() =>
             {
-                this.CreateMediaInfo(filePath);
-                this.CreateImageSource(filePath);
+                try
+                {
+                    this.IsBuzy = true;
+                    this.CreateMediaInfo(filePath);
+                    this.CreateImageSource(filePath);
+                    builder?.Invoke(this);
+                    this.RefreshAnalysis();
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    this.IsBuzy = false;
+                }
             });
         }
+
+        protected virtual void RefreshAnalysis()
+        {
+
+        }
+
+        private string _useOutToolCommadNames;
+        [Browsable(false)]
+        public string UseOutToolCommadNames
+        {
+            get { return _useOutToolCommadNames; }
+            set
+            {
+                _useOutToolCommadNames = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         protected virtual void CreateImageSource(string filePath)
         {
@@ -76,16 +110,19 @@ namespace HeBianGu.Domain.Converter
             result.Size = new FileInfo(FilePath).Length;
             result.VedioAnalysis.Codecs = FFMpeg.GetCodecs().Where(x => x.Type == CodecType.Video).ToList().AsReadOnly();
             //  Do ：假定DemuxingSupported==true表示音频
-            result.VedioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().Where(x => x.DemuxingSupported == false).ToList().AsReadOnly();
+            result.VedioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().ToList().AsReadOnly();
             result.VedioAnalysis.PixelFormats = FFMpeg.GetPixelFormats();
-            result.VedioAnalysis.Size = result.Size;
+            //result.VedioAnalysis.Size = result.Size;
             result.AudioAnalysis.Codecs = FFMpeg.GetCodecs().Where(x => x.Type == CodecType.Audio).ToList().AsReadOnly();
             //  Do ：假定DemuxingSupported==true表示音频
-            result.AudioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().Where(x => x.DemuxingSupported == true).ToList().AsReadOnly();
-            result.AudioAnalysis.Size = result.Size;
+            result.AudioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().ToList().AsReadOnly();
+            //result.AudioAnalysis.Size = result.Size;
 
-
-            //result.Meta.Copyright
+            result.Meta.Software = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyProductAttribute>()?.Product;
+            result.Meta.Copyright = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright;
+            result.Meta.Composers = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
+            result.Meta.Creation_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            result.Meta.Title = this.FileName;
             return result;
         }
 
@@ -237,14 +274,14 @@ namespace HeBianGu.Domain.Converter
         public RelayCommand StartCommand => new RelayCommand(async (s, e) =>
         {
             await StartAsync(s, e);
-        });
+        }, (s, e) => this.IsBuzy == false);
 
 
         [Displayer(Name = "播放源文件", Icon = Icons.Play, GroupName = "操作,输入", Description = "播放源文件", Order = 1)]
         public RelayCommand PlayInputCommand => new RelayCommand((s, e) =>
         {
             Process.Start(new ProcessStartInfo("ffplay.exe", FilePath) { UseShellExecute = true });
-        }, (s, e) => File.Exists(FilePath));
+        });
 
 
         [Displayer(Name = "播放输出文件", Icon = Icons.Play, GroupName = "操作,输出", Description = "播放输出文件", Order = 1)]
@@ -252,6 +289,15 @@ namespace HeBianGu.Domain.Converter
         {
             Process.Start(new ProcessStartInfo("ffplay.exe", OutputPath) { UseShellExecute = true });
         }, (s, e) => File.Exists(OutputPath));
+
+        [Displayer(Name = "设置截取时间段", Icon = Icons.Clock, GroupName = "操作,输出", Description = "设置截取时间段")]
+        public RelayCommand OutputTimePanCommand => new RelayCommand(async (s, e) =>
+        {
+            await MessageProxy.PropertyGrid.ShowEdit(OutputAnalysis, null, "设置截取时间段", x => x.UseGroupNames = "截取时间");
+
+            //(视频码率 + 音频码率) * 时长 / 8 = 文件大小
+            OutputMediaInfo.Size = (long)((OutputMediaInfo.VedioAnalysis.BitRate + OutputMediaInfo.VedioAnalysis.BitRate) * OutputMediaInfo.Model.Duration.TotalSeconds / 8);
+        }, (s, e) => this.IsBuzy == false);
 
         protected virtual bool Start(IRelayCommand s, object e)
         {
@@ -271,9 +317,9 @@ namespace HeBianGu.Domain.Converter
             {
                 IsBuzy = true;
                 s.IsBusy = true;
-                OutputPath = CreateOutputPath(group.OutPath);
-                if (!Directory.Exists(Path.GetDirectoryName(OutputPath)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
+                this.OutputPath = CreateOutputPath(group.OutPath);
+                if (!Directory.Exists(Path.GetDirectoryName(this.OutputPath)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(this.OutputPath));
                 return await Task.Run(() =>
                  {
                      try
@@ -299,7 +345,7 @@ namespace HeBianGu.Domain.Converter
             return false;
         }
 
-        [Displayer(Name = "停止转换", Icon = Icons.Stop, GroupName = "转换", Description = "处理器相关数据监控")]
+        [Displayer(Name = "停止转换", Icon = Icons.Stop, GroupName = "转换", Description = "停止转换")]
         public RelayCommand StopCommand => new RelayCommand(async (s, e) =>
         {
             s.IsBusy = true;
@@ -310,11 +356,11 @@ namespace HeBianGu.Domain.Converter
 
         protected abstract Task<bool> StopAsnyc(IRelayCommand s, object e);
 
-        [Displayer(Name = "信息和章节", Icon = "\xea5c", GroupName = "操作,输出", Description = "设置文件信息", Order = 96)]
+        [Displayer(Name = "信息和章节", Icon = "\xe761", GroupName = "操作,输出", Description = "设置信息和章节", Order = 96)]
         public RelayCommand SetMetaDataCommand => new RelayCommand((s, e) =>
         {
-            MessageProxy.PropertyGrid.ShowEdit(OutputMediaInfo.Meta, null, "设置文件信息", x => x.UseEnumerator = true);
-        });
+            MessageProxy.PropertyGrid.ShowEdit(OutputMediaInfo.Meta, null, "设置信息和章节", x => x.UseEnumerator = true);
+        }, (s, e) => this.IsBuzy == false);
 
 
         [Displayer(Name = "打开文件夹", Icon = Icons.OpenFolder, GroupName = "操作,输出", Description = "处理器相关数据监控", Order = 97)]

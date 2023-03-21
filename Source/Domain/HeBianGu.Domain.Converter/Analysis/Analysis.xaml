@@ -60,10 +60,13 @@
     </DataTemplate>-->
 
     <DataTemplate DataType="{x:Type local:VideoAnalysis}">
-        <h:PropertyGrid SelectObject="{Binding}" UsePropertyView="True" UseGroupNames="视频" Style="{DynamicResource {x:Static h:PropertyGrid.ClearlyKey}}">
+        <h:PropertyGrid SelectObject="{Binding}"
+                        Style="{DynamicResource {x:Static h:PropertyGrid.ClearlyKey}}"
+                        UseGroupNames="视频"
+                        UsePropertyView="True">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="3"/>
+                    <UniformGrid Columns="3" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </h:PropertyGrid>
@@ -170,7 +173,7 @@
         </UniformGrid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type local:SnapshotVideoAnalysis}">
+    <!--<DataTemplate DataType="{x:Type local:SnapshotVideoAnalysis}">
         <ItemsControl ItemsSource="{Binding Collection}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -179,10 +182,10 @@
                             <Image Width="60"
                                    Height="Auto"
                                    Margin="2"
-                                   Source="{Binding}">
+                                   Source="{Binding Item2}">
                                 <Image.ToolTip>
                                     <ToolTip Height="Auto">
-                                        <Image Width="500" Margin="2" Source="{Binding}" />
+                                        <Image Width="500" Margin="2" Source="{Binding Item2}" />
                                     </ToolTip>
                                 </Image.ToolTip>
                             </Image>
@@ -191,6 +194,7 @@
                                     <h:RemoveItemVisualTreeButtonBehavior />
                                 </h:Interaction.Behaviors>
                             </Button>
+                            <TextBlock Effect="{DynamicResource {x:Static h:EffectShadowKeys.Default1}}" Foreground="White" Text="{Binding Item1}" />
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -201,5 +205,5 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-    </DataTemplate>
+    </DataTemplate>-->
 </ResourceDictionary>

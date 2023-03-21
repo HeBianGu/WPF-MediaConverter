@@ -4,14 +4,15 @@ using System.ComponentModel;
 using System.Xml.Linq;
 using FFMpegCore.Enums;
 using System.Linq;
+using System;
 
 namespace HeBianGu.Domain.Converter
 {
     public class SubVideoConverterItem : VideoConverterItemBase
     {
-        public SubVideoConverterItem(string filePath) : base(filePath)
+        public SubVideoConverterItem(string filePath, Action<ConverterItemBase> builder = null) : base(filePath, builder)
         {
-
+            this.UseOutToolCommadNames = $"{nameof(PlayOutputCommand)},{nameof(ViewArgumentsCommand)},{nameof(OpenCommand)},{nameof(DeleteCommand)},{nameof(DeleteFileCommand)},{nameof(OutputTimePanCommand)}";
         }
 
         public override MediaInfo CreateOutputMediaInfo(IMediaAnalysis mediaInfo)
@@ -19,33 +20,14 @@ namespace HeBianGu.Domain.Converter
             return new SubMediaInfo(mediaInfo, FilePath);
         }
 
-        private bool _useCopyChannel = true;
-        [DefaultValue(true)]
-        [Display(Name = "复制通道", GroupName = "配置", Description = "启用后不转码，运行速度快")]
-        public bool UseCopyChannel
-        {
-            get { return _useCopyChannel; }
-            set
-            {
-                _useCopyChannel = value;
-                RaisePropertyChanged();
-            }
-        }
-
         protected override void CreateArguments(FFMpegArgumentOptions options)
         {
-            if (UseCopyChannel)
-            {
-                options.CopyChannel(Channel.All)
-                    .UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading)
-                    .Seek(OutputMediaInfo.VedioAnalysis.StartTime)
-                    .EndSeek(OutputMediaInfo.VedioAnalysis.EndTime)
-                    .WithFastStart();
-            }
-            else
-            {
-                base.CreateArguments(options);
-            }
+            //options.CopyChannel(Channel.All)
+            options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading)
+                .Seek(OutputMediaInfo.VedioAnalysis.StartTime)
+                .EndSeek(OutputMediaInfo.VedioAnalysis.EndTime)
+                .WithFastStart();
+
         }
     }
 

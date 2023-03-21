@@ -1,14 +1,15 @@
 ﻿using FFMpegCore;
 using FFMpegCore.Arguments;
 using FFMpegCore.Enums;
+using System;
 
 namespace HeBianGu.Domain.Converter
 {
     public class DrawTextConverterItem : VideoConverterItemBase
     {
-        public DrawTextConverterItem(string filePath) : base(filePath)
+        public DrawTextConverterItem(string filePath, Action<ConverterItemBase> builder) : base(filePath, builder)
         {
-
+            this.UseOutToolCommadNames = $"{nameof(PlayOutputCommand)},{nameof(OutputWaterSetCommand)},{nameof(OpenCommand)},{nameof(DeleteCommand)},{nameof(ViewArgumentsCommand)},{nameof(DeleteFileCommand)}";
         }
 
         protected override void CreateArguments(FFMpegArgumentOptions options)

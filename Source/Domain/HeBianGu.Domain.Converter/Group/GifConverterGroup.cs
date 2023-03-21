@@ -6,15 +6,18 @@ using System.Xml.Linq;
 
 namespace HeBianGu.Domain.Converter
 {
+   
     [Displayer(Name = "视频转Gif", Icon = "\xe805", GroupName = "视频", Order = 1, Description = "截取视频一段数据生成gif文件")]
     public class GifConverterGroup : ConverterGroupBase
     {
         protected override ConverterItemBase CreateConverterItem(string filePath)
         {
-            var result = new GifConverterItem(filePath);
-            result.OutputMediaInfo.VedioAnalysis.FrameRate = FrameRate;
-            result.OutputMediaInfo.VedioAnalysis.VideoSize = VideoSize;
-            result.OutputMediaInfo.VedioAnalysis.Speed = Speed;
+            var result = new GifConverterItem(filePath, x =>
+            {
+                x.OutputMediaInfo.VedioAnalysis.FrameRate = FrameRate;
+                x.OutputMediaInfo.VedioAnalysis.VideoSize = VideoSize;
+                x.OutputMediaInfo.VedioAnalysis.Speed = Speed;
+            });
             return result;
         }
 
@@ -31,7 +34,7 @@ namespace HeBianGu.Domain.Converter
             }
         }
 
-        private VideoSize _videoSize = VideoSize.Ld;
+        private VideoSize _videoSize = VideoSize.LD;
         [Displayer(Name = "默认清晰度", Icon = "\xe751", GroupName = "配置", Description = "默认清晰度")]
         public VideoSize VideoSize
         {

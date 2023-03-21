@@ -101,6 +101,14 @@
                 <Setter Property="h:Cattach.Icon" Value="{Binding Icon}" />
                 <Setter Property="h:Cattach.IconSize" Value="15" />
                 <Setter Property="h:Cattach.UseGuide" Value="True" />
+                <Setter Property="h:VipAttach.Level" Value="{Binding Vip}"/>
+                <Setter Property="h:Cattach.Behaviors">
+                    <Setter.Value>
+                        <h:Behaviors>
+                            <h:LoadedAdornerBehavior AdornerType="{x:Type h:VipAdorner}"/>
+                        </h:Behaviors>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </TabControl.ItemContainerStyle>
         <h:Interaction.Triggers>
@@ -170,5 +178,35 @@
                 </DockPanel>
             </DataTemplate>
         </TabControl.ContentTemplate>-->
+
+
+        <!--<StackPanel>
+        <h:PropertyGrid x:Name="p" UseGroup="True">
+            <h:PropertyGrid.SelectObject>
+                <h:Student/>
+            </h:PropertyGrid.SelectObject>
+            <ItemsControl.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource {x:Static h:GroupItemKeys.GroupTitle}}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter />
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </ItemsControl.GroupStyle>
+        </h:PropertyGrid>
+
+        <ItemsControl ItemsSource="{Binding ElementName=p,Path=ItemsSource}">
+            <ItemsControl.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource {x:Static h:GroupItemKeys.GroupTitle}}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter />
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </ItemsControl.GroupStyle>
+        </ItemsControl>
+    </StackPanel>-->
     </TabControl>
 </h:MainWindow>

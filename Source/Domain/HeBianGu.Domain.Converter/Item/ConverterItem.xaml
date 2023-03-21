@@ -15,7 +15,7 @@
                                         Style="{DynamicResource {x:Static h:PropertyGrid.CommandIconKey}}"
                                         UseGroupNames="输入" />
                         <Border Background="Black">
-                            <Image Source="{Binding ImageSource}" RenderOptions.BitmapScalingMode="LowQuality"/>
+                            <Image RenderOptions.BitmapScalingMode="LowQuality" Source="{Binding ImageSource}" />
                         </Border>
                     </DockPanel>
 
@@ -40,8 +40,8 @@
                                           h:Cattach.IconSize="10"
                                           Command="{Binding StartCommand}"
                                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext}"
-                                          Content="转换"
-                                          Message="转换中"
+                                          Content="开始"
+                                          Message="运行中"
                                           ToolTip="点击更多，显示详细数据" />
 
                         <h:ProgressButton Grid.Row="0"
@@ -138,7 +138,7 @@
                                     </DataTemplate>
                                 </ContentPresenter.Resources>
                             </ContentPresenter>
-                            
+
                             <ContentPresenter Grid.Column="2" VerticalAlignment="Top" Content="{Binding OutputAnalysis}">
                                 <ContentPresenter.Resources>
                                     <DataTemplate DataType="{x:Type local:VideoAnalysis}">
@@ -169,13 +169,17 @@
                                                             <Image Width="60"
                                                                    Height="Auto"
                                                                    Margin="2"
-                                                                   Source="{Binding}">
+                                                                   Source="{Binding Item2}">
                                                                 <Image.ToolTip>
                                                                     <ToolTip Height="Auto">
-                                                                        <Image Width="500" Margin="2" Source="{Binding}" />
+                                                                        <Grid>
+                                                                            <Image Width="500" Margin="2" Source="{Binding Item2}" />
+                                                                            <TextBlock Effect="{DynamicResource {x:Static h:EffectShadowKeys.Default1}}" Foreground="White" Text="{Binding Item1}" />
+                                                                        </Grid>
                                                                     </ToolTip>
                                                                 </Image.ToolTip>
                                                             </Image>
+
                                                             <Button Margin="0,0" Style="{DynamicResource {x:Static h:ButtonKeys.CloseFlag}}" Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}">
                                                                 <h:Interaction.Behaviors>
                                                                     <h:RemoveItemVisualTreeButtonBehavior />
@@ -233,6 +237,7 @@
                             SelectObject="{Binding}"
                             Style="{DynamicResource {x:Static h:PropertyGrid.CommandMouseOverKey}}"
                             UseGroupNames="输出"
+                            UsePropertyNames="{Binding UseOutToolCommadNames}"
                             Visibility="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=IsMouseOver, Converter={x:Static h:Converter.GetTrueToVisible}}" />
         </Grid>
     </DataTemplate>

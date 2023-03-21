@@ -1,16 +1,19 @@
 ﻿using FFMpegCore;
+using FFMpegCore.Arguments;
 using FFMpegCore.Enums;
 using HeBianGu.Base.WpfBase;
 using System;
 using System.IO;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HeBianGu.Domain.Converter
 {
     public class GifConverterItem : VideoConverterItemBase
     {
-        public GifConverterItem(string filePath) : base(filePath)
+        public GifConverterItem(string filePath, Action<ConverterItemBase> builder) : base(filePath, builder)
         {
+            this.UseOutToolCommadNames = $"{nameof(OutputWaterSetCommand)},{nameof(PlayOutputCommand)},{nameof(OpenCommand)},{nameof(DeleteCommand)},{nameof(DeleteFileCommand)},{nameof(OutputVedioSetCommand)},{nameof(OutputTimePanCommand)}";
 
         }
 
@@ -41,15 +44,14 @@ namespace HeBianGu.Domain.Converter
             }
             StartTime = DateTime.Now;
             var subProcess = FFMpegArguments.FromFileInput(FilePath).OutputToFile(subOutputPath, false,
-                options => options.CopyChannel(Channel.All)
-                .UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading)
+                options => options.UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading)
                 .Seek(OutputMediaInfo.VedioAnalysis.StartTime)
                 .EndSeek(OutputMediaInfo.VedioAnalysis.EndTime)
                 .WithFastStart());
             StartProcessor(subProcess);
 
             var gifProcess = FFMpegArguments.FromFileInput(subOutputPath).OutputToFile(OutputPath, false,
-               options => options.DisableChannel(Channel.Audio).WithVideoCodec(OutputMediaInfo.VedioAnalysis.Codec)
+               options => options.WithVideoCodec(OutputMediaInfo.VedioAnalysis.Codec)
                              .WithFramerate(OutputMediaInfo.VedioAnalysis.FrameRate)
                              .WithVideoBitrate((int)OutputMediaInfo.VedioAnalysis.BitRate)
                              .ForcePixelFormat(OutputMediaInfo.VedioAnalysis.PixelFormat)
@@ -57,11 +59,25 @@ namespace HeBianGu.Domain.Converter
                              .UsingMultithreading(FFmpegSetting.Instance.UsingMultithreading)
                              .WithConstantRateFactor(OutputMediaInfo.VedioAnalysis.ConstantRateFactor)
                              .WithVariableBitrate(OutputMediaInfo.VedioAnalysis.VariableBitrate)
-                             .WithVideoFilters(filterOptions => filterOptions
-                             .Scale(OutputMediaInfo.VedioAnalysis.VideoSize))
+                             .WithVideoFilters(filterOptions =>
+                             {
+                                 filterOptions.Scale(OutputMediaInfo.VedioAnalysis.VideoSize);
+                                 if (this.OutputMediaInfo.VedioAnalysis.UseDrawText && !string.IsNullOrEmpty(this.OutputMediaInfo.VedioAnalysis.Text))
+                                 {
+                                     filterOptions
+                                     .DrawText(DrawTextOptions
+                                     .Create(this.OutputMediaInfo.VedioAnalysis.Text, "")
+                                     .WithParameter("fontcolor", this.OutputMediaInfo.VedioAnalysis.Fontcolor)
+                                     .WithParameter("fontsize", this.OutputMediaInfo.VedioAnalysis.FontSize.ToString())
+                                     .WithParameter("box", this.OutputMediaInfo.VedioAnalysis.Box ? "1" : "0")
+                                     .WithParameter("boxcolor", this.OutputMediaInfo.VedioAnalysis.Boxcolor)
+                                     .WithParameter("boxborderw", this.OutputMediaInfo.VedioAnalysis.Boxborderw.ToString())
+                                     .WithParameter("x", this.OutputMediaInfo.VedioAnalysis.X)
+                                     .WithParameter("y", this.OutputMediaInfo.VedioAnalysis.Y));
+                                 }
+                             })
                              .WithFastStart());
             StartProcessor(gifProcess);
-
             File.Delete(subOutputPath);
             return true;
         }
@@ -90,7 +106,7 @@ namespace HeBianGu.Domain.Converter
             ContainerFormat = ContainerFormats?.FirstOrDefault();
             Codec = Codecs?.FirstOrDefault();
             FrameRate = 5;
-            VideoSize = VideoSize.Ld;
+            VideoSize = VideoSize.LD;
             Speed = Speed.VerySlow;
         }
     }

@@ -2,6 +2,7 @@
 using FFMpegCore.Enums;
 using HeBianGu.Base.WpfBase;
 using HeBianGu.Control.PropertyGrid;
+using HeBianGu.Service.TypeConverter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -117,8 +118,9 @@ namespace HeBianGu.Domain.Converter
         }
 
         private long _size;
+        [TypeConverter(typeof(FileSizeDisplayTypeConverter))]
         [ReadOnly(true)]
-        [Displayer(Name = "文件大小", GroupName = "视频,音频", Description = "文件大小", Icon = "\xe7a3")]
+        [Displayer(Name = "文件大小", GroupName = "视频,音频,输入参数,输出参数", Description = "文件大小", Icon = "\xe7a3")]
         public long Size
         {
             get { return _size; }
@@ -130,6 +132,7 @@ namespace HeBianGu.Domain.Converter
         }
 
         private double _bitRate;
+        [Unit("bps")]
         [Displayer(Name = "码率", GroupName = "视频,音频,输入参数,输出参数", Description = "值越大效果越好，占用资源越多", Icon = "\xe7a5")]
         //[Range(0, 8000 * 1000, ErrorMessage = "512-8000")]
         public double BitRate
@@ -157,7 +160,7 @@ namespace HeBianGu.Domain.Converter
         }
 
         private TimeSpan _startTime;
-        [Displayer(Name = "截取起始时间", GroupName = "视频,音频,输入参数,输出参数", Icon = "\xe84d")]
+        [Displayer(Name = "截取起始时间", GroupName = "视频,音频,输入参数,截取时间", Icon = "\xe84d")]
         [TypeConverter(typeof(TimeSpanConverter))]
         public TimeSpan StartTime
         {
@@ -171,7 +174,7 @@ namespace HeBianGu.Domain.Converter
 
         private TimeSpan _endTime;
         //[ReadOnly(true)]
-        [Displayer(Name = "截取结束时间", GroupName = "视频,音频,输入参数,输出参数", Icon = "\xe84d")]
+        [Displayer(Name = "截取结束时间", GroupName = "视频,音频,输入参数,截取时间", Icon = "\xe84d")]
         [TypeConverter(typeof(TimeSpanConverter))]
         public TimeSpan EndTime
         {

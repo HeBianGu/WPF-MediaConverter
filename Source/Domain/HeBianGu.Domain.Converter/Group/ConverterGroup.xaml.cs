@@ -16,9 +16,15 @@ using System.Windows.Threading;
 
 namespace HeBianGu.Domain.Converter
 {
-    /// <summary> 说明</summary>
+    [Vip(-1)]
     public abstract class GroupBase : DisplayerViewModelBase
     {
+        public GroupBase()
+        {
+            var att = this.GetType().GetCustomAttribute<VipAttribute>(true);
+            if (att != null)
+                this.Vip = att.Level;
+        }
         public override void LoadDefault()
         {
             base.LoadDefault();
@@ -40,6 +46,19 @@ namespace HeBianGu.Domain.Converter
         }
 
 
+        private int _vip = -1;
+        /// <summary> 说明  </summary>
+        public int Vip
+        {
+            get { return _vip; }
+            set
+            {
+                _vip = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
         //private bool _combineAll;
         //[Displayer(Name = "合并全部文件", Icon = "\xe751", GroupName = "配置", Description = "处理器相关数据监控")]
         //public bool CombineAll
@@ -52,34 +71,54 @@ namespace HeBianGu.Domain.Converter
         //    }
         //}
 
+        private ObservableSource<ConverterItemBase> _collection = new ObservableSource<ConverterItemBase>();
+        /// <summary> 说明  </summary>
+        public ObservableSource<ConverterItemBase> Collection
+        {
+            get { return _collection; }
+            set
+            {
+                _collection = value;
+                RaisePropertyChanged();
+            }
+        }
 
+        [Displayer(Name = "添加任务", Icon = "\xe6e1", GroupName = "工具栏", Description = "添加任务")]
+        public RelayCommand AddFileCommand => new RelayCommand(async (s, e) =>
+        {
+            await this.CreateConverterItemAsync();
+        });
+
+        protected abstract Task CreateConverterItemAsync();
     }
 
     /// <summary> 说明</summary>
     public abstract class ConverterGroupBase : GroupBase
     {
-        [Displayer(Name = "添加文件", Icon = "\xe6e1", GroupName = "工具栏", Description = "处理器相关数据监控")]
-        public RelayCommand AddFileCommand => new RelayCommand(async (s, e) =>
+        protected override async Task CreateConverterItemAsync()
         {
             //var fromats = FFMpeg.GetContainerFormats();
             //var extensions = fromats.Select(x => $"{x.Name}文件(*{x.Extension})|*{x.Extension}");
             OpenFileDialog openFileDialog = new OpenFileDialog();
             //openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory; //设置初始路径
-            openFileDialog.Filter = "MP4文件(*.mp4)|*.mp4|所有文件(*.*)|*.*"; //设置“另存为文件类型”或“文件类型”框中出现的选择内容
+            string p = "*.wmv;*.asf;*.asx;*.rm;*.rmvb;*.mpg;*.mpeg;*.mpe;*.3gp;*.mov;*.mp4;*.m4v;*.avi;*.dat;*.mkv;*.flv;*.vob;*.dat;*.bdmv;";
+            //openFileDialog.Filter = "MP4文件(*.mp4)|*.mp4|所有文件(*.*)|*.*"; //设置“另存为文件类型”或“文件类型”框中出现的选择内容
+            openFileDialog.Filter = $"视频文件|{p}|所有文件(*.*)|*.*"; //设置“另存为文件类型”或“文件类型”框中出现的选择内容
             //openFileDialog.Filter = "所有文件(*.*)|*.*"; //设置“另存为文件类型”或“文件类型”框中出现的选择内容
-            openFileDialog.FilterIndex = 2; //设置默认显示文件类型为Csv文件(*.csv)|*.csv
+            openFileDialog.FilterIndex = 1; //设置默认显示文件类型为Csv文件(*.csv)|*.csv
             openFileDialog.Title = "打开文件"; //获取或设置文件对话框标题
             openFileDialog.RestoreDirectory = true; //设置对话框是否记忆上次打开的目录
             openFileDialog.Multiselect = false;//设置多选
             if (openFileDialog.ShowDialog() != true)
                 return;
             var item = await MessageProxy.Messager.ShowWaitter(() =>
-              {
-                  return CreateConverterItem(openFileDialog.FileName);
-              });
+            {
+                return CreateConverterItem(openFileDialog.FileName);
+            });
             Collection.Add(item);
             MessageProxy.Snacker.ShowTime("添加完成");
-        });
+        }
+
 
         protected abstract ConverterItemBase CreateConverterItem(string filePath);
 
@@ -113,14 +152,14 @@ namespace HeBianGu.Domain.Converter
             MessageProxy.Snacker.ShowTime("添加完成");
         });
 
-        [Displayer(Name = "转换全部", Icon = "\xe8dc", GroupName = "工具栏", Description = "处理器相关数据监控")]
-        public RelayCommand ConvertAllCommand => new RelayCommand((s, e) =>
-        {
-            if (e is string project)
-            {
+        //[Displayer(Name = "转换全部", Icon = "\xe8dc", GroupName = "工具栏", Description = "处理器相关数据监控")]
+        //public RelayCommand ConvertAllCommand => new RelayCommand((s, e) =>
+        //{
+        //    if (e is string project)
+        //    {
 
-            }
-        });
+        //    }
+        //});
 
         [Displayer(Name = "清空", Icon = "\xe844", GroupName = "工具栏", Description = "处理器相关数据监控")]
         public RelayCommand ClearCommand => new RelayCommand((s, e) =>
@@ -131,18 +170,6 @@ namespace HeBianGu.Domain.Converter
             });
             Collection.Clear();
         });
-
-        private ObservableSource<ConverterItemBase> _collection = new ObservableSource<ConverterItemBase>();
-        /// <summary> 说明  </summary>
-        public ObservableSource<ConverterItemBase> Collection
-        {
-            get { return _collection; }
-            set
-            {
-                _collection = value;
-                RaisePropertyChanged();
-            }
-        }
 
     }
 }

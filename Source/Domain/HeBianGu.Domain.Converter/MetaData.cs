@@ -29,8 +29,8 @@ namespace HeBianGu.Domain.Converter
             //    this.alb = album;
             if (model.Format.Tags.TryGetValue("genre", out var genre))
                 this.Genres = genre;
-            //if (model.Format.Tags.TryGetValue("comment", out var comment))
-            //    this.Title = comment;
+            if (model.Format.Tags.TryGetValue("comment", out var comment))
+                this.Comment = comment;
             //if (model.Format.Tags.TryGetValue("encoder", out var encoder))
             //    this.Title = encoder;
             //if (model.Format.Tags.TryGetValue("major_brand", out var major_brand))
@@ -121,6 +121,20 @@ namespace HeBianGu.Domain.Converter
             }
         }
 
+
+        private string _comment;
+        [Display(Name = "评论", GroupName = "视频", Description = "评论")]
+        public string Comment
+        {
+            get { return _comment; }
+            set
+            {
+                _comment = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
         private string _copyright = string.Empty;
         [Display(Name = "版权", GroupName = "视频", Description = "版权")]
         public string Copyright
@@ -132,21 +146,6 @@ namespace HeBianGu.Domain.Converter
                 RaisePropertyChanged();
             }
         }
-
-
-        private ObservableCollection<ChapterItemPresenter> _chapters = new ObservableCollection<ChapterItemPresenter>();
-        [PropertyItemType(Type = (typeof(ListPresenterPropertyItem)))]
-        [Display(Name = "章节", GroupName = "视频", Description = "章节")]
-        public ObservableCollection<ChapterItemPresenter> Chapters
-        {
-            get { return _chapters; }
-            set
-            {
-                _chapters = value;
-                RaisePropertyChanged();
-            }
-        }
-
 
         private string _software;
         [Display(Name = "创建软件", GroupName = "视频", Description = "软件")]
@@ -173,6 +172,18 @@ namespace HeBianGu.Domain.Converter
             }
         }
 
+        private ObservableCollection<ChapterItemPresenter> _chapters = new ObservableCollection<ChapterItemPresenter>();
+        [PropertyItemType(Type = (typeof(ListPresenterPropertyItem)))]
+        [Display(Name = "章节", GroupName = "视频", Description = "章节")]
+        public ObservableCollection<ChapterItemPresenter> Chapters
+        {
+            get { return _chapters; }
+            set
+            {
+                _chapters = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public IReadOnlyMetaData CreateMetaData()
         {

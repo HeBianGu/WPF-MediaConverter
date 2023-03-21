@@ -32,10 +32,11 @@ namespace HeBianGu.Domain.Converter
             PixelFormat = FFMpeg.GetPixelFormat(model.PrimaryVideoStream.PixelFormat);
             BitRate = model.PrimaryVideoStream.BitRate;
             var find = Enum.GetValues<VideoSize>().FirstOrDefault(x => (int)x == model.PrimaryVideoStream.Height);
-            VideoSize = find == default ? VideoSize.FullHd : find;
+            VideoSize = find == default ? VideoSize.FD : find;
             StartTime = model.PrimaryVideoStream.StartTime;
             EndTime = model.PrimaryVideoStream.Duration;
             MetaData = model.PrimaryVideoStream.Tags ?? new Dictionary<string, string>();
+            this.Size=new FileInfo(filePath).Length;
         }
 
         public VideoAnalysis() : base(null)
@@ -84,6 +85,7 @@ namespace HeBianGu.Domain.Converter
 
 
         private double _frameRate;
+        [Unit("fps")]
         [Displayer(Name = "帧率", GroupName = "视频,输入参数,输出参数", Description = "值越大效果越好，占用资源越多", Icon = "\xe7a3")]
         [Range(0.0, 30.0, ErrorMessage = "0.0 - 30.0")]
         public double FrameRate

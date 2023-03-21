@@ -4,6 +4,7 @@ using System;
 
 namespace HeBianGu.Domain.Converter
 {
+    [Vip(3)]
     [Displayer(Name = "视频合并", Icon = "\xe67c", GroupName = "视频", Order = 3, Description = "将多个视频合并")]
     public class ConcatConverterGroup : ConverterGroupBase
     {

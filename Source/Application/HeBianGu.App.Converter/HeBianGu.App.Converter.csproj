@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <None Remove="logo.ico" />
+    <None Remove="View\MainWindow.xaml~RF752bf1ca.TMP" />
   </ItemGroup>
 
   <ItemGroup>

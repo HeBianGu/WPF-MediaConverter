@@ -7,7 +7,7 @@ using HeBianGu.Domain.Converter;
 
 namespace HeBianGu.Domain.Converter
 {
-    [Displayer(Name = "视频水印", Icon = "\xe649", GroupName = "视频", Order = 11, Description = "给视频添加水印")]
+    [Displayer(Name = "视频水印", Icon = "\xe649", GroupName = "视频", Order = 6, Description = "给视频添加水印")]
     public class DrawTextConverterGroup : ConverterGroupBase
     {
         private string _text = "HeBianGu";
@@ -124,16 +124,18 @@ namespace HeBianGu.Domain.Converter
 
         protected override ConverterItemBase CreateConverterItem(string filePath)
         {
-            var result = new DrawTextConverterItem(filePath);
-            result.OutputMediaInfo.VedioAnalysis.Text = Text;
-            result.OutputMediaInfo.VedioAnalysis.UseDrawText = true;
-            result.OutputMediaInfo.VedioAnalysis.FontSize = FontSize;
-            result.OutputMediaInfo.VedioAnalysis.Box = Box;
-            result.OutputMediaInfo.VedioAnalysis.Boxborderw = Boxborderw;
-            result.OutputMediaInfo.VedioAnalysis.Boxcolor = Boxcolor;
-            result.OutputMediaInfo.VedioAnalysis.Fontcolor = Fontcolor;
-            result.OutputMediaInfo.VedioAnalysis.X = X;
-            result.OutputMediaInfo.VedioAnalysis.Y = Y;
+            var result = new DrawTextConverterItem(filePath, x =>
+            {
+                x.OutputMediaInfo.VedioAnalysis.Text = Text;
+                x.OutputMediaInfo.VedioAnalysis.UseDrawText = true;
+                x.OutputMediaInfo.VedioAnalysis.FontSize = FontSize;
+                x.OutputMediaInfo.VedioAnalysis.Box = Box;
+                x.OutputMediaInfo.VedioAnalysis.Boxborderw = Boxborderw;
+                x.OutputMediaInfo.VedioAnalysis.Boxcolor = Boxcolor;
+                x.OutputMediaInfo.VedioAnalysis.Fontcolor = Fontcolor;
+                x.OutputMediaInfo.VedioAnalysis.X = X;
+                x.OutputMediaInfo.VedioAnalysis.Y = Y;
+            });
             return result;
         }
     }

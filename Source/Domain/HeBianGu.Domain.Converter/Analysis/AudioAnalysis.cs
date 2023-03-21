@@ -31,6 +31,7 @@ namespace HeBianGu.Domain.Converter
                 EndTime = model.PrimaryAudioStream.Duration;
                 MetaData = model.PrimaryAudioStream.Tags ?? new Dictionary<string, string>();
             }
+            this.Size = new FileInfo(filePath).Length;
         }
 
         public AudioAnalysis() : base(null)

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HeBianGu.Domain.Converter
 {
-    [Displayer(Name = "章节/标题", Icon = "\xe76b", GroupName = "视频,音频", Order = 12, Description = "给视频增加章节，标题，许可，作者等参数")]
+    [Displayer(Name = "章节/标题", Icon = "\xe76b", GroupName = "视频,音频", Order = 9, Description = "给视频增加章节，标题，许可，作者等参数")]
     public class MetaDataConverterGroup : ConverterGroupBase
     {
         private string _title = string.Empty;
@@ -107,15 +107,17 @@ namespace HeBianGu.Domain.Converter
 
         protected override ConverterItemBase CreateConverterItem(string filePath)
         {
-            var result= new MetaDataConverterItem(filePath);
-            result.OutputMediaInfo.Meta.Title = this.Title;
-            result.OutputMediaInfo.Meta.Creation_time = this.Creation_time;
-            result.OutputMediaInfo.Meta.Software = this.Software;
-            result.OutputMediaInfo.Meta.Copyright = this.Copyright;
-            result.OutputMediaInfo.Meta.Composers = this.Composers;
-            result.OutputMediaInfo.Meta.Artists = this.Artists;
-            result.OutputMediaInfo.Meta.AlbumArtists = this.AlbumArtists;
-            result.OutputMediaInfo.Meta.Genres = this.Genres;
+            var result= new MetaDataConverterItem(filePath,x=>
+            {
+                x.OutputMediaInfo.Meta.Title = this.Title;
+                x.OutputMediaInfo.Meta.Creation_time = this.Creation_time;
+                x.OutputMediaInfo.Meta.Software = this.Software;
+                x.OutputMediaInfo.Meta.Copyright = this.Copyright;
+                x.OutputMediaInfo.Meta.Composers = this.Composers;
+                x.OutputMediaInfo.Meta.Artists = this.Artists;
+                x.OutputMediaInfo.Meta.AlbumArtists = this.AlbumArtists;
+                x.OutputMediaInfo.Meta.Genres = this.Genres;
+            });
             return result;
         }
     }

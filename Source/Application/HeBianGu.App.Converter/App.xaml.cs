@@ -115,10 +115,10 @@ namespace HeBianGu.App.Converter
 
             #region - More -
             services.AddUpgradeViewPresenter();
-            //services.AddLicense();
-            //services.AddLicenseViewPresenter();
-            //services.AddVip();
-            //services.AddVipViewPresenter();
+            services.AddLicense();
+            services.AddLicenseViewPresenter();
+            services.AddVip();
+            services.AddVipViewPresenter();
             services.AddSurveyViewPresenter();
             services.AddFeedbackViewPresenter();
             //services.AddLogoutViewPresenter();
@@ -126,8 +126,8 @@ namespace HeBianGu.App.Converter
             services.AddMoreViewPresenter(x =>
             {
                 x.AddPersenter(UpgradeViewPresenter.Instance);
-                //x.AddPersenter(LicenseViewPresenter.Instance);
-                //x.AddPersenter(VipViewPresenter.Instance);
+                x.AddPersenter(LicenseViewPresenter.Instance);
+                x.AddPersenter(VipViewPresenter.Instance);
                 x.AddPersenter(SurveyViewPresenter.Instance);
                 x.AddPersenter(FeedbackViewPresenter.Instance);
                 x.AddPersenter(AboutViewPresenter.Instance);

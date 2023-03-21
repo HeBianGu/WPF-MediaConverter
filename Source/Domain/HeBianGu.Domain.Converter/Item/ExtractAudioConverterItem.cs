@@ -1,6 +1,7 @@
 ﻿using FFMpegCore;
 using FFMpegCore.Enums;
 using FFMpegCore.Helpers;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -9,9 +10,9 @@ namespace HeBianGu.Domain.Converter
 {
     public class ExtractAudioConverterItem : AudioConverterItemBase
     {
-        public ExtractAudioConverterItem(string filePath) : base(filePath)
+        public ExtractAudioConverterItem(string filePath, Action<ConverterItemBase> builder = null) : base(filePath, builder)
         {
-
+            this.UseOutToolCommadNames = $"{nameof(PlayOutputCommand)},{nameof(ViewArgumentsCommand)},{nameof(OpenCommand)},{nameof(DeleteCommand)},{nameof(DeleteFileCommand)}";
         }
 
         private bool _useCopyChannel = true;
