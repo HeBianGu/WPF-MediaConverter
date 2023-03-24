@@ -2,6 +2,7 @@
 using HeBianGu.Base.WpfBase;
 using HeBianGu.Control.PropertyGrid;
 using HeBianGu.Domain.Converter;
+using HeBianGu.Service.AppConfig;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace HeBianGu.Domain.Converter
         public override void LoadDefault()
         {
             base.LoadDefault();
-            OutPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Name);
+            this.OutPath = Path.Combine(SystemPathSetting.Instance.UserData, Name);
             if (!Directory.Exists(OutPath))
                 Directory.CreateDirectory(OutPath);
         }

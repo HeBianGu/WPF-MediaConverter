@@ -23,14 +23,14 @@ using System.Xml.Serialization;
 
 namespace HeBianGu.App.Converter
 {
-    internal class ShellViewModel : NotifyPropertyChanged
+    public class ShellViewModel : NotifyPropertyChanged
     {
         public ShellViewModel()
         {
             var types = typeof(GroupBase).Assembly.GetTypes().Where(x => typeof(GroupBase).IsAssignableFrom(x)).Where(x => x.GetCustomAttribute<DisplayerAttribute>() != null);
             this.Collection = types.Where(x => x.IsClass && !x.IsAbstract).Select(x => Activator.CreateInstance(x)).OfType<GroupBase>().OrderBy(x => x.Order).ToObservable();
             this.SelectedItem = this.Collection.FirstOrDefault();
-            this.Collection.Add(new CrawlerConverterGroup());
+            //this.Collection.Add(new CrawlerConverterGroup());
         }
         private ObservableCollection<GroupBase> _collection = new ObservableCollection<GroupBase>();
         /// <summary> 说明  </summary>
