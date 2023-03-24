@@ -2,6 +2,7 @@
 using HeBianGu.Base.WpfBase;
 using HeBianGu.Domain.Converter;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.IO;
@@ -13,20 +14,14 @@ namespace HeBianGu.Domain.Converter
     [Displayer(Name = "屏幕录像", Icon = "\xe781", GroupName = "视频", Order = 8, Description = "屏幕录制功能")]
     public class ScreenConverterGroup : GroupBase
     {
-        //private ObservableSource<ConverterItemBase> _collection = new ObservableSource<ConverterItemBase>();
-        ///// <summary> 说明  </summary>
-        //public ObservableSource<ConverterItemBase> Collection
-        //{
-        //    get { return _collection; }
-        //    set
-        //    {
-        //        _collection = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
-
+        public ScreenConverterGroup()
+        {
+            this.SettingVip = 6;
+        }
         private bool _showRegion;
-        [Display(Name = "显示边界", GroupName = "工具栏", Description = "录屏时是否在屏幕上显示边界框。用于检查录屏区域，防止区域错误。 1显示，0不显示。-show_region 1")]
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "显示边界", GroupName = "配置", Description = "录屏时是否在屏幕上显示边界框。用于检查录屏区域，防止区域错误。 1显示，0不显示。-show_region 1")]
         public bool ShowRegion
         {
             get { return _showRegion; }
@@ -39,7 +34,9 @@ namespace HeBianGu.Domain.Converter
 
 
         private bool _drawMouse;
-        [Display(Name = "绘制鼠标", GroupName = "工具栏", Description = "是否包含鼠标。0=不包含，1=包含。默认值1，视频含有鼠标 -draw_mouse 1")]
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "绘制鼠标", GroupName = "配置", Description = "是否包含鼠标。0=不包含，1=包含。默认值1，视频含有鼠标 -draw_mouse 1")]
         public bool DrawMouse
         {
             get { return _drawMouse; }
@@ -52,7 +49,9 @@ namespace HeBianGu.Domain.Converter
 
 
         private bool _useDeskTop;
-        [Display(Name = "捕捉桌面", GroupName = "工具栏", Description = "捕捉整个桌面或者桌面的某个区域 -i desktop")]
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "捕捉桌面", GroupName = "工具配置栏", Description = "捕捉整个桌面或者桌面的某个区域 -i desktop")]
         public bool UseDeskTop
         {
             get { return _useDeskTop; }
@@ -65,7 +64,9 @@ namespace HeBianGu.Domain.Converter
 
 
         private string _title;
-        [Display(Name = "捕捉窗口", GroupName = "工具栏", Description = "捕捉指定窗口，由窗口标题栏指定窗口  -i title=window_title")]
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "捕捉窗口", GroupName = "配置", Description = "捕捉指定窗口，由窗口标题栏指定窗口  -i title=window_title")]
         public string Title
         {
             get { return _title; }
@@ -133,7 +134,9 @@ namespace HeBianGu.Domain.Converter
         //uhd2160    3840x2160
         //uhd4320    7680x4320
         /// </summary>
-        [Display(Name = "录制范围", GroupName = "工具栏", Description = "-video_size cif -offset_x 10 -offset_y 20;-offset_x 10 -offset_y 20 -video_size 640x480")]
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "录制范围", GroupName = "配置", Description = "-video_size cif -offset_x 10 -offset_y 20;-offset_x 10 -offset_y 20 -video_size 640x480")]
         public Rect videoRect
         {
             get { return _videoRect; }
@@ -143,15 +146,58 @@ namespace HeBianGu.Domain.Converter
                 RaisePropertyChanged();
             }
         }
-
-        [Displayer(Name = "添加录制", Icon = "\xe6e1", GroupName = "工具栏", Description = "开始录制")]
-        public RelayCommand StartCommand => new RelayCommand(async (s, e) =>
+        bool _UseMicrophone = false;
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "启用麦克风", GroupName = "配置", Description = "是否启用麦克风")]
+        public bool UseMicrophone
         {
-            string filePath = Path.Combine(this.OutPath, DateTime.Now.ToString("yyyyMMddHHmmssff") + VideoType.Mp4.Extension);
-            var item = new ScreenConverterItem(filePath);
-            this.Collection.Add(item);
-            //await item.StartAsync(s,e);
-        });
+            get { return _UseMicrophone; }
+            set
+            {
+                _UseMicrophone = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _useSystemAudio;
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "启用系统声音", GroupName = "配置", Description = "是否启用系统声音")]
+        public bool UseSystemAudio
+        {
+            get { return _useSystemAudio; }
+            set
+            {
+                _useSystemAudio = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        private bool _useCamera;
+        [ReadOnly(true)]
+        [Vip(6)]
+        [Display(Name = "启用摄像头", GroupName = "配置", Description = "是否启用摄像头")]
+        public bool UseCamera
+        {
+            get { return _useCamera; }
+            set
+            {
+                _useCamera = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        //[Displayer(Name = "添加录制", Icon = "\xe6e1", GroupName = "工具栏", Description = "开始录制")]
+        //public RelayCommand StartCommand => new RelayCommand(async (s, e) =>
+        //{
+        //    string filePath = Path.Combine(this.OutPath, DateTime.Now.ToString("yyyyMMddHHmmssff") + VideoType.Mp4.Extension);
+        //    var item = new ScreenConverterItem(filePath);
+        //    this.Collection.Add(item);
+        //    //await item.StartAsync(s,e);
+        //});
 
         protected override async Task CreateConverterItemAsync()
         {

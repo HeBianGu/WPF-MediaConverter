@@ -46,13 +46,13 @@ namespace HeBianGu.Domain.Converter
             await MessageProxy.PropertyGrid.ShowEdit(OutputMediaInfo.AudioAnalysis, null, "设置音频输出参数");
         }, (s, e) => this.IsBuzy == false);
 
-        [Displayer(Name = "查看视频参数", Icon = "\xeabe", GroupName = "操作,输入", Description = "查看视频参数")]
+        [Displayer(Name = "查看视频参数", Icon = "\xeabe", GroupName = "操作,输入", Description = "查看视频参数", Order = 7)]
         public RelayCommand InputVideoViewCommand => new RelayCommand(async (s, e) =>
         {
             await MessageProxy.PropertyGrid.ShowView(OutputMediaInfo.VedioAnalysis, null, "查看视频参数", x => x.UseEnumerator = true);
         }, (s, e) => this.IsBuzy == false);
 
-        [Displayer(Name = "查看音频参数", Icon = "\xe6c0", GroupName = "操作,输入", Description = "查看音频参数")]
+        [Displayer(Name = "查看音频参数", Icon = "\xe6ba", GroupName = "操作,输入", Description = "查看音频参数", Order = 7)]
         public RelayCommand InputAudioViewCommand => new RelayCommand(async (s, e) =>
         {
             await MessageProxy.PropertyGrid.ShowView(InputMediaInfo.AudioAnalysis, null, "查看音频参数", x => x.UseEnumerator = true);

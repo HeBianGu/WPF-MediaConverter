@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HeBianGu.Domain.Converter
 {
@@ -108,10 +109,14 @@ namespace HeBianGu.Domain.Converter
             {
                 this.OutputMediaInfo.VedioAnalysis.Size = new FileInfo(this.OutputPath).Length;
                 this.OutputMediaInfo.AudioAnalysis.Size = new FileInfo(this.OutputPath).Length;
-                this.OutputAnalysis = this.InputMediaInfo.VedioAnalysis;
-                this.OutputAnalysis = this.OutputMediaInfo.VedioAnalysis;
 
-                this.RefreshAnalysis();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    this.OutputAnalysis = this.InputMediaInfo.VedioAnalysis;
+                    this.OutputAnalysis = this.OutputMediaInfo.VedioAnalysis;
+                    this.RefreshAnalysis();
+                });
+
             }
             return true;
         }

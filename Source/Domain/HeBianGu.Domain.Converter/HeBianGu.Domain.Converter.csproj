@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PagedDataGrid\HeBianGu.Control.PagedDataGrid.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Control\HeBianGu.Control.PropertyGrid\HeBianGu.Control.PropertyGrid.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\General\HeBianGu.General.WpfControlLib\HeBianGu.General.WpfControlLib.csproj" />
+    <ProjectReference Include="..\..\..\..\WPF-Controls\Source\Service\HeBianGu.Service.License\HeBianGu.Service.License.csproj" />
     <ProjectReference Include="..\..\..\..\WPF-Controls\Source\System\HeBianGu.Systems.Setting\HeBianGu.Systems.Setting.csproj" />
     <ProjectReference Include="..\FFMpegCore.Extensions.System.Drawing.Common\FFMpegCore.Extensions.System.Drawing.Common.csproj" />
     <ProjectReference Include="..\FFMpegCore\FFMpegCore.csproj" />

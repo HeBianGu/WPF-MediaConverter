@@ -88,7 +88,7 @@ namespace HeBianGu.Domain.Converter
                   {
                       var bitmap = ImageService.ImageSourceToBitmap(item.Item2);
                       //var p = System.IO.Path.Combine(this.OutputPath, item.Item1.ToString().Split('.')[0] + FileExtension.Png);
-                      var p = System.IO.Path.Combine(this.OutputPath, item.Item1.TimespanToDislay() + FileExtension.Png);
+                      var p = System.IO.Path.Combine(this.OutputPath, item.Item1.ToString().Replace(":", "-") + FileExtension.Png);
                       bitmap.Save(System.IO.Path.Combine(this.OutputPath, p));
                   }
               });

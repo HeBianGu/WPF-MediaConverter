@@ -13,5 +13,4 @@ namespace HeBianGu.Domain.Converter
             throw new NotImplementedException();
         }
     }
-    
 }

@@ -139,7 +139,7 @@
                                 </ContentPresenter.Resources>
                             </ContentPresenter>
 
-                            <ContentPresenter Grid.Column="2" VerticalAlignment="Top" Content="{Binding OutputAnalysis}">
+                            <ContentPresenter Grid.Column="2" VerticalAlignment="Top" Content="{Binding OutputAnalysis,Mode=TwoWay}">
                                 <ContentPresenter.Resources>
                                     <DataTemplate DataType="{x:Type local:VideoAnalysis}">
                                         <h:PropertyGrid SelectObject="{Binding}" Style="{DynamicResource {x:Static h:PropertyGrid.PreviewIconKey}}" UseGroupNames="视频,输出参数">

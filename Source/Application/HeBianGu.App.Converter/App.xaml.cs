@@ -40,7 +40,7 @@ namespace HeBianGu.App.Converter
         {
             base.ConfigureServices(services);
 
-            //services.AddStart(x => x.ProductFontSize = 70);
+            services.AddStart(x => x.ProductFontSize = 70);
             services.AddWindowDialog();
             services.AddObjectWindowDialog();
             services.AddWindowAnimation();
@@ -50,15 +50,14 @@ namespace HeBianGu.App.Converter
             services.AddNotifyMessage();
             services.AddSetting();
             //services.AddIdentity(x => x.ProductFontSize = 50);
-
             services.AddProjectDefault();
             services.AddXmlWebSerializerService();
-            ////  Do ：注册软件更新页面
-            //services.AddAutoUpgrade(x =>
-            //{
-            //    x.Uri = "https://gitee.com/hebiangu/wpf-auto-update/raw/master/Install/Computer/AutoUpdate.xml";
-            //    x.UseIEDownload = true;
-            //});
+            //  Do ：注册软件更新页面
+            services.AddAutoUpgrade(x =>
+            {
+                x.Uri = "https://gitee.com/hebiangu/wpf-auto-update/raw/master/Install/Converter/AutoUpdate.xml";
+                x.UseIEDownload = true;
+            });
             services.AddSettingPath();
             services.AddXmlSerialize();
             services.AddDESCryptService();

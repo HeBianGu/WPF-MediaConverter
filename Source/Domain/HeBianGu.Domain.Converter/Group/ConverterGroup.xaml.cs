@@ -57,7 +57,17 @@ namespace HeBianGu.Domain.Converter
                 RaisePropertyChanged();
             }
         }
-
+        private int _SettingVip = -1;
+        /// <summary> 说明  </summary>
+        public int SettingVip
+        {
+            get { return _SettingVip; }
+            set
+            {
+                _SettingVip = value;
+                RaisePropertyChanged();
+            }
+        }
 
         //private bool _combineAll;
         //[Displayer(Name = "合并全部文件", Icon = "\xe751", GroupName = "配置", Description = "处理器相关数据监控")]

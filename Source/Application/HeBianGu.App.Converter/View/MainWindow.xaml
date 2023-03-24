@@ -35,7 +35,7 @@
                                    FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}"
                                    Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundTitle}}"
                                    Text="H视频转换器" />
-                        <TextBlock Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}" Text="专注硬件参数" TextWrapping="Wrap" />
+                        <TextBlock Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}" Text="专注视频音频处理" TextWrapping="Wrap" />
                         <!--<TextBlock Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}" Text="{Binding Source={x:Static h:ComputerViewPresenter.Instance}, Path=OSDescription}" TextWrapping="Wrap" />-->
                     </DockPanel>
                 </DockPanel>

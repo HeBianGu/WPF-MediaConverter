@@ -368,7 +368,7 @@ namespace HeBianGu.Domain.Converter
         {
             Process.Start(new ProcessStartInfo(Path.GetDirectoryName(_outputPath)) { UseShellExecute = true });
 
-        }, (s, e) => File.Exists(_outputPath));
+        }, (s, e) => File.Exists(_outputPath) || Directory.Exists(_outputPath));
 
         [Displayer(Name = "删除", Icon = IconAll.Close, GroupName = "操作,输出", Description = "处理器相关数据监控", Order = 98)]
         public RelayCommand DeleteCommand => new RelayCommand(async (s, e) =>
