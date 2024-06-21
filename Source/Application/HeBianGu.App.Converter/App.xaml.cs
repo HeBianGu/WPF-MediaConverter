@@ -303,7 +303,7 @@ namespace HeBianGu.App.Converter
                 l.AnimalSpeed = 5000;
                 l.AccentColorSelectType = 0;
                 l.IsUseAnimal = false;
-                l.ThemeType = ThemeType.Light;
+                l.ThemeType = ThemeType.DarkGray;
                 l.Language = Language.Chinese;
                 l.AccentBrushType = AccentBrushType.LinearGradientBrush;
             });

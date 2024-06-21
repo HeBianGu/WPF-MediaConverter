@@ -26,17 +26,17 @@ namespace HeBianGu.Domain.Converter
             if (string.IsNullOrEmpty(fn))
                 fn = splits[0];
 
-            ContainerFormat = FFMpeg.GetContainerFormat(fn);
-            Codec = FFMpeg.GetCodec(model.PrimaryVideoStream.CodecName);
-            FrameRate = model.PrimaryVideoStream.FrameRate;
-            PixelFormat = FFMpeg.GetPixelFormat(model.PrimaryVideoStream.PixelFormat);
-            BitRate = model.PrimaryVideoStream.BitRate;
+            this.ContainerFormat = FFMpeg.GetContainerFormat(fn);
+            this.Codec = FFMpeg.GetCodec(model.PrimaryVideoStream.CodecName);
+            this.FrameRate = model.PrimaryVideoStream.FrameRate;
+            this.PixelFormat = FFMpeg.GetPixelFormat(model.PrimaryVideoStream.PixelFormat);
+            this.BitRate = model.PrimaryVideoStream.BitRate;
             var find = Enum.GetValues<VideoSize>().FirstOrDefault(x => (int)x == model.PrimaryVideoStream.Height);
-            VideoSize = find == default ? VideoSize.FD : find;
-            StartTime = model.PrimaryVideoStream.StartTime;
-            EndTime = model.PrimaryVideoStream.Duration;
-            MetaData = model.PrimaryVideoStream.Tags ?? new Dictionary<string, string>();
-            this.Size=new FileInfo(filePath).Length;
+            this.VideoSize = find == default ? VideoSize.FD : find;
+            this.StartTime = model.PrimaryVideoStream.StartTime;
+            this.EndTime = model.PrimaryVideoStream.Duration;
+            this.MetaData = model.PrimaryVideoStream.Tags ?? new Dictionary<string, string>();
+            this.Size = new FileInfo(filePath).Length;
         }
 
         public VideoAnalysis() : base(null)
@@ -257,6 +257,8 @@ namespace HeBianGu.Domain.Converter
                                    }
                                })
                                .WithFastStart();
+
+            //options.WithFastStart();
         }
 
     }

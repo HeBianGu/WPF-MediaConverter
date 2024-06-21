@@ -61,11 +61,6 @@ namespace HeBianGu.Domain.Converter
         protected override void CreateArguments(FFMpegArgumentOptions options)
         {
             OutputMediaInfo.VedioAnalysis.CreateArguments(options);
-
-            ////  Do ：设置基础信息
-            //var metaData = OutputMediaInfo.Meta.CreateMetaData();
-            //var arg = new MapMetaDataArgument(MetaDataSerializer.Instance.Serialize(metaData));
-            //options.WithArgument(arg);
         }
 
         protected override string CreateOutputPath(string groupPath)

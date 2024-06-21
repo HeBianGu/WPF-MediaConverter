@@ -24,12 +24,5 @@ namespace HeBianGu.Domain.Converter
                 RaisePropertyChanged();
             }
         }
-
-
-        //protected override async Task<bool> Set()
-        //{
-        //    return await MessageProxy.Presenter.Show(VideoFormats, null, "选择格式");
-        //}
-
     }
 }

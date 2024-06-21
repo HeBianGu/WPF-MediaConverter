@@ -109,6 +109,8 @@ namespace HeBianGu.Domain.Converter
             var result = new MediaInfo(mediaInfo, FilePath);
             result.Size = new FileInfo(FilePath).Length;
             result.VedioAnalysis.Codecs = FFMpeg.GetCodecs().Where(x => x.Type == CodecType.Video).ToList().AsReadOnly();
+
+            //string p = "*.wmv;*.asf;*.asx;*.rm;*.rmvb;*.mpg;*.mpeg;*.mpe;*.3gp;*.mov;*.mp4;*.m4v;*.avi;*.dat;*.mkv;*.flv;*.vob;*.dat;*.bdmv;";
             //  Do ：假定DemuxingSupported==true表示音频
             result.VedioAnalysis.ContainerFormats = FFMpeg.GetContainerFormats().ToList().AsReadOnly();
             result.VedioAnalysis.PixelFormats = FFMpeg.GetPixelFormats();
