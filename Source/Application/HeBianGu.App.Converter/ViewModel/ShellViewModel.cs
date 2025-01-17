@@ -4,7 +4,6 @@ using HeBianGu.Base.WpfBase;
 using HeBianGu.Control.PropertyGrid;
 using HeBianGu.Domain.Converter;
 using HeBianGu.Service.AppConfig;
-using HeBianGu.Systems.Print;
 using HeBianGu.Systems.Project;
 using HeBianGu.Systems.WinTool;
 using HeBianGu.Systems.XmlSerialize;

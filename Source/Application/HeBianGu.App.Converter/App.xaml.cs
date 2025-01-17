@@ -1,6 +1,5 @@
 ﻿using HeBianGu.Base.WpfBase;
 using HeBianGu.Control.Guide;
-using HeBianGu.Control.MessageListBox;
 using HeBianGu.Control.ThemeSet;
 using HeBianGu.Domain.Converter;
 using HeBianGu.General.WpfControlLib;
@@ -8,7 +7,6 @@ using HeBianGu.Service.Mvp;
 using HeBianGu.Systems.About;
 using HeBianGu.Systems.Feedback;
 using HeBianGu.Systems.Identity;
-using HeBianGu.Systems.License;
 using HeBianGu.Systems.Logger;
 using HeBianGu.Systems.Notification;
 using HeBianGu.Systems.Operation;
@@ -60,9 +58,9 @@ namespace HeBianGu.App.Converter
             });
             services.AddSettingPath();
             services.AddXmlSerialize();
-            services.AddDESCryptService();
+            //services.AddDESCryptService();
             services.AddTheme();
-            services.AddPrintBoxMessage();
+            //services.AddPrintBoxMessage();
 
             #region - WindowStatus -
             //services.AddWinToolViewPresenter();
@@ -90,16 +88,16 @@ namespace HeBianGu.App.Converter
             });
             #endregion
 
-            #region - WindowMessage -
-            services.AddInfoMessageViewPresenter();
-            services.AddErrorMessageViewPresenter();
-            services.AddWindowMessageViewPresenter(x =>
-            {
-                x.AddPersenter(InfoMessageViewPresenter.Instance);
-                x.AddPersenter(ErrorMessageViewPresenter.Instance);
+            //#region - WindowMessage -
+            //services.AddInfoMessageViewPresenter();
+            //services.AddErrorMessageViewPresenter();
+            //services.AddWindowMessageViewPresenter(x =>
+            //{
+            //    x.AddPersenter(InfoMessageViewPresenter.Instance);
+            //    x.AddPersenter(ErrorMessageViewPresenter.Instance);
 
-            });
-            #endregion
+            //});
+            //#endregion
 
             //#region - WindowMenu -
             //services.AddNewProjectTreeViewPresenter(x =>
@@ -114,10 +112,10 @@ namespace HeBianGu.App.Converter
 
             #region - More -
             services.AddUpgradeViewPresenter();
-            services.AddLicense();
-            services.AddLicenseViewPresenter();
-            services.AddVip();
-            services.AddVipViewPresenter();
+            //services.AddLicense();
+            //services.AddLicenseViewPresenter();
+            //services.AddVip();
+            //services.AddVipViewPresenter();
             services.AddSurveyViewPresenter();
             services.AddFeedbackViewPresenter();
             //services.AddLogoutViewPresenter();
@@ -125,8 +123,8 @@ namespace HeBianGu.App.Converter
             services.AddMoreViewPresenter(x =>
             {
                 x.AddPersenter(UpgradeViewPresenter.Instance);
-                x.AddPersenter(LicenseViewPresenter.Instance);
-                x.AddPersenter(VipViewPresenter.Instance);
+                //x.AddPersenter(LicenseViewPresenter.Instance);
+                //x.AddPersenter(VipViewPresenter.Instance);
                 x.AddPersenter(SurveyViewPresenter.Instance);
                 x.AddPersenter(FeedbackViewPresenter.Instance);
                 x.AddPersenter(AboutViewPresenter.Instance);
@@ -238,15 +236,15 @@ namespace HeBianGu.App.Converter
 
 
             #region - WindowSideEdit -   
-            services.AddWindowSideEditViewPresenter(x =>
-            {
-                //service.AddSingleton<IInfoMessageViewPresenter, InfoMessageViewPresenter>();
-                //action?.Invoke(InfoMessageViewPresenter.Instance);
-                //WindowMessageViewPresenter.Instance.AddPersenter(InfoMessageViewPresenter.Instance);
+            //services.AddWindowSideEditViewPresenter(x =>
+            //{
+            //    //service.AddSingleton<IInfoMessageViewPresenter, InfoMessageViewPresenter>();
+            //    //action?.Invoke(InfoMessageViewPresenter.Instance);
+            //    //WindowMessageViewPresenter.Instance.AddPersenter(InfoMessageViewPresenter.Instance);
 
-                x.AddPersenter(InfoMessageViewPresenter.Instance);
-                x.AddPersenter(ErrorMessageViewPresenter.Instance);
-            });
+            //    x.AddPersenter(InfoMessageViewPresenter.Instance);
+            //    x.AddPersenter(ErrorMessageViewPresenter.Instance);
+            //});
             #endregion
 
 
