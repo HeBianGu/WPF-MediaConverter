@@ -1,0 +1,149 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:h="https://github.com/HeBianGu"
+                    xmlns:local="clr-namespace:HeBianGu.Domain.Converter">
+    <DataTemplate DataType="{x:Type local:GroupBase}">
+        <DockPanel>
+            <!--<Border Height="60"
+                        Background="{DynamicResource {x:Static h:BrushKeys.Dark0_2}}"
+                        DockPanel.Dock="Top"
+                        Style="{DynamicResource {x:Static h:BorderKeys.Card}}">-->
+            <DockPanel Margin="0,10"
+                       VerticalAlignment="Center"
+                       h:Cattach.GuideData="通过此功能显示当前的功能的标题和简介信息"
+                       h:Cattach.GuideTitle="标题和简介"
+                       h:Cattach.UseGuide="True"
+                       DockPanel.Dock="Top">
+                <Border Width="30"
+                        Height="30"
+                        Margin="10,0"
+                        BorderBrush="{DynamicResource {x:Static h:BrushKeys.ForegroundAssist}}"
+                        BorderThickness="1"
+                        CornerRadius="60">
+                    <TextBlock FontSize="15" Style="{DynamicResource {x:Static h:TextBlockKeys.Icon}}" Text="{Binding Icon}" />
+                </Border>
+                <TextBlock Margin="5,0" VerticalAlignment="Center" DockPanel.Dock="Right">
+                    <Run Text="[" />
+                    <Run Text="{Binding Collection.Cache.Count, Mode=OneWay}" />
+                    <Run Text="]" />
+                </TextBlock>
+
+                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundAssist}}">
+                    <Run FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}" Foreground="{DynamicResource {x:Static h:BrushKeys.ForegroundTitle}}" Text="{Binding Name}" />
+                    <Run Text=" [" />
+                    <Run Text="{Binding Description}" />
+                    <Run Text="]" />
+                </TextBlock>
+            </DockPanel>
+            <!--</Border>-->
+
+            <h:PropertyGrid HorizontalAlignment="Left"
+                            h:Cattach.GuideData="{Binding Description}"
+                            h:Cattach.GuideTitle="操作和功能"
+                            h:Cattach.UseGuide="True"
+                            DockPanel.Dock="Top"
+                            SelectObject="{Binding}"
+                            Style="{DynamicResource {x:Static h:PropertyGrid.CommandKey}}" />
+
+            <Separator Margin="0,5,0,0"
+                       Background="{DynamicResource {x:Static h:BrushKeys.Dark0_6}}"
+                       DockPanel.Dock="Top"
+                       Style="{DynamicResource {x:Static h:SeparatorKeys.Default}}" />
+
+
+            <TextBox Margin="0,2"
+                     h:Cattach.BackgroundColumn="1"
+                     h:Cattach.GuideData="通过此功能设置当前视频处理结果的输出路径"
+                     h:Cattach.GuideTitle="输出路径"
+                     h:Cattach.Title="输出路径"
+                     h:Cattach.TitleMargin="12 0"
+                     h:Cattach.TitleWidth="120"
+                     h:Cattach.UseGuide="True"
+                     DockPanel.Dock="Bottom"
+                     IsReadOnly="True"
+                     Style="{DynamicResource {x:Static h:TextBoxKeys.OpenFolder}}"
+                     Text="{Binding OutPath}" />
+
+            <Grid h:VipAttach.Level="{Binding SettingVip, Mode=TwoWay}" DockPanel.Dock="Bottom">
+                <h:Interaction.Behaviors>
+                    <h:LoadedAdornerBehavior AdornerType="{x:Type h:VipAdorner}" />
+                </h:Interaction.Behaviors>
+                <h:PropertyGrid h:Cattach.GuideData="通过此功能设置创建条目的默认配置，通过子项配置可以单独修改"
+                                h:Cattach.GuideTitle="默认配置"
+                                h:Cattach.UseGuide="True"
+                                DockPanel.Dock="Bottom"
+                                SelectObject="{Binding}"
+                                Style="{DynamicResource {x:Static h:PropertyGrid.ClearlyKey}}"
+                                UseGroupNames="配置">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </h:PropertyGrid>
+            </Grid>
+
+
+            <Separator Margin="0,0,0,5"
+                       Background="{DynamicResource {x:Static h:BrushKeys.Dark0_6}}"
+                       DockPanel.Dock="Bottom"
+                       Style="{DynamicResource {x:Static h:SeparatorKeys.Default}}" />
+
+
+            <Grid>
+                <DockPanel Margin="0,2">
+                    <h:Pagination HorizontalAlignment="Right"
+                                  DockPanel.Dock="Bottom"
+                                  MaxPageCount="{Binding Collection.TotalPage}"
+                                  PageIndex="{Binding Collection.PageIndex, Mode=TwoWay}" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Collection.Source}">
+                            <!--<ItemsControl.ItemTemplate>
+
+                            </ItemsControl.ItemTemplate>-->
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+
+                <DockPanel VerticalAlignment="Center" Visibility="{Binding Collection.Cache.Count, Mode=OneWay, Converter={x:Static h:Converter.GetIntToVisible}, ConverterParameter=0}">
+                    <TextBlock Margin="10"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Bottom"
+                               Text="{Binding Description}" />
+
+                    <TextBlock Margin="10,20,10,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Bottom"
+                               FontSize="{DynamicResource {x:Static h:FontSizeKeys.Header4}}"
+                               Text="{Binding Name}" />
+
+                    <Button Width="220"
+                            Height="220"
+                            HorizontalAlignment="Center"
+                            h:Cattach.GuideData="通过此功能添加任务"
+                            h:Cattach.GuideTitle="添加任务"
+                            h:Cattach.Icon=""
+                            h:Cattach.IconSize="150"
+                            h:Cattach.UseGuide="True"
+                            BorderBrush="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Foreground}"
+                            BorderThickness="2"
+                            Command="{Binding AddFileCommand}"
+                            Style="{DynamicResource {x:Static h:ButtonKeys.Dynamic}}">
+                        <Button.Content>
+                            <Path Data="M80,0 80,120Z M0,60 160,60"
+                                  Stretch="Uniform"
+                                  Stroke="{DynamicResource {x:Static h:BrushKeys.ForegroundDefault}}"
+                                  StrokeThickness="3" />
+                        </Button.Content>
+                    </Button>
+                </DockPanel>
+            </Grid>
+        </DockPanel>
+    </DataTemplate>
+
+    <!--<DataTemplate DataType="{x:Type local:ScreenConverterGroup}">
+        <TextBlock Text="{Binding Name}" />
+    </DataTemplate>-->
+</ResourceDictionary>

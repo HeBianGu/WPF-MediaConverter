@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--<TargetFramework>net5.0-windows</TargetFramework>-->
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Product>H视频转换器</Product>
+    <Description>软件支持音频转换、视频转换、视频压缩、视频编辑、合并转换等多种功能</Description>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Copyright>Copyright © HeBianGu 2019-2023</Copyright>
+    <Authors>HeBianGu</Authors>
+    <Company>HeBianGu</Company>
+    <PackageProjectUrl>https://github.com/HeBianGu</PackageProjectUrl>
+    <XamlDebuggingInformation>True</XamlDebuggingInformation>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Content Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HeBianGu.Control.Filter" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Control.FontEditor" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Control.OutlookBar" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Control.PagedDataGrid" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.DataBase.Sqlite" Version="5.0.0" />
+    <!--<PackageReference Include="HeBianGu.Service.Attach" Version="5.0.0" />-->
+    <PackageReference Include="HeBianGu.Systems.About" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Feedback" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Identity" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Logger" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Notification" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Operation" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Project" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Repository" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Setting" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Start" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Survey" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Upgrade" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.WinTool" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.XmlSerialize" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Window.Main" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Window.Notify" Version="5.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\FFMpegCore.Extensions.System.Drawing.Common\FFMpegCore.Extensions.System.Drawing.Common.csproj" />
+    <ProjectReference Include="..\..\Domain\FFMpegCore\FFMpegCore.csproj" />
+    <ProjectReference Include="..\..\Domain\HeBianGu.Domain.Converter\HeBianGu.Domain.Converter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo.ico" />
+  </ItemGroup>
+</Project>

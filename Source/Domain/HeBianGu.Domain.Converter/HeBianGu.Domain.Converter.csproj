@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+	  <UseWPF>true</UseWPF>
+	  <PackageIcon>logo.jpg</PackageIcon>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HeBianGu.Control.PagedDataGrid" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Service.License" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Systems.Setting" Version="5.0.0" />
+    <PackageReference Include="HeBianGu.Window.MessageDialog" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FFMpegCore.Extensions.System.Drawing.Common\FFMpegCore.Extensions.System.Drawing.Common.csproj" />
+    <ProjectReference Include="..\FFMpegCore\FFMpegCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="PropertyControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PropertyTabControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>
